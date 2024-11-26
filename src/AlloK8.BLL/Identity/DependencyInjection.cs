@@ -8,6 +8,8 @@ internal static class DependencyInjection
     public static IServiceCollection AddIdentityServices(
         this IServiceCollection services)
     {
+        //ERROR
+
         //services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
         //{
         //    options.SignIn.RequireConfirmedAccount = true;

@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Essentials" Version="0.0.10" />
+    <PackageReference Include="SendGrid" Version="9.29.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AlloK8.DAL\AlloK8.DAL.csproj" />
   </ItemGroup>
 
