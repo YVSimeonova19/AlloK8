@@ -6,6 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <_ContentIncludedByDefault Remove="appsettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\AlloK8.BLL\AlloK8.BLL.csproj" />
     </ItemGroup>
 

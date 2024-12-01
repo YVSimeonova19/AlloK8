@@ -1,4 +1,4 @@
-﻿namespace AlloK8.BLL.Common.Options;
+﻿namespace AlloK8.BLL.Common.EmailSending;
 
 public class EmailSendGridOptions
 {
