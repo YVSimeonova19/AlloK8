@@ -10,6 +10,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.Configure<EmailSendGridOptions>(configuration.GetSection("SendGrid").Bind);
         services.AddScoped<IEmailService, EmailService>();
 
         return services;

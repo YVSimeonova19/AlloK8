@@ -1,7 +1,4 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using AlloK8.PL.Models;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.EmailSending;
 
@@ -9,34 +6,25 @@ namespace AlloK8.PL.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IEmailService _emailService;
-    private readonly ILogger<HomeController> _logger;
+    private readonly IEmailService emailService;
 
-    public HomeController(
-        IEmailService emailService,
-        ILogger<HomeController> logger)
+    public HomeController(IEmailService emailService)
     {
-        _emailService = emailService;
-        _logger = logger;
+        this.emailService = emailService;
     }
 
-    [HttpGet("/")]
-    public async Task<IActionResult> Index()
+    [HttpGet("/emailTest")]
+    public async Task<IActionResult> SendConfirmationEmail()
     {
-        await _emailService.SendEmailAsync(
-            new EmailModel
-            {
-                Subject = "Welcome to AlloK8!",
-                Email = "allok8.customerservice@gmail.com",
-                Message = "You have received an email via SendGrid."
-            });
+        var emailModel = new EmailModel
+        {
+            Email = "hwplatformaibest@gmail.com",
+            Subject = "Confirmation Email",
+            Message = "<h1>Thank you for registering!</h1><p>Your registration is complete.</p>",
+        };
 
-        return Ok();
-    }
+        await this.emailService.SendEmailAsync(emailModel);
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return this.Ok("Email Sent Successfully");
     }
 }

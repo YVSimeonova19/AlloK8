@@ -4,36 +4,45 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.Threading.Tasks;
 
-namespace AlloK8.BLL.Common.EmailSending;
-
-internal class EmailService : IEmailService
+namespace AlloK8.BLL.Common.EmailSending
 {
-    private readonly EmailSendGridOptions options;
-
-    public EmailService(IOptions<EmailSendGridOptions> options)
+    internal class EmailService : IEmailService
     {
-        this.options = options.Value;
-    }
+        private readonly EmailSendGridOptions emailOptions;
 
-    public async Task SendEmailAsync(EmailModel emailModel)
-    {
-        var client = new SendGridClient(options.ApiKey);
-
-        var sender = new EmailAddress(options.Email, options.Name);
-
-        var recipient = new EmailAddress(emailModel.Email);
-
-        var message = MailHelper.CreateSingleEmail(sender, recipient, emailModel.Subject, emailModel.Message, emailModel.Message);
-
-        var response = await client.SendEmailAsync(message);
-
-        if (response.IsSuccessStatusCode)
+        public EmailService(IOptions<EmailSendGridOptions> options)
         {
-            Console.WriteLine("Email sent");
+            emailOptions = options.Value ?? throw new ArgumentNullException(nameof(options));
+
+            if (string.IsNullOrEmpty(emailOptions.ApiKey))
+                throw new Exception("SendGrid API key is not configured.");
+            if (string.IsNullOrEmpty(emailOptions.Email))
+                throw new Exception("SendGrid Email is not configured.");
+            if (string.IsNullOrEmpty(emailOptions.Name))
+                throw new Exception("SendGrid Name is not configured.");
         }
-        else
+
+        public async Task SendEmailAsync(EmailModel emailModel)
         {
-            Console.WriteLine("Error sending email: " + response.StatusCode.ToString());
+            var client = new SendGridClient(emailOptions.ApiKey);
+
+            var sender = new EmailAddress(emailOptions.Email, emailOptions.Name);
+
+            var recipient = new EmailAddress(emailModel.Email);
+
+            var message = MailHelper.CreateSingleEmail(sender, recipient, emailModel.Subject, emailModel.Message,
+                emailModel.Message);
+
+            var response = await client.SendEmailAsync(message);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Email sent");
+            }
+            else
+            {
+                Console.WriteLine("Error sending email: " + response.StatusCode.ToString());
+            }
         }
     }
 }
