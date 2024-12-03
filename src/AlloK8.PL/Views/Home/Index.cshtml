@@ -2,7 +2,6 @@
 @model IActionResult
 
 @{
-    ViewData["Title"] = "Home";
     Layout = "_Layout";
 }
 
@@ -61,6 +60,6 @@
         @await Html.PartialAsync("_Notifications")
     </div>
     <div class="row">
-        @await Html.PartialAsync("_AdvancedTable    ")
+        @await Html.PartialAsync("_AdvancedTable")
     </div>
 </div>

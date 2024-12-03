@@ -13,6 +13,12 @@ public class HomeController : Controller
         this.emailService = emailService;
     }
 
+    [HttpGet("/")]
+    public IActionResult Index()
+    {
+        return View();
+    }
+
     [HttpGet("/emailTest")]
     public async Task<IActionResult> SendConfirmationEmail()
     {
