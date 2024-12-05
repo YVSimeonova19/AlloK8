@@ -7,6 +7,6 @@ public class Error500Controller : Controller
     [HttpGet("/error-500")]
     public IActionResult Error500()
     {
-        return View();
+        return this.View();
     }
 }

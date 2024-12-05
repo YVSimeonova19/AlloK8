@@ -7,6 +7,6 @@ public class LoginController : Controller
     [HttpGet("/login")]
     public IActionResult Login()
     {
-        return View();
+        return this.View();
     }
 }

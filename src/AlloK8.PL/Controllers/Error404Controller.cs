@@ -7,6 +7,6 @@ public class Error404Controller : Controller
     [HttpGet("/error-404")]
     public IActionResult Error404()
     {
-        return View();
+        return this.View();
     }
 }

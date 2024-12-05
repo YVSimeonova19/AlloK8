@@ -7,6 +7,6 @@ public class RegisterController : Controller
     [HttpGet("/register")]
     public IActionResult Register()
     {
-        return View();
+        return this.View();
     }
 }

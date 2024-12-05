@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.EmailSending;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AlloK8.PL.Controllers;
 
@@ -16,7 +16,7 @@ public class HomeController : Controller
     [HttpGet("/")]
     public IActionResult Index()
     {
-        return View();
+        return this.View();
     }
 
     [HttpGet("/emailTest")]
