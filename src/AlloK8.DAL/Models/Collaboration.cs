@@ -18,5 +18,5 @@ public class Collaboration
 
     public Task? Task { get; set; }
 
-    public User? User { get; set; }
+    public UserProfile? User { get; set; }
 }

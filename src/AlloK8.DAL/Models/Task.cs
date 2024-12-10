@@ -24,7 +24,7 @@ public class Task
 
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-    public User? Creator { get; set; }
+    public UserProfile? Creator { get; set; }
 
-    public User? Assignee { get; set; }
+    public UserProfile? Assignee { get; set; }
 }

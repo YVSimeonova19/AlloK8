@@ -16,7 +16,7 @@ public class Message
 
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-    public User? Sender { get; set; }
+    public UserProfile? Sender { get; set; }
 
-    public User? Receiver { get; set; }
+    public UserProfile? Receiver { get; set; }
 }

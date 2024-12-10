@@ -1,19 +1,28 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.EmailSending;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace AlloK8.PL.Controllers;
 
 public class HomeController : Controller
 {
     private readonly IEmailService emailService;
+    private readonly ILogger<HomeController> logger;
 
-    public HomeController(IEmailService emailService)
+    public HomeController(
+        IEmailService emailService,
+        ILogger<HomeController> logger)
     {
         this.emailService = emailService;
+        this.logger = logger;
     }
 
     [HttpGet("/")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public IActionResult Index()
     {
         return this.View();

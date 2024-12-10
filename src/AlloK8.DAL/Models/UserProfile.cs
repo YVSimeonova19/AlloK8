@@ -4,7 +4,7 @@ using AlloK8.DAL.Models;
 
 namespace AlloK8.DAL.Models;
 
-public class User
+public class UserProfile
 {
     public ICollection<Task>? Tasks { get; set; }
 
