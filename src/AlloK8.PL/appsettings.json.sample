@@ -1,14 +1,11 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": ""
+    "DefaultConnection": "{{connection_string}}"
   },
-  "Emails": {
-    "SendGrid": {
-      "Enabled": false,
-      "ApiKey": "{{api_key}}",
-      "Email": "{{email}}",
-      "Name": "{{name}}"
-    }
+  "SendGrid": {
+    "ApiKey": "{{api_key}}",
+    "Email": "{{email}}",
+    "Name": "{{name}}"
   },
   "Logging": {
     "LogLevel": {
