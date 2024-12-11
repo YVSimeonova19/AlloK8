@@ -16,7 +16,7 @@ This is a Web App for **managing projects and tasks** that implements the **Agil
 
 <img align="left" alt="sqlserver" width="40px" src="https://github.com/devicons/devicon/blob/master/icons/microsoftsqlserver/microsoftsqlserver-plain.svg">
 
-<br/>~~~~
+<br/>
 <br/>
 
 ## Quick startup 💻
