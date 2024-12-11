@@ -7,6 +7,10 @@ public class LoginVM
     [Required(
         ErrorMessageResourceType = typeof(Common.T),
         ErrorMessageResourceName = "EmailIsRequiredErrorMessage")]
+    [EmailAddress(
+        ErrorMessageResourceType = typeof(Common.T),
+        ErrorMessageResourceName = "EmailIsInvalidErrorMessage")]
+
     public string? Email { get; set; }
 
     [Required(

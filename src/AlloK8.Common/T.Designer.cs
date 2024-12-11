@@ -28,7 +28,7 @@ namespace AlloK8.Common {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public T() {
+        internal T() {
         }
         
         /// <summary>
@@ -105,6 +105,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вашата заявка беше успешна. Моля проверете имейл адреса си за линк за промяна на парола..
+        /// </summary>
+        public static string ForgotPasswordSuccessMessage {
+            get {
+                return ResourceManager.GetString("ForgotPasswordSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Забравена парола.
         /// </summary>
         public static string ForgotPasswordTitle {
@@ -119,6 +128,15 @@ namespace AlloK8.Common {
         public static string HaveAccountText {
             get {
                 return ResourceManager.GetString("HaveAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имейлът или паролата не съвпадат.
+        /// </summary>
+        public static string InvalidLoginErrorMessage {
+            get {
+                return ResourceManager.GetString("InvalidLoginErrorMessage", resourceCulture);
             }
         }
         
@@ -168,6 +186,33 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изход.
+        /// </summary>
+        public static string LogoutButtonText {
+            get {
+                return ResourceManager.GetString("LogoutButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сигурни ли сте, че искате да излезете от Вашия профил?.
+        /// </summary>
+        public static string LogoutModalMessage {
+            get {
+                return ResourceManager.GetString("LogoutModalMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изход от системата.
+        /// </summary>
+        public static string LogoutModalTitle {
+            get {
+                return ResourceManager.GetString("LogoutModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Нямаш профил?.
         /// </summary>
         public static string NoAccountText {
@@ -204,6 +249,42 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Паролата трябва да съдържа малка буква.
+        /// </summary>
+        public static string PasswordRequiresLowerErrorMessage {
+            get {
+                return ResourceManager.GetString("PasswordRequiresLowerErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Паролата трябва да съдържа символ.
+        /// </summary>
+        public static string PasswordRequiresNonAlphanumericErrorMessage {
+            get {
+                return ResourceManager.GetString("PasswordRequiresNonAlphanumericErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Паролата трябва да съдържа голяма буква.
+        /// </summary>
+        public static string PasswordRequiresUpperErrorMessage {
+            get {
+                return ResourceManager.GetString("PasswordRequiresUpperErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Паролата трябва да е поне 6 символа.
+        /// </summary>
+        public static string PasswordTooShortErrorMessage {
+            get {
+                return ResourceManager.GetString("PasswordTooShortErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Регистрация.
         /// </summary>
         public static string RegisterButtonText {
@@ -222,6 +303,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вашата регистрация беше успешна. Използвайте данните си за да влезете в системата..
+        /// </summary>
+        public static string RegisterSuccessMessage {
+            get {
+                return ResourceManager.GetString("RegisterSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Регистрация.
         /// </summary>
         public static string RegisterTitle {
@@ -236,6 +326,24 @@ namespace AlloK8.Common {
         public static string RememberMeLabel {
             get {
                 return ResourceManager.GetString("RememberMeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Смени паролата.
+        /// </summary>
+        public static string ResetPasswordButtonText {
+            get {
+                return ResourceManager.GetString("ResetPasswordButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Смяна на парола.
+        /// </summary>
+        public static string ResetPasswordTitle {
+            get {
+                return ResourceManager.GetString("ResetPasswordTitle", resourceCulture);
             }
         }
         
@@ -263,6 +371,15 @@ namespace AlloK8.Common {
         public static string SignUpHeader2Text {
             get {
                 return ResourceManager.GetString("SignUpHeader2Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Профилът Ви е временно заключен.
+        /// </summary>
+        public static string UserLockedOutErrorMessage {
+            get {
+                return ResourceManager.GetString("UserLockedOutErrorMessage", resourceCulture);
             }
         }
     }

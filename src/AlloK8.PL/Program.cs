@@ -10,7 +10,14 @@ using Microsoft.Extensions.Hosting;
 var builder = WebApplication.CreateBuilder(args);
 
 //ask about this one bc it doesn't work in the dependency injection in identity dal
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<EntityContext>()
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        //make the next one true later
+        options.SignIn.RequireConfirmedEmail = false;
+        options.Password.RequiredLength = 6;
+    })
+    .AddEntityFrameworkStores<EntityContext>()
     .AddDefaultTokenProviders();
 
 builder.Services

@@ -18,8 +18,10 @@ internal static class DependencyInjection
         //         options.SignIn.RequireConfirmedAccount = false;
         //         //make the next one true later
         //         options.SignIn.RequireConfirmedEmail = false;
+        //         options.Password.RequiredLength = 6;
         //     })
-        //     .AddEntityFrameworkStores<EntityContext>();
+        //     .AddEntityFrameworkStores<EntityContext>()
+        //     .AddDefaultTokenProviders();
 
         return services;
     }

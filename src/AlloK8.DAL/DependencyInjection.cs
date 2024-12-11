@@ -14,7 +14,7 @@ public static class DependencyInjection
         services.AddDbContext<EntityContext>(options =>
             options.UseSqlServer(connectionString));
 
-        // services.AddDatabaseDeveloperPageExceptionFilter();
+        //  services.AddDatabaseDeveloperPageExceptionFilter();
 
         return services;
     }

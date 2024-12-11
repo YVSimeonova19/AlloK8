@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
+using Essentials.Results;
 
 namespace AlloK8.BLL.Common.EmailSending;
 
 public interface IEmailService
 {
-    Task SendEmailAsync(EmailModel emailModel);
+    Task<StandardResult> SendEmailAsync(EmailModel emailModel);
 }

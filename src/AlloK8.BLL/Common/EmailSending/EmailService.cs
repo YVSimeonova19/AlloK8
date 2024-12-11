@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Essentials.Results;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -30,7 +31,7 @@ namespace AlloK8.BLL.Common.EmailSending
             }
         }
 
-        public async Task SendEmailAsync(EmailModel emailModel)
+        public async Task<StandardResult> SendEmailAsync(EmailModel emailModel)
         {
             var client = new SendGridClient(this.emailOptions.ApiKey);
 
@@ -38,18 +39,16 @@ namespace AlloK8.BLL.Common.EmailSending
 
             var recipient = new EmailAddress(emailModel.Email);
 
-            var message = MailHelper.CreateSingleEmail(sender, recipient, emailModel.Subject, emailModel.Message, emailModel.Message);
+            var message = MailHelper.CreateSingleEmail(
+                sender,
+                recipient,
+                emailModel.Subject,
+                emailModel.Message,
+                emailModel.Message);
 
             var response = await client.SendEmailAsync(message);
 
-            if (response.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Email sent");
-            }
-            else
-            {
-                Console.WriteLine("Error sending email: " + response.StatusCode.ToString());
-            }
+            return StandardResult.ResultFrom(response.IsSuccessStatusCode);
         }
     }
 }

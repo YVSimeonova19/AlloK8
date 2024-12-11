@@ -1,6 +1,9 @@
-﻿@model LoginVM
+﻿@using System.Net.Http
+@using AlloK8.PL.Extensions
+@model LoginVM
 @{
     Layout = "_AuthLayout";
+    var globalError = this.ViewContext.ModelState.GetFirstGlobalError();
 }
 
 <h4>@T.LoginFormWelcomeMessage</h4>
@@ -10,6 +13,13 @@
 {
     <span class="d-block text-small alert alert-@TempData["MessageVariant"]">
         @TempData["MessageText"]
+    </span>
+}
+
+@if (!string.IsNullOrWhiteSpace(globalError))
+{
+    <span class="d-block text-small alert alert-danger">
+        @globalError
     </span>
 }
 
