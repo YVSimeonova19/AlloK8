@@ -1,7 +1,7 @@
 # AlloK8
 
 ## Project resume 📑
-This is a Web App for **managing projects and tasks** that implements the **Agile** and **Scrum** methodologies. The system's goal is to **simplify project management** by keeping track of progress and the ability to work in teams. It aids communication and productivity by centralizing the management of project tasks.~~~~
+This is a Web App for **managing projects and tasks** that implements the **Agile** and **Scrum** methodologies. The system's goal is to **simplify project management** by keeping track of progress and the ability to work in teams. It aids communication and productivity by centralizing the management of project tasks.
 
 ## Used technologies ⚙️
 <img align="left" alt="c#" width="40px" src="https://github.com/devicons/devicon/blob/master/icons/csharp/csharp-plain.svg">
