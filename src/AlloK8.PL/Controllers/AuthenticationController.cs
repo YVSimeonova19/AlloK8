@@ -2,6 +2,7 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.EmailSending;
+using AlloK8.BLL.Identity.Constants;
 using AlloK8.BLL.Identity.Extensions;
 using AlloK8.Common;
 using AlloK8.DAL;
@@ -110,16 +111,19 @@ public class AuthenticationController : Controller
 
         if (this.ModelState.IsValid)
         {
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+            };
             var result = await this.userManager.CreateAsync(
-                new ApplicationUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email,
-                },
+                user,
                 model.Password!);
 
             if (result.Succeeded)
             {
+                await this.userManager.AddToRoleAsync(user, DefaultRoles.User);
+
                 this.TempData["MessageText"] = T.RegisterSuccessMessage;
                 this.TempData["MessageVariant"] = "success";
                 return this.RedirectToAction(nameof(this.Login));
@@ -232,6 +236,12 @@ public class AuthenticationController : Controller
         }
 
         return this.View(model);
+    }
+
+    [HttpGet("/access-denied")]
+    public IActionResult AccessDenied()
+    {
+        return this.View();
     }
 
     [HttpPost("/logout")]

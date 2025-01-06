@@ -1,9 +1,12 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.EmailSending;
+using AlloK8.BLL.Identity.Constants;
 using AlloK8.BLL.Identity.Contracts;
+using AlloK8.DAL;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -13,20 +16,23 @@ public class HomeController : Controller
 {
     private readonly IEmailService emailService;
     private readonly ICurrentUser currentUser;
+    private readonly UserManager<ApplicationUser> userManager;
     private readonly ILogger<HomeController> logger;
 
     public HomeController(
         IEmailService emailService,
         ICurrentUser currentUser,
+        UserManager<ApplicationUser> userManager,
         ILogger<HomeController> logger)
     {
         this.emailService = emailService;
         this.currentUser = currentUser;
+        this.userManager = userManager;
         this.logger = logger;
     }
 
     [HttpGet("/")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize(DefaultPolicies.UserPolicy)]
     public IActionResult Index()
     {
         return this.View();

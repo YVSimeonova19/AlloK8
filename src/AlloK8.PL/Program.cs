@@ -1,4 +1,5 @@
 using AlloK8.BLL;
+using AlloK8.BLL.Identity.Constants;
 using AlloK8.DAL;
 using AlloK8.PL;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -17,9 +18,26 @@ builder.Services
         {
             options.LoginPath = "/login";
             options.LogoutPath = "/logout";
+            options.AccessDeniedPath = "/access-denied";
         });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(DefaultPolicies.AdminPolicy, policyBuilder =>
+    {
+        policyBuilder.RequireAuthenticatedUser();
+        policyBuilder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+        policyBuilder.RequireRole(DefaultRoles.Admin);
+    });
+    options.AddPolicy(DefaultPolicies.UserPolicy, policyBuilder =>
+    {
+        policyBuilder.RequireAuthenticatedUser();
+        policyBuilder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+        policyBuilder.RequireRole(DefaultRoles.User);
+    });
+});
 
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
