@@ -1,4 +1,6 @@
-﻿using AlloK8.DAL;
+﻿using AlloK8.BLL.Identity.Contracts;
+using AlloK8.BLL.Identity.Internals;
+using AlloK8.DAL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +21,8 @@ internal static class DependencyInjection
              })
              .AddEntityFrameworkStores<EntityContext>()
              .AddDefaultTokenProviders();
+
+         services.AddScoped<ICurrentUser, CurrentUser>();
 
          return services;
     }
