@@ -43,7 +43,7 @@ public class HomeController : Controller
     {
         var emailModel = new EmailModel
         {
-            Email = "hwplatformaibest@gmail.com",
+            Email = "vonjoanna2005@gmail.com",
             Subject = "Confirmation Email",
             Message = "<h1>Thank you for registering!</h1><p>Your registration is complete.</p>",
         };
