@@ -1,15 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace AlloK8.DAL.Models;
 
-public class Column
+public class Column : Entity
 {
-    public int Id { get; set; }
-
-    public int BoardId { get; set; }
-
     public string? Name { get; set; }
     public int Position { get; set; }
 
-    public Board? Board { get; set; }
+    public int BoardId { get; set; }
+    public Board Board { get; set; } = null!;
+
+    public ICollection<Task> Tasks { get; } = new List<Task>();
 }

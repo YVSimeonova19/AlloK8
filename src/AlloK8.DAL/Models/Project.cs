@@ -4,19 +4,12 @@ using System.Collections.Generic;
 
 namespace AlloK8.DAL.Models;
 
-public class Project
+public class Project : AuditableEntity
 {
-    public int Id { get; set; }
-
-    public int UserId { get; set; }
-
     public string? Name { get; set; }
     public string? Description { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public ICollection<Board> Boards { get; } = new List<Board>();
 
-    public UserProfile? Creator { get; set; }
-    public ICollection<UserProfile>? Users { get; set; }
-    public ICollection<Board>? Boards { get; set; }
+    public List<UserProfile> Users { get; } = [];
 }

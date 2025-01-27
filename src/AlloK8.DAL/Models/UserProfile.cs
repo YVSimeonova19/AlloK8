@@ -6,7 +6,11 @@ namespace AlloK8.DAL.Models;
 
 public class UserProfile : ApplicationUser
 {
-    public ICollection<Task>? Tasks { get; set; }
+    public List<Task> Tasks { get; } = [];
+    public Task? TaskCreated { get; set; }
+    public Task? TaskUpdated { get; set; }
 
-    public ICollection<Notification>? Notifications { get; set; }
+    public List<Board> Boards { get; } = [];
+
+    public List<Project> Projects { get; } = [];
 }

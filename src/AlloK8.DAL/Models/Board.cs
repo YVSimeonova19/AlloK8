@@ -3,20 +3,15 @@ using System.Collections.Generic;
 
 namespace AlloK8.DAL.Models;
 
-public class Board
+public class Board : AuditableEntity
 {
-    public int Id { get; set; }
-
-    public int ProjectId { get; set; }
-
     public string? Name { get; set; }
     public string? Description { get; set; }
 
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public int ProjectId { get; set; }
+    public Project Project { get; set; } = null!;
 
-    public UserProfile? Creator { get; set; }
-    public Project? Project { get; set; }
-    public ICollection<UserProfile>? Users { get; set; }
-    public ICollection<Column>? Columns { get; set; }
+    public ICollection<Column> Columns { get; } = new List<Column>();
+
+    public List<UserProfile> Users { get; } = [];
 }
