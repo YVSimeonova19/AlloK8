@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AlloK8.DAL;
 
 public class EntityContext
-    : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    : IdentityDbContext<ApplicationUser, ApplicationRole, int>
 {
     public EntityContext(DbContextOptions<EntityContext> options)
         : base(options)
@@ -40,6 +40,24 @@ public class EntityContext
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Task(1) - Creator(1)
+        builder
+            .Entity<Task>()
+            .HasOne(t => t.CreatedByUser)
+            .WithOne(u => u.TaskCreated)
+            .HasForeignKey<Task>(t => t.CreatedByUserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Task(1) - Updator(1)
+        builder
+            .Entity<Task>()
+            .HasOne(t => t.UpdatedByUser)
+            .WithOne(u => u.TaskUpdated)
+            .HasForeignKey<Task>(t => t.UpdatedByUserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
         // COLUMN
         // Column(m) - Board(1)
         builder
@@ -66,12 +84,48 @@ public class EntityContext
             .HasMany(p => p.Users)
             .WithMany(u => u.Boards);
 
+        // Board(1) - Creator(1)
+        builder
+            .Entity<Board>()
+            .HasOne(b => b.CreatedByUser)
+            .WithOne(u => u.BoardCreated)
+            .HasForeignKey<Board>(b => b.CreatedByUserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Board(1) - Updator(1)
+        builder
+            .Entity<Board>()
+            .HasOne(b => b.UpdatedByUser)
+            .WithOne(u => u.BoardUpdated)
+            .HasForeignKey<Board>(b => b.UpdatedByUserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
         // PROJECT
         // Project(m) - UserProfile(m)
         builder
             .Entity<Project>()
             .HasMany(p => p.Users)
             .WithMany(u => u.Projects);
+
+        // Project(1) - Creator(1)
+        builder
+            .Entity<Project>()
+            .HasOne(p => p.CreatedByUser)
+            .WithOne(u => u.ProjectCreated)
+            .HasForeignKey<Project>(p => p.CreatedByUserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Project(1) - Updator(1)
+        builder
+            .Entity<Project>()
+            .HasOne(p => p.UpdatedByUser)
+            .WithOne(u => u.ProjectUpdated)
+            .HasForeignKey<Project>(p => p.UpdatedByUserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
 
         base.OnModelCreating(builder);
     }
