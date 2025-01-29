@@ -12,6 +12,7 @@ public class Task : AuditableEntity
 
     public int Position { get; set; }
 
+    // to remove start date
     public DateTime StartDate { get; set; }
     public DateTime DueDate { get; set; }
 
