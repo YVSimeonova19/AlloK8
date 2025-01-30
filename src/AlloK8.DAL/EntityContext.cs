@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AlloK8.DAL;
 
 public class EntityContext
-    : IdentityDbContext<ApplicationUser, ApplicationRole, int>
+    : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public EntityContext(DbContextOptions<EntityContext> options)
         : base(options)
@@ -24,6 +24,16 @@ public class EntityContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        // USER
+        // UserProfile(1) - ApplicationUser(1)
+        builder
+            .Entity<UserProfile>()
+            .HasOne(up => up.ApplicationUser)
+            .WithOne(au => au.UserProfile)
+            .HasForeignKey<UserProfile>(up => up.ApplicationUserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
         // TASK
         // Task(m) - UserProfile(m)
         builder
