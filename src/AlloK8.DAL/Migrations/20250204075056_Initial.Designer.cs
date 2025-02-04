@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlloK8.DAL.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20250204073559_Initial")]
+    [Migration("20250204075056_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

@@ -15,7 +15,6 @@ public class EntityContext
     }
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-    public DbSet<ApplicationRole> ApplicationRoles { get; set; }
     public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<Task> Tasks { get; set; }
     public DbSet<Column> Columns { get; set; }

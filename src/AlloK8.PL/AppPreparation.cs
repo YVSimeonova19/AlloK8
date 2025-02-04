@@ -20,18 +20,6 @@ public static class AppPreparation
 
             await dbContext.Database.MigrateAsync();
 
-            if (!await dbContext.Roles.AnyAsync())
-            {
-                using var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-                foreach (var role in DefaultRoles.List)
-                {
-                    var succeeded = await roleManager.CreateAsync(new ApplicationRole
-                    {
-                        Name = role,
-                    });
-                }
-            }
-
             if (!await dbContext.Users.AnyAsync())
             {
                 using var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -41,13 +29,7 @@ public static class AppPreparation
                     Email = InitialAdminCredentials.AdminEmail,
                     EmailConfirmed = true,
                 };
-                var adminCreatedResult = await userManager.CreateAsync(
-                    user,
-                    InitialAdminCredentials.AdminPassword);
-                if (adminCreatedResult.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, DefaultRoles.Admin);
-                }
+                var adminCreatedResult = await userManager.CreateAsync(user, InitialAdminCredentials.AdminPassword);
             }
         }
         catch (Exception e)

@@ -122,8 +122,6 @@ public class AuthenticationController : Controller
 
             if (result.Succeeded)
             {
-                await this.userManager.AddToRoleAsync(user, DefaultRoles.User);
-
                 this.TempData["MessageText"] = T.RegisterSuccessMessage;
                 this.TempData["MessageVariant"] = "success";
                 return this.RedirectToAction(nameof(this.Login));
