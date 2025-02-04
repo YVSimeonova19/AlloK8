@@ -1,0 +1,20 @@
+@page
+@model List<ProjectVM>
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="content-wrapper">
+    @foreach (var project in Model)
+    {
+        <div class="col-md-6 mb-4 stretch-card transparent">
+            <div class="card card-dark-blue">
+                <div class="card-body">
+                    <p class="fs-30 mb-2">@project.Name</p>
+                    <p>@project.Description</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

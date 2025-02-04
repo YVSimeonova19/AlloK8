@@ -1,0 +1,34 @@
+@model ProjectVM
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="content-wrapper">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Create Project</h4>
+            <p class="card-description">
+                Give it a name and a short description
+            </p>
+            <form class="forms-sample" asp-action="CreateProject" method="post">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input asp-for="Name" 
+                           class="form-control" 
+                           id="name" 
+                           placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="description">Short Description</label>
+                    <input asp-for="Description"
+                           class="form-control" 
+                           id="description" 
+                           placeholder="Short Description">
+                </div>
+                <button type="submit" 
+                        class="btn btn-primary mr-2">Create Project</button>
+            </form>
+        </div>
+    </div>
+</div>

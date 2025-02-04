@@ -22,8 +22,4 @@
     <ProjectReference Include="..\AlloK8.DAL\AlloK8.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\Tasks\Models\" />
-  </ItemGroup>
-
 </Project>

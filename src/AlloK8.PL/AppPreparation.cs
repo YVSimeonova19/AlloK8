@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AlloK8.BLL.Common.Users;
 using AlloK8.BLL.Identity.Constants;
 using AlloK8.DAL;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +18,7 @@ public static class AppPreparation
         {
             using var scope = app.ApplicationServices.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<EntityContext>();
+            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 
             await dbContext.Database.MigrateAsync();
 
@@ -30,6 +32,7 @@ public static class AppPreparation
                     EmailConfirmed = true,
                 };
                 var adminCreatedResult = await userManager.CreateAsync(user, InitialAdminCredentials.AdminPassword);
+                userService.CreateUserProfile(user.Id);
             }
         }
         catch (Exception e)

@@ -1,5 +1,7 @@
 ﻿using AlloK8.BLL.Common.EmailSending;
+using AlloK8.BLL.Common.Projects;
 using AlloK8.BLL.Common.Tasks;
+using AlloK8.BLL.Common.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +16,8 @@ public static class DependencyInjection
         services.Configure<EmailSendGridOptions>(configuration.GetSection("SendGrid").Bind);
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ITaskService, TaskService>();
+        services.AddScoped<IProjectService, ProjectService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }

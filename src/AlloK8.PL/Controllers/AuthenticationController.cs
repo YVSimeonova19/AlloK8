@@ -2,6 +2,7 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.EmailSending;
+using AlloK8.BLL.Common.Users;
 using AlloK8.BLL.Identity.Constants;
 using AlloK8.BLL.Identity.Extensions;
 using AlloK8.Common;
@@ -26,19 +27,22 @@ public class AuthenticationController : Controller
     private readonly IEmailService emailService;
     private readonly UrlEncoder urlEncoder;
     private readonly ILogger<AuthenticationController> logger;
+    private readonly IUserService userService;
 
     public AuthenticationController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IEmailService emailService,
         UrlEncoder urlEncoder,
-        ILogger<AuthenticationController> logger)
+        ILogger<AuthenticationController> logger,
+        IUserService userService)
     {
         this.userManager = userManager;
         this.signInManager = signInManager;
         this.emailService = emailService;
         this.urlEncoder = urlEncoder;
         this.logger = logger;
+        this.userService = userService;
     }
 
     [HttpGet("/login")]
@@ -122,8 +126,11 @@ public class AuthenticationController : Controller
 
             if (result.Succeeded)
             {
+                this.userService.CreateUserProfile(user.Id);
+
                 this.TempData["MessageText"] = T.RegisterSuccessMessage;
                 this.TempData["MessageVariant"] = "success";
+
                 return this.RedirectToAction(nameof(this.Login));
             }
 
