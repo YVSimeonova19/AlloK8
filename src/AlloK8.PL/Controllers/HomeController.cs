@@ -32,7 +32,6 @@ public class HomeController : Controller
     }
 
     [HttpGet("/")]
-    [Authorize(DefaultPolicies.UserPolicy)]
     public IActionResult Index()
     {
         return this.View();

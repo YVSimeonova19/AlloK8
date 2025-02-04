@@ -25,7 +25,7 @@ public static class AppPreparation
                 using var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
                 foreach (var role in DefaultRoles.List)
                 {
-                    await roleManager.CreateAsync(new ApplicationRole
+                    var succeeded = await roleManager.CreateAsync(new ApplicationRole
                     {
                         Name = role,
                     });
