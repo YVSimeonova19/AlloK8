@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AlloK8.DAL;
-using AlloK8.DAL.Models;
+using Task = System.Threading.Tasks.Task;
 
 namespace AlloK8.BLL.Common.Tasks;
 
@@ -15,9 +16,9 @@ internal class TaskService : ITaskService
         this.context = context;
     }
 
-    public Task CreateTask(TaskIM taskIM)
+    public async Task<DAL.Models.Task> CreateTask(TaskIM taskIM)
     {
-        var task = new Task
+        var task = new DAL.Models.Task
         {
             Title = taskIM.Title,
             Description = taskIM.Description,
@@ -33,7 +34,7 @@ internal class TaskService : ITaskService
         return task;
     }
 
-    public Task GetTaskById(int id)
+    public async Task<DAL.Models.Task> GetTaskById(int id)
     {
         var task = this.context.Tasks.Find(id);
         if (task == null)
@@ -44,14 +45,14 @@ internal class TaskService : ITaskService
         return task;
     }
 
-    public List<Task> GetAllTasks()
+    public async Task<List<DAL.Models.Task>> GetAllTasks()
     {
         return this.context.Tasks.ToList();
     }
 
-    public Task UpdateTask(TaskUM taskUM, int id)
+    public async Task<DAL.Models.Task> UpdateTask(TaskUM taskUM, int id)
     {
-        var task = this.GetTaskById(id);
+        var task = await this.GetTaskById(id);
 
         task.Title = taskUM.Title ?? task.Title;
         task.Description = taskUM.Description ?? task.Description;
@@ -64,9 +65,9 @@ internal class TaskService : ITaskService
         return task;
     }
 
-    public Task MoveTask(TaskUM taskUM, int id)
+    public async Task<DAL.Models.Task> MoveTask(TaskUM taskUM, int id)
     {
-        var task = this.GetTaskById(id);
+        var task = await this.GetTaskById(id);
 
         task.Position = taskUM.Position ?? task.Position;
         task.ColumnId = taskUM.ColumnId ?? task.ColumnId;
@@ -78,9 +79,9 @@ internal class TaskService : ITaskService
     }
 
 /*
-    public Task AssignTask(TaskUM taskUM, int id)
+    public async Task<DAL.Models.Task> AssignTask(TaskUM taskUM, int id)
     {
-        var task = this.GetTaskById(id);
+        var task = await this.GetTaskById(id);
 
         // Assuming taskUM.Assignees is a list of user IDs
         foreach (var userId in taskUM.Assignees)
@@ -98,9 +99,9 @@ internal class TaskService : ITaskService
         return task;
     }
 */
-    public void DeleteTaskById(int id)
+    public async Task DeleteTaskById(int id)
     {
-        var task = this.GetTaskById(id);
+        var task = await this.GetTaskById(id);
 
         this.context.Tasks.Remove(task);
         this.context.SaveChanges();
