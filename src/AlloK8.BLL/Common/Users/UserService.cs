@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AlloK8.DAL;
 using AlloK8.DAL.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlloK8.BLL.Common.Users;
 
@@ -16,7 +16,7 @@ internal class UserService : IUserService
         this.context = context;
     }
 
-    public UserProfile CreateUserProfile(Guid userId)
+    public async Task<UserProfile> CreateUserProfile(Guid userId)
     {
         var userProflie = new UserProfile
         {
@@ -29,7 +29,7 @@ internal class UserService : IUserService
         return userProflie;
     }
 
-    public UserProfile GetUserProfileById(int id)
+    public async Task<UserProfile> GetUserProfileById(int id)
     {
         var user = this.context.UserProfiles.Find(id);
 
@@ -41,7 +41,7 @@ internal class UserService : IUserService
         return user;
     }
 
-    public UserProfile GetUserProfileByGuid(Guid? userGuid)
+    public async Task<UserProfile> GetUserProfileByGuid(Guid? userGuid)
     {
         if (userGuid == null)
         {

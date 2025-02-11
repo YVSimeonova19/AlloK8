@@ -34,7 +34,7 @@ internal class ProjectService : IProjectService
             UpdatedOn = projectIM.CreatedOn,
         };
 
-        var user = this.userService.GetUserProfileById(projectIM.CreatorId);
+        var user = await this.userService.GetUserProfileById(projectIM.CreatorId);
         user.Projects.Add(project);
 
         this.context.Update(user);
@@ -61,7 +61,7 @@ internal class ProjectService : IProjectService
 
     public async Task<List<DAL.Models.Project>> GetProjectsByUserId(Guid? userId)
     {
-        var user = this.userService.GetUserProfileByGuid(userId);
+        var user = await this.userService.GetUserProfileByGuid(userId);
 
         return this.context.Projects
             .Where(p => p.Users.Contains(user))

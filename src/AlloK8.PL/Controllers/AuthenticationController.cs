@@ -126,7 +126,7 @@ public class AuthenticationController : Controller
 
             if (result.Succeeded)
             {
-                this.userService.CreateUserProfile(user.Id);
+                await this.userService.CreateUserProfile(user.Id);
 
                 this.TempData["MessageText"] = T.RegisterSuccessMessage;
                 this.TempData["MessageVariant"] = "success";

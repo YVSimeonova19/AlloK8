@@ -1,13 +1,14 @@
 using System;
+using System.Threading.Tasks;
 using AlloK8.DAL.Models;
 
 namespace AlloK8.BLL.Common.Users;
 
 public interface IUserService
 {
-    UserProfile CreateUserProfile(Guid userId);
+    Task<UserProfile> CreateUserProfile(Guid userId);
 
-    UserProfile GetUserProfileById(int id);
+    Task<UserProfile> GetUserProfileById(int id);
 
-    UserProfile GetUserProfileByGuid(Guid? userGuid);
+    Task<UserProfile> GetUserProfileByGuid(Guid? userGuid);
 }

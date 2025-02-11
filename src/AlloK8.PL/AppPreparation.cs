@@ -32,7 +32,7 @@ public static class AppPreparation
                     EmailConfirmed = true,
                 };
                 var adminCreatedResult = await userManager.CreateAsync(user, InitialAdminCredentials.AdminPassword);
-                userService.CreateUserProfile(user.Id);
+                await userService.CreateUserProfile(user.Id);
             }
         }
         catch (Exception e)
