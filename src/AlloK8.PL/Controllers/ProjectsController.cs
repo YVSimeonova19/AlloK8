@@ -30,9 +30,9 @@ public class ProjectsController : Controller
     }
 
     [HttpGet("/projects")]
-    public IActionResult Projects()
+    public async Task<IActionResult> Projects()
     {
-        var projects = this.projectService.GetProjectsByUserId(this.currentUser.UserId);
+        var projects = await this.projectService.GetProjectsByUserId(this.currentUser.UserId);
         var projectModels = new List<ProjectVM>();
 
         foreach (var project in projects)

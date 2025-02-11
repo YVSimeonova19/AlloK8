@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AlloK8.BLL.Common.Users;
 using AlloK8.Common.Models.Project;
 using AlloK8.DAL;
@@ -21,7 +22,7 @@ internal class ProjectService : IProjectService
         this.userService = userService;
     }
 
-    public DAL.Models.Project CreateProject(ProjectIM projectIM)
+    public async Task<DAL.Models.Project> CreateProject(ProjectIM projectIM)
     {
         var project = new DAL.Models.Project
         {
@@ -42,7 +43,7 @@ internal class ProjectService : IProjectService
         return project;
     }
 
-    public DAL.Models.Project GetProjectById(int id)
+    public async Task<DAL.Models.Project> GetProjectById(int id)
     {
         var project = this.context.Projects.Find(id);
         if (project == null)
@@ -53,12 +54,12 @@ internal class ProjectService : IProjectService
         return project;
     }
 
-    public List<DAL.Models.Project> GetAllProjects()
+    public async Task<List<DAL.Models.Project>> GetAllProjects()
     {
         return this.context.Projects.ToList();
     }
 
-    public List<DAL.Models.Project> GetProjectsByUserId(Guid? userId)
+    public async Task<List<DAL.Models.Project>> GetProjectsByUserId(Guid? userId)
     {
         var user = this.userService.GetUserProfileByGuid(userId);
 
@@ -67,9 +68,9 @@ internal class ProjectService : IProjectService
             .ToList();
     }
 
-    public DAL.Models.Project UpdateTask(ProjectUM projectUM, int id)
+    public async Task<DAL.Models.Project> UpdateTask(ProjectUM projectUM, int id)
     {
-        var project = this.GetProjectById(id);
+        var project = await this.GetProjectById(id);
 
         project.Name = projectUM.Title ?? project.Name;
         project.Description = projectUM.Description ?? project.Description;
@@ -80,9 +81,9 @@ internal class ProjectService : IProjectService
         return project;
     }
 
-    public void DeleteProjectById(int id)
+    public async Task DeleteProjectById(int id)
     {
-        var project = this.GetProjectById(id);
+        var project = await this.GetProjectById(id);
 
         this.context.Projects.Remove(project);
         this.context.SaveChanges();
