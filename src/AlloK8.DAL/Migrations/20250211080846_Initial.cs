@@ -445,14 +445,12 @@ namespace AlloK8.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_CreatedByUserId",
                 table: "Projects",
-                column: "CreatedByUserId",
-                unique: true);
+                column: "CreatedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_UpdatedByUserId",
                 table: "Projects",
-                column: "UpdatedByUserId",
-                unique: true);
+                column: "UpdatedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectUserProfile_UsersId",

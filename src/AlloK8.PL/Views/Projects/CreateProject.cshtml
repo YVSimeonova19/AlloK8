@@ -11,7 +11,7 @@
             <p class="card-description">
                 Give it a name and a short description
             </p>
-            <form class="forms-sample" asp-action="CreateProject" method="post">
+            <form class="forms-sample" asp-controller="Projects" asp-action="CreateProject" method="post">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input asp-for="Name" 

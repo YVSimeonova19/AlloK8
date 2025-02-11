@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AlloK8.PL.Controllers;
 
+[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
 public class HomeController : Controller
 {
     private readonly IEmailService emailService;

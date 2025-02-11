@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlloK8.DAL.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20250204075056_Initial")]
+    [Migration("20250211080846_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -213,11 +213,9 @@ namespace AlloK8.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedByUserId")
-                        .IsUnique();
+                    b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("UpdatedByUserId")
-                        .IsUnique();
+                    b.HasIndex("UpdatedByUserId");
 
                     b.ToTable("Projects");
                 });
@@ -481,14 +479,14 @@ namespace AlloK8.DAL.Migrations
             modelBuilder.Entity("AlloK8.DAL.Models.Project", b =>
                 {
                     b.HasOne("AlloK8.DAL.Models.UserProfile", "CreatedByUser")
-                        .WithOne("ProjectCreated")
-                        .HasForeignKey("AlloK8.DAL.Models.Project", "CreatedByUserId")
+                        .WithMany("ProjectsCreated")
+                        .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("AlloK8.DAL.Models.UserProfile", "UpdatedByUser")
-                        .WithOne("ProjectUpdated")
-                        .HasForeignKey("AlloK8.DAL.Models.Project", "UpdatedByUserId")
+                        .WithMany("ProjectsUpdated")
+                        .HasForeignKey("UpdatedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -657,9 +655,9 @@ namespace AlloK8.DAL.Migrations
 
                     b.Navigation("BoardUpdated");
 
-                    b.Navigation("ProjectCreated");
+                    b.Navigation("ProjectsCreated");
 
-                    b.Navigation("ProjectUpdated");
+                    b.Navigation("ProjectsUpdated");
 
                     b.Navigation("TaskCreated");
 

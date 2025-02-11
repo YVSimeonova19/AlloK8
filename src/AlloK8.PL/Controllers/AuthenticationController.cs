@@ -186,8 +186,8 @@ public class AuthenticationController : Controller
         return this.View(model);
     }
 
-    [AllowAnonymous]
     [HttpGet("/reset-password")]
+    [AllowAnonymous]
     public async Task<IActionResult> ResetPassword(string email, string token)
     {
         if (this.IsUserAuthenticated())

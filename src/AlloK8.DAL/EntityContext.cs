@@ -118,21 +118,21 @@ public class EntityContext
             .HasMany(p => p.Users)
             .WithMany(u => u.Projects);
 
-        // Project(1) - Creator(1)
+        // Project(m) - Creator(1)
         builder
             .Entity<Project>()
             .HasOne(p => p.CreatedByUser)
-            .WithOne(u => u.ProjectCreated)
-            .HasForeignKey<Project>(p => p.CreatedByUserId)
+            .WithMany(u => u.ProjectsCreated)
+            .HasForeignKey(p => p.CreatedByUserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Project(1) - Updator(1)
+        // Project(m) - Updator(1)
         builder
             .Entity<Project>()
             .HasOne(p => p.UpdatedByUser)
-            .WithOne(u => u.ProjectUpdated)
-            .HasForeignKey<Project>(p => p.UpdatedByUserId)
+            .WithMany(u => u.ProjectsUpdated)
+            .HasForeignKey(p => p.UpdatedByUserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 

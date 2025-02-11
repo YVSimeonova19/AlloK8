@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using AlloK8.BLL.Common.Users;
 using AlloK8.Common.Models.Project;
 using AlloK8.DAL;
 using Microsoft.CodeAnalysis;
@@ -9,10 +11,14 @@ namespace AlloK8.BLL.Common.Projects;
 internal class ProjectService : IProjectService
 {
     private readonly EntityContext context;
+    private readonly IUserService userService;
 
-    public ProjectService(EntityContext context)
+    public ProjectService(
+        EntityContext context,
+        IUserService userService)
     {
         this.context = context;
+        this.userService = userService;
     }
 
     public DAL.Models.Project CreateProject(ProjectIM projectIM)
@@ -27,9 +33,10 @@ internal class ProjectService : IProjectService
             UpdatedOn = projectIM.CreatedOn,
         };
 
-        // TODO: How to add connection to ProjectUserProfile table
+        var user = this.userService.GetUserProfileById(projectIM.CreatorId);
+        user.Projects.Add(project);
 
-        this.context.Projects.Add(project);
+        this.context.Update(user);
         this.context.SaveChanges();
 
         return project;
@@ -49,6 +56,15 @@ internal class ProjectService : IProjectService
     public List<DAL.Models.Project> GetAllProjects()
     {
         return this.context.Projects.ToList();
+    }
+
+    public List<DAL.Models.Project> GetProjectsByUserId(Guid? userId)
+    {
+        var user = this.userService.GetUserProfileByGuid(userId);
+
+        return this.context.Projects
+            .Where(p => p.Users.Contains(user))
+            .ToList();
     }
 
     public DAL.Models.Project UpdateTask(ProjectUM projectUM, int id)

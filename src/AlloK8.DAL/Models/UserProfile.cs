@@ -22,6 +22,7 @@ public class UserProfile : Entity
 
     public List<Project> Projects { get; } = [];
 
-    public Project? ProjectCreated { get; set; }
-    public Project? ProjectUpdated { get; set; }
+    public List<Project> ProjectsCreated { get; } = [];
+
+    public List<Project> ProjectsUpdated { get; } = [];
 }
