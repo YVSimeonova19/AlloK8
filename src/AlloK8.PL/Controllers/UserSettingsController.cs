@@ -43,24 +43,25 @@ public class UserSettingsController : Controller
     [HttpPost("/profile-settings")]
     public async Task<IActionResult> UserSettings(UserSettingsVM model)
     {
-        if (this.ModelState.IsValid)
+        if (!this.ModelState.IsValid)
         {
-            //var user = (await this.userService.GetUserProfileByGuid(this.currentUser.UserId)).ApplicationUser;
-            var user = await this.userManager.FindByIdAsync(this.currentUser.UserId.ToString()!);
-            if (user != null)
-            {
-                var resetPasswordToken = await this.userManager.GeneratePasswordResetTokenAsync(user);
-                // invalid token
-                var result = await this.userManager.ResetPasswordAsync(user, resetPasswordToken, model.Password!);
-                if (result.Succeeded)
-                {
-                    return this.RedirectToAction(nameof(this.UserSettings));
-                }
-
-                this.ModelState.AssignIdentityErrors(result.Errors);
-            }
+            return this.View(model);
         }
 
+        var user = await this.userManager.FindByIdAsync(this.currentUser.UserId.ToString()!);
+        if (user == null)
+        {
+            return this.NotFound();
+        }
+
+        var result = await this.userManager.ChangePasswordAsync(user, model.OldPassword!, model.Password!);
+
+        if (result.Succeeded)
+        {
+            return this.RedirectToAction(nameof(this.UserSettings));
+        }
+
+        this.ModelState.AssignIdentityErrors(result.Errors);
         return this.View(model);
     }
 }

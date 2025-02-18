@@ -8,32 +8,34 @@
         <div class="card-body">
             <h4 class="card-title">Account Details</h4>
             <p class="card-description">
-                Update your account details
+                Update your account password
             </p>
             <form class="forms-sample" asp-controller="UserSettings" asp-action="UserSettings" method="post">
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input asp-for="Email"
+                    <label for="old-password">Old Password</label>
+                    <input asp-for="OldPassword"
                            class="form-control"
-                           id="email"
-                           placeholder="Email">
+                           id="old-password"
+                           type="password"
+                           placeholder="Old Password">
+                    <span class="text-danger text-small" asp-validation-for="OldPassword"></span>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input asp-for="Password"
-                           class="form-control"
-                           id="password"
-                           type="password"
-                           placeholder="Password">
+                    <label for="password">New Password</label>
+                    <input type="password"
+                           asp-for="Password"
+                           class="form-control form-control-lg"
+                           id="exampleInputPassword1"
+                           placeholder="@T.PasswordPlaceholderText">
                     <span class="text-danger text-small" asp-validation-for="Password"></span>
                 </div>
                 <div class="form-group">
-                    <label for="confirm-password">Confirm Password</label>
-                    <input asp-for="ConfirmPassword"
-                           class="form-control"
-                           id="confirm-password"
-                           type="password"
-                           placeholder="Confirm Password">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password"
+                           asp-for="ConfirmPassword"
+                           class="form-control form-control-lg"
+                           id="exampleInputPassword1"
+                           placeholder="@T.ConfirmPasswordPlaceholderText">
                     <span class="text-danger text-small" asp-validation-for="ConfirmPassword"></span>
                 </div>
                 <button type="submit"
