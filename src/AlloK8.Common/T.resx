@@ -126,4 +126,58 @@
     <data name="RegisterSuccessMessage" xml:space="preserve">
         <value>Вашата регистрация беше успешна. Използвайте данните си за да влезете в системата.</value>
     </data>
+    <data name="AccountDetailsText" xml:space="preserve">
+        <value>Детайли за акаунта</value>
+    </data>
+    <data name="UpdateAccountPasswordText" xml:space="preserve">
+        <value>Сменете паролата си</value>
+    </data>
+    <data name="OldPasswordLabel" xml:space="preserve">
+        <value>Стара парола</value>
+    </data>
+    <data name="NewPasswordLabel" xml:space="preserve">
+        <value>Нова парола</value>
+    </data>
+    <data name="ConfirmNewPasswordLabel" xml:space="preserve">
+        <value>Потвърждение на новата парола</value>
+    </data>
+    <data name="UpdateAccountDetailsButtonText" xml:space="preserve">
+        <value>Потвърждаване смяна на паролата</value>
+    </data>
+    <data name="SettingsButtonText" xml:space="preserve">
+        <value>Настройки</value>
+    </data>
+    <data name="LogoutNavButtonText" xml:space="preserve">
+        <value>Изход от профила</value>
+    </data>
+    <data name="HomeNavButtonText" xml:space="preserve">
+        <value>Начало</value>
+    </data>
+    <data name="ProjectsNavButtonText" xml:space="preserve">
+        <value>Проекти</value>
+    </data>
+    <data name="CreateNewProjectNavButtonText" xml:space="preserve">
+        <value>Нов проект</value>
+    </data>
+    <data name="CalendarNavButtonText" xml:space="preserve">
+        <value>Календар</value>
+    </data>
+    <data name="YourProjectsTitleText" xml:space="preserve">
+        <value>Вашите проекти</value>
+    </data>
+    <data name="CreateProjectTitleText" xml:space="preserve">
+        <value>Създайте нов проект</value>
+    </data>
+    <data name="CreateProjectSubtitleText" xml:space="preserve">
+        <value>Задайте му име и описание</value>
+    </data>
+    <data name="ProjectNameLabelText" xml:space="preserve">
+        <value>Име на проекта</value>
+    </data>
+    <data name="ShortDescriptionLabelText" xml:space="preserve">
+        <value>Кратко описание</value>
+    </data>
+    <data name="CreateProjectButtonText" xml:space="preserve">
+        <value>Създаване на проект</value>
+    </data>
 </root>

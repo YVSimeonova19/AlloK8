@@ -54,7 +54,7 @@ public class UserSettingsController : Controller
             return this.NotFound();
         }
 
-        var result = await this.userManager.ChangePasswordAsync(user, model.OldPassword!, model.Password!);
+        var result = await this.userManager.ChangePasswordAsync(user, model.OldPassword!, model.NewPassword!);
 
         if (result.Succeeded)
         {

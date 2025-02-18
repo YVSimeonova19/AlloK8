@@ -60,11 +60,74 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Детайли за акаунта.
+        /// </summary>
+        public static string AccountDetailsText {
+            get {
+                return ResourceManager.GetString("AccountDetailsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Календар.
+        /// </summary>
+        public static string CalendarNavButtonText {
+            get {
+                return ResourceManager.GetString("CalendarNavButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потвърждение на новата парола.
+        /// </summary>
+        public static string ConfirmNewPasswordLabel {
+            get {
+                return ResourceManager.GetString("ConfirmNewPasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Потвърждаване на парола.
         /// </summary>
         public static string ConfirmPasswordPlaceholderText {
             get {
                 return ResourceManager.GetString("ConfirmPasswordPlaceholderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нов проект.
+        /// </summary>
+        public static string CreateNewProjectNavButtonText {
+            get {
+                return ResourceManager.GetString("CreateNewProjectNavButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Създаване на проект.
+        /// </summary>
+        public static string CreateProjectButtonText {
+            get {
+                return ResourceManager.GetString("CreateProjectButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задайте му име и описание.
+        /// </summary>
+        public static string CreateProjectSubtitleText {
+            get {
+                return ResourceManager.GetString("CreateProjectSubtitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Създайте нов проект.
+        /// </summary>
+        public static string CreateProjectTitleText {
+            get {
+                return ResourceManager.GetString("CreateProjectTitleText", resourceCulture);
             }
         }
         
@@ -128,6 +191,15 @@ namespace AlloK8.Common {
         public static string HaveAccountText {
             get {
                 return ResourceManager.GetString("HaveAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало.
+        /// </summary>
+        public static string HomeNavButtonText {
+            get {
+                return ResourceManager.GetString("HomeNavButtonText", resourceCulture);
             }
         }
         
@@ -213,11 +285,38 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изход от профила.
+        /// </summary>
+        public static string LogoutNavButtonText {
+            get {
+                return ResourceManager.GetString("LogoutNavButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нова парола.
+        /// </summary>
+        public static string NewPasswordLabel {
+            get {
+                return ResourceManager.GetString("NewPasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Нямаш профил?.
         /// </summary>
         public static string NoAccountText {
             get {
                 return ResourceManager.GetString("NoAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Стара парола.
+        /// </summary>
+        public static string OldPasswordLabel {
+            get {
+                return ResourceManager.GetString("OldPasswordLabel", resourceCulture);
             }
         }
         
@@ -281,6 +380,24 @@ namespace AlloK8.Common {
         public static string PasswordTooShortErrorMessage {
             get {
                 return ResourceManager.GetString("PasswordTooShortErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Име на проекта.
+        /// </summary>
+        public static string ProjectNameLabelText {
+            get {
+                return ResourceManager.GetString("ProjectNameLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Проекти.
+        /// </summary>
+        public static string ProjectsNavButtonText {
+            get {
+                return ResourceManager.GetString("ProjectsNavButtonText", resourceCulture);
             }
         }
         
@@ -357,6 +474,24 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Настройки.
+        /// </summary>
+        public static string SettingsButtonText {
+            get {
+                return ResourceManager.GetString("SettingsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Кратко описание.
+        /// </summary>
+        public static string ShortDescriptionLabelText {
+            get {
+                return ResourceManager.GetString("ShortDescriptionLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Нов си?.
         /// </summary>
         public static string SignUpHeader1Text {
@@ -375,11 +510,38 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Потвърждаване смяна на паролата.
+        /// </summary>
+        public static string UpdateAccountDetailsButtonText {
+            get {
+                return ResourceManager.GetString("UpdateAccountDetailsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сменете паролата си.
+        /// </summary>
+        public static string UpdateAccountPasswordText {
+            get {
+                return ResourceManager.GetString("UpdateAccountPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Профилът Ви е временно заключен.
         /// </summary>
         public static string UserLockedOutErrorMessage {
             get {
                 return ResourceManager.GetString("UserLockedOutErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вашите проекти.
+        /// </summary>
+        public static string YourProjectsTitleText {
+            get {
+                return ResourceManager.GetString("YourProjectsTitleText", resourceCulture);
             }
         }
     }

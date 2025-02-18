@@ -7,27 +7,25 @@
 <div class="content-wrapper">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Create Project</h4>
-            <p class="card-description">
-                Give it a name and a short description
-            </p>
+            <h4 class="card-title">@T.CreateProjectTitleText</h4>
+            <p class="card-description">@T.CreateProjectSubtitleText</p>
             <form class="forms-sample" asp-controller="Projects" asp-action="CreateProject" method="post">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name">@T.ProjectNameLabelText</label>
                     <input asp-for="Name" 
                            class="form-control" 
                            id="name" 
-                           placeholder="Name">
+                           placeholder="@T.ProjectNameLabelText">
                 </div>
                 <div class="form-group">
-                    <label for="description">Short Description</label>
+                    <label for="description">@T.ShortDescriptionLabelText</label>
                     <input asp-for="Description"
                            class="form-control" 
                            id="description" 
-                           placeholder="Short Description">
+                           placeholder="@T.ShortDescriptionLabelText">
                 </div>
                 <button type="submit" 
-                        class="btn btn-primary mr-2">Create Project</button>
+                        class="btn btn-primary mr-2">@T.CreateProjectButtonText</button>
             </form>
         </div>
     </div>

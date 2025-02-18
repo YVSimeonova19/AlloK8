@@ -12,10 +12,10 @@ public class UserSettingsVM
     [Required(
         ErrorMessageResourceType = typeof(Common.T),
         ErrorMessageResourceName = "PasswordIsRequiredErrorMessage")]
-    public string? Password { get; set; }
+    public string? NewPassword { get; set; }
 
     [Compare(
-        nameof(Password),
+        nameof(NewPassword),
         ErrorMessageResourceType = typeof(Common.T),
         ErrorMessageResourceName = "PasswordIsDifferentThanConfirmedErrorMessage")]
     public string? ConfirmPassword { get; set; }
