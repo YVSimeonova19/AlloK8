@@ -45,8 +45,4 @@
       <TypeScriptCompile Include="wwwroot\vendors\tinymce\tinymce.d.ts" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Views\Task\" />
-    </ItemGroup>
-
 </Project>

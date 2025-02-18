@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="content-wrapper">
+    <h3 class="mb-4">[Project] Kanban Board</h3>
+
+    <div class="row d-flex justify-content-between">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">To Do</h4>
+                    <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    </ul>
+                    <div class="input-group mt-3">
+                        <input type="text" id="newTaskTodo" class="form-control" placeholder="Add new task">
+                        <button class="btn btn-icon bg-transparent text-primary" onclick="addTask('todo')">
+                            <i class="icon-circle-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Doing</h4>
+                    <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Done</h4>
+                    <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+
+    function addTask(columnId) {
+        let input = document.getElementById("newTask" + columnId.charAt(0).toUpperCase() + columnId.slice(1));
+        let taskText = input.value.trim();
+        if (taskText === "") return;
+
+        let taskItem = document.createElement("li");
+        taskItem.className = "list-group-item draggable";
+        taskItem.id = "task-" + Date.now();
+        taskItem.draggable = true;
+        taskItem.ondragstart = drag;
+        taskItem.innerHTML = `${taskText} <button class="btn btn-icon bg-transparent text-danger" onclick='removeTask(this)'><i class="remove ti-close"></i></button>`;
+
+        document.getElementById(columnId).appendChild(taskItem);
+        input.value = "";
+    }
+
+    function removeTask(button) {
+        button.parentElement.remove();
+    }
+</script>
+
+<style>
+    .task-list {
+        min-height: 200px;
+        border: 1px dashed #ccc;
+        padding: 10px;
+        background-color: #f8f9fa;
+    }
+
+    .draggable {
+        cursor: grab;
+    }
+</style>
