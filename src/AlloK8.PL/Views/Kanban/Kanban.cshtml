@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@model Dictionary<int, List<TaskVM>>
+
+@{
     Layout = "_Layout";
 }
 
@@ -6,41 +9,40 @@
     <h3 class="mb-4">[Project] Kanban Board</h3>
 
     <div class="row d-flex justify-content-between">
+        @foreach (var column in new[] { "To Do", "Doing", "Done" })
+        {
+        var columnId = column == "To Do" ? 1 : column == "Doing" ? 2 : 3;
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">To Do</h4>
-                    <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h4 class="card-title">@column</h4>
+                    <ul class="list-group task-list" id="column-@columnId" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        @if (Model.ContainsKey(columnId))
+                        {
+                        @foreach (var task in Model[columnId])
+                        {
+                        <li class="list-group-item draggable d-flex align-items-center" id="task-@task.Position" draggable="true" ondragstart="drag(event)">
+                            @task.Title
+                            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='deleteTask(@task.Position, this)'>
+                                <i class="remove ti-close"></i>
+                            </button>
+                        </li>
+                        }
+                        }
                     </ul>
+                    @if (column == "To Do")
+                    {
                     <div class="input-group mt-3">
                         <input type="text" id="newTaskTodo" class="form-control" placeholder="Add new task">
                         <button class="btn btn-icon bg-transparent text-primary" onclick="addTask('todo')">
                             <i class="icon-circle-plus"></i>
                         </button>
                     </div>
+                    }
                 </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Doing</h4>
-                    <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Done</h4>
-                    <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    </ul>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
@@ -56,7 +58,20 @@
     function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
+        var taskId = data.split('-')[1];
+        var columnId = ev.target.id.split('-')[1];
+        var position = ev.target.children.length;
+
         ev.target.appendChild(document.getElementById(data));
+
+        fetch('/kanban/move', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken'
+            },
+            body: JSON.stringify({ id: taskId, columnId: columnId, position: position })
+        });
     }
 
     function addTask(columnId) {
@@ -65,14 +80,29 @@
         if (taskText === "") return;
 
         let taskItem = document.createElement("li");
-        taskItem.className = "list-group-item draggable";
+        taskItem.className = "list-group-item draggable d-flex align-items-center";
         taskItem.id = "task-" + Date.now();
         taskItem.draggable = true;
         taskItem.ondragstart = drag;
-        taskItem.innerHTML = `${taskText} <button class="btn btn-icon bg-transparent text-danger" onclick='removeTask(this)'><i class="remove ti-close"></i></button>`;
+        taskItem.innerHTML = `${taskText} <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'><i class="remove ti-close"></i></button>`;
 
         document.getElementById(columnId).appendChild(taskItem);
         input.value = "";
+    }
+
+    function deleteTask(taskId, button) {
+        fetch('/kanban/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken'
+            },
+            body: JSON.stringify({ id: taskId })
+        }).then(response => {
+            if (response.ok) {
+                button.parentElement.remove();
+            }
+        });
     }
 
     function removeTask(button) {
@@ -90,5 +120,6 @@
 
     .draggable {
         cursor: grab;
+        margin: 5px;
     }
 </style>
