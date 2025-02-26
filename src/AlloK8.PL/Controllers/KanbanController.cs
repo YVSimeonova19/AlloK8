@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.Tasks;
 using AlloK8.PL.Models;
@@ -37,6 +38,19 @@ public class KanbanController : Controller
             .ToDictionary(g => g.Key, g => g.ToList());
 
         return this.View(tasksByColumn);
+    }
+
+    [HttpPost("/kanban/create")]
+    public async Task<IActionResult> CreateTask(string title)
+    {
+        var taskIM = new TaskIM
+        {
+            Title = title,
+        };
+
+        await this.taskService.CreateTask(taskIM);
+
+        return this.RedirectToAction("Kanban");
     }
 
     [HttpPost("/kanban/move")]

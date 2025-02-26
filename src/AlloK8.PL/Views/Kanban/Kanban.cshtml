@@ -67,9 +67,14 @@
         fetch('/kanban/move', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json' // TODO: add token
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
             },
             body: JSON.stringify({ id: taskId, columnId: columnId, position: position })
+        }).then(response => {
+            if (!response.ok) {
+                console.error('Failed to move task');
+            }
         });
     }
 
@@ -78,27 +83,43 @@
         let taskText = input.value.trim();
         if (taskText === "") return;
 
-        let taskItem = document.createElement("li");
-        taskItem.className = "list-group-item draggable d-flex align-items-center";
-        taskItem.id = "task-" + Date.now();
-        taskItem.draggable = true;
-        taskItem.ondragstart = drag;
-        taskItem.innerHTML = `${taskText} <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'><i class="remove ti-close"></i></button>`;
+        fetch('/kanban/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({ title: taskText, columnId: columnId === 'todo' ? 1 : columnId === 'doing' ? 2 : 3 })
+        }).then(response => {
+            if (response.ok) {
+                let taskItem = document.createElement("li");
+                taskItem.className = "list-group-item draggable d-flex align-items-center";
+                taskItem.id = "task-" + Date.now();
+                taskItem.draggable = true;
+                taskItem.ondragstart = drag;
+                taskItem.innerHTML = `${taskText} <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='deleteTask(this)'><i class="remove ti-close"></i></button>`;
 
-        document.getElementById(columnId).appendChild(taskItem);
-        input.value = "";
+                document.getElementById("column-" + (columnId === 'todo' ? 1 : columnId === 'doing' ? 2 : 3)).appendChild(taskItem);
+                input.value = "";
+            } else {
+                console.error('Failed to add task');
+            }
+        });
     }
 
     function deleteTask(taskId, button) {
         fetch('/kanban/delete', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json' // TODO: add token
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
             },
             body: JSON.stringify({ id: taskId })
         }).then(response => {
             if (response.ok) {
                 button.parentElement.remove();
+            } else {
+                console.error('Failed to delete task');
             }
         });
     }
