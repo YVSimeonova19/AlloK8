@@ -11,5 +11,5 @@ public class Project : AuditableEntity
 
     public ICollection<Board> Boards { get; } = new List<Board>();
 
-    public List<UserProfile> Users { get; } = [];
+    public List<UserProfile> Users { get; set;  } = [];
 }

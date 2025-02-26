@@ -67,8 +67,7 @@
         fetch('/kanban/move', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'RequestVerificationToken': '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken'
+                'Content-Type': 'application/json' // TODO: add token
             },
             body: JSON.stringify({ id: taskId, columnId: columnId, position: position })
         });
@@ -94,8 +93,7 @@
         fetch('/kanban/delete', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'RequestVerificationToken': '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken'
+                'Content-Type': 'application/json' // TODO: add token
             },
             body: JSON.stringify({ id: taskId })
         }).then(response => {

@@ -20,7 +20,7 @@ public class UserProfile : Entity
     public Board? BoardCreated { get; set; }
     public Board? BoardUpdated { get; set; }
 
-    public List<Project> Projects { get; } = [];
+    public List<Project> Projects { get; set; } = [];
 
     public List<Project> ProjectsCreated { get; } = [];
 

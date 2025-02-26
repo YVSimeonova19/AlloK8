@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlloK8.BLL.Tests", "src\AlloK8.BLL.Tests\AlloK8.BLL.Tests.csproj", "{A257C854-A247-4273-B2D1-13F44632D37E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,11 +43,17 @@ Global
 		{7717A7A9-35ED-4524-915F-7DC0C1B0104A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7717A7A9-35ED-4524-915F-7DC0C1B0104A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7717A7A9-35ED-4524-915F-7DC0C1B0104A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A257C854-A247-4273-B2D1-13F44632D37E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A257C854-A247-4273-B2D1-13F44632D37E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A257C854-A247-4273-B2D1-13F44632D37E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A257C854-A247-4273-B2D1-13F44632D37E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D7AD30F-08F1-43D1-AB61-BFF5A9564C65}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal
