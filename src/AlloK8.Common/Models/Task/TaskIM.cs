@@ -12,5 +12,11 @@ public class TaskIM
 
     public DateTime? DueDate { get; set; }
 
+    [Required]
+    public int CreatorId { get; set; }
+
+    [Required]
+    public DateTime? CreatedOn { get; set; }
+
     // Add assignees
 }

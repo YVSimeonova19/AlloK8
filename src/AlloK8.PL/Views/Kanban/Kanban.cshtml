@@ -13,6 +13,15 @@
                 <div class="card-body">
                     <h4 class="card-title">To Do</h4>
                     <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        @foreach (var task in Model.GetValueOrDefault(1, new List<TaskVM>()))
+                        {
+                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                            @task.Title
+                            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                <i class="remove ti-close"></i>
+                            </button>
+                        </li>
+                        }
                     </ul>
                     <div class="input-group mt-3">
                         <input type="text" id="newTaskTodo" class="form-control" placeholder="Add new task">
@@ -29,6 +38,15 @@
                 <div class="card-body">
                     <h4 class="card-title">Doing</h4>
                     <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        @foreach (var task in Model.GetValueOrDefault(2, new List<TaskVM>()))
+                        {
+                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                            @task.Title
+                            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                <i class="remove ti-close"></i>
+                            </button>
+                        </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -39,6 +57,15 @@
                 <div class="card-body">
                     <h4 class="card-title">Done</h4>
                     <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        @foreach (var task in Model.GetValueOrDefault(3, new List<TaskVM>()))
+                        {
+                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                            @task.Title
+                            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                <i class="remove ti-close"></i>
+                            </button>
+                        </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -58,7 +85,33 @@
     function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
+        var taskId = data.split("-")[1];
+        var targetColumnId = ev.target.id;
+
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/kanban/move";
+
+        var taskIdInput = document.createElement("input");
+        taskIdInput.type = "hidden";
+        taskIdInput.name = "id";
+        taskIdInput.value = taskId;
+        form.appendChild(taskIdInput);
+
+        var columnIdInput = document.createElement("input");
+        columnIdInput.type = "hidden";
+        columnIdInput.name = "columnId";
+        columnIdInput.value = getColumnIdFromColumnName(targetColumnId);
+        form.appendChild(columnIdInput);
+
+        var positionInput = document.createElement("input");
+        positionInput.type = "hidden";
+        positionInput.name = "position";
+        positionInput.value = 0;
+        form.appendChild(positionInput);
+
+        document.body.appendChild(form);
+        form.submit();
     }
 
     function addTask(columnId) {
@@ -66,19 +119,49 @@
         let taskText = input.value.trim();
         if (taskText === "") return;
 
-        let taskItem = document.createElement("li");
-        taskItem.className = "list-group-item draggable d-flex align-items-center";
-        taskItem.id = "task-" + Date.now();
-        taskItem.draggable = true;
-        taskItem.ondragstart = drag;
-        taskItem.innerHTML = `${taskText} <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'><i class="remove ti-close"></i></button>`;
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/kanban/create";
 
-        document.getElementById(columnId).appendChild(taskItem);
-        input.value = "";
+        var titleInput = document.createElement("input");
+        titleInput.type = "hidden";
+        titleInput.name = "title";
+        titleInput.value = taskText;
+        form.appendChild(titleInput);
+
+        document.body.appendChild(form);
+        form.submit();
     }
 
     function removeTask(button) {
-        button.parentElement.remove();
+        let taskItem = button.parentElement;
+        let taskId = taskItem.id.split("-")[1];
+
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/kanban/delete";
+
+        var taskIdInput = document.createElement("input");
+        taskIdInput.type = "hidden";
+        taskIdInput.name = "id";
+        taskIdInput.value = taskId;
+        form.appendChild(taskIdInput);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function getColumnIdFromColumnName(columnName) {
+        switch (columnName) {
+            case 'todo':
+                return 1;
+            case 'doing':
+                return 2;
+            case 'done':
+                return 3;
+            default:
+                return 0;
+        }
     }
 </script>
 

@@ -1,7 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.Tasks;
+using AlloK8.BLL.Common.Users;
+using AlloK8.BLL.Identity.Contracts;
 using AlloK8.PL.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +16,17 @@ namespace AlloK8.PL.Controllers;
 public class KanbanController : Controller
 {
     private readonly ITaskService taskService;
+    private readonly ICurrentUser currentUser;
+    private readonly IUserService userService;
 
-    public KanbanController(ITaskService taskService)
+    public KanbanController(
+        ITaskService taskService,
+        ICurrentUser currentUser,
+        IUserService userService)
     {
         this.taskService = taskService;
+        this.currentUser = currentUser;
+        this.userService = userService;
     }
 
     [HttpGet("/kanban")]
@@ -26,6 +36,7 @@ public class KanbanController : Controller
         var taskVMs = tasks
             .Select(t => new TaskVM
             {
+                Id = t.Id,
                 Title = t.Title,
                 Description = t.Description,
                 Position = t.Position,
@@ -46,6 +57,8 @@ public class KanbanController : Controller
         var taskIM = new TaskIM
         {
             Title = title,
+            CreatorId = (await this.userService.GetUserProfileByGuid(this.currentUser.UserId)).Id,
+            CreatedOn = DateTime.Now,
         };
 
         await this.taskService.CreateTask(taskIM);

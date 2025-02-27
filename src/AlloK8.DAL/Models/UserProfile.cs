@@ -12,13 +12,8 @@ public class UserProfile : Entity
 
     public List<Task> Tasks { get; } = [];
 
-    public Task? TaskCreated { get; set; }
-    public Task? TaskUpdated { get; set; }
-
-    public List<Board> Boards { get; } = [];
-
-    public Board? BoardCreated { get; set; }
-    public Board? BoardUpdated { get; set; }
+    public List<Task> TasksCreated { get; set; } = [];
+    public List<Task> TasksUpdated { get; set; } = [];
 
     public List<Project> Projects { get; set; } = [];
 

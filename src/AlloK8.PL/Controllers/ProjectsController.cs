@@ -66,11 +66,11 @@ public class ProjectsController : Controller
             {
                 Name = model.Name,
                 Description = model.Description,
-                CreatorId = this.userService.GetUserProfileByGuid(this.currentUser.UserId).Id,
+                CreatorId = (await this.userService.GetUserProfileByGuid(this.currentUser.UserId)).Id,
                 CreatedOn = DateTime.Now,
             };
 
-            var result = this.projectService.CreateProject(project);
+            var result = await this.projectService.CreateProject(project);
 
             if (result != null)
             {

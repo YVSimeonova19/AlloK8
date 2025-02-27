@@ -23,9 +23,13 @@ internal class TaskService : ITaskService
             Title = taskIM.Title,
             Description = taskIM.Description,
             DueDate = taskIM.DueDate ?? DateTime.Now,
-            Position = 0,
-            ColumnId = 1,
+            Position = 1,
+            ColumnId = 2,
             StartDate = DateTime.Now,
+            CreatedByUserId = taskIM.CreatorId,
+            CreatedOn = taskIM.CreatedOn,
+            UpdatedByUserId = taskIM.CreatorId,
+            UpdatedOn = taskIM.CreatedOn,
         };
 
         this.context.Tasks.Add(task);
