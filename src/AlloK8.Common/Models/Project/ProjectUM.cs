@@ -5,8 +5,8 @@ namespace AlloK8.Common.Models.Project;
 
 public class ProjectUM
 {
-    public string? Title { get; set; }
-    public string? Description { get; set; }
+    public string? Title { get; set; } = null;
+    public string? Description { get; set; } = null;
 
     [Required]
     public int UpdatorId { get; set; }

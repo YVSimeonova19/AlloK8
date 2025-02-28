@@ -18,5 +18,7 @@ public class TaskIM
     [Required]
     public DateTime? CreatedOn { get; set; }
 
+    public int? ColumnId { get; set; }
+
     // Add assignees
 }

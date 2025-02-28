@@ -26,8 +26,7 @@
                     <div class="input-group mt-3">
                         <input type="text" id="newTaskTodo" class="form-control" placeholder="Add new task">
                         <button class="btn btn-icon bg-transparent text-primary" onclick="addTask('todo')">
-                            <i class="icon-circle-plus
-"></i>
+                            <i class="icon-circle-plus"></i>
                         </button>
                     </div>
                 </div>
@@ -75,20 +74,58 @@
 </div>
 
 <script>
+    // Allow dropping
     function allowDrop(ev) {
         ev.preventDefault();
     }
 
+    // Start dragging
     function drag(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
     }
 
+    // Handle drop
     function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         var taskId = data.split("-")[1];
-        var targetColumnId = ev.target.id;
+        var targetColumn = ev.target.closest(".task-list");
 
+        if (!targetColumn) {
+            console.error("Could not find the target column.");
+            return;
+        }
+
+        var targetColumnId = targetColumn.id;
+        var currentColumnId = document.getElementById(data).closest(".task-list").id;
+
+        // Get all tasks in the target column
+        var tasks = Array.from(targetColumn.querySelectorAll(".draggable"));
+        console.log("Tasks in Target Column:", tasks);
+
+        // Calculate the position index
+        var position = tasks.length; // Default to the end of the list
+        var dropTarget = ev.target.closest(".draggable");
+
+        if (dropTarget) {
+            // Find the index of the drop target
+            position = tasks.indexOf(dropTarget);
+
+            // Check if the task is dropped below the drop target
+            var dropTargetRect = dropTarget.getBoundingClientRect();
+            console.log("Drop Target Rect:", dropTargetRect);
+            console.log("Mouse Y:", ev.clientY);
+
+            if (ev.clientY > dropTargetRect.top + dropTargetRect.height / 2) {
+                position++;
+            }
+            console.log("Adjusted Position:", position);
+        } else {
+            // If no drop target is found, append the task to the end
+            console.log("Appending to End. Position:", position);
+        }
+
+        // Create and submit the form
         var form = document.createElement("form");
         form.method = "POST";
         form.action = "/kanban/move";
@@ -108,13 +145,14 @@
         var positionInput = document.createElement("input");
         positionInput.type = "hidden";
         positionInput.name = "position";
-        positionInput.value = 0;
+        positionInput.value = position;
         form.appendChild(positionInput);
 
         document.body.appendChild(form);
         form.submit();
     }
 
+    // Add a new task
     function addTask(columnId) {
         let input = document.getElementById("newTask" + columnId.charAt(0).toUpperCase() + columnId.slice(1));
         let taskText = input.value.trim();
@@ -134,6 +172,7 @@
         form.submit();
     }
 
+    // Remove a task
     function removeTask(button) {
         let taskItem = button.parentElement;
         let taskId = taskItem.id.split("-")[1];
@@ -152,6 +191,7 @@
         form.submit();
     }
 
+    // Map column names to IDs
     function getColumnIdFromColumnName(columnName) {
         switch (columnName) {
             case 'todo':
@@ -176,5 +216,6 @@
 
     .draggable {
         cursor: grab;
+        margin: 5px;
     }
 </style>

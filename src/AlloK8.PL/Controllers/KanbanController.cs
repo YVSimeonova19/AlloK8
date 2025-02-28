@@ -34,6 +34,7 @@ public class KanbanController : Controller
     {
         var tasks = await this.taskService.GetAllTasks();
         var taskVMs = tasks
+            .OrderBy(t => t.Position)
             .Select(t => new TaskVM
             {
                 Id = t.Id,
@@ -59,6 +60,7 @@ public class KanbanController : Controller
             Title = title,
             CreatorId = (await this.userService.GetUserProfileByGuid(this.currentUser.UserId)).Id,
             CreatedOn = DateTime.Now,
+            ColumnId = 1,
         };
 
         await this.taskService.CreateTask(taskIM);
