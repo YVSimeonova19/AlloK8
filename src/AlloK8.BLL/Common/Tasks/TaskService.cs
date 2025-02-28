@@ -23,8 +23,9 @@ internal class TaskService : ITaskService
             Title = taskIM.Title,
             Description = taskIM.Description,
             DueDate = taskIM.DueDate ?? DateTime.Now,
+            // make position dynamic
             Position = 1,
-            ColumnId = 2,
+            ColumnId = 1,
             StartDate = DateTime.Now,
             CreatedByUserId = taskIM.CreatorId,
             CreatedOn = taskIM.CreatedOn,
