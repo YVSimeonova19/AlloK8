@@ -33,6 +33,7 @@ internal class TaskService : ITaskService
             DueDate = taskIM.DueDate ?? DateTime.Now,
             Position = Math.Max(maxPosition + 1, 1),
             ColumnId = taskIM.ColumnId ?? 1,
+            ProjectId = taskIM.ProjectId,
             StartDate = DateTime.Now,
             CreatedByUserId = taskIM.CreatorId,
             CreatedOn = taskIM.CreatedOn,
@@ -60,6 +61,13 @@ internal class TaskService : ITaskService
     public async Task<List<DAL.Models.Task>> GetAllTasks()
     {
         return this.context.Tasks.ToList();
+    }
+
+    public async Task<List<DAL.Models.Task>> GetAllTasksByProjectId(int projectId)
+    {
+        return this.context.Tasks
+            .Where(t => t.Project.Id == projectId)
+            .ToList();
     }
 
     public async Task<DAL.Models.Task> UpdateTask(TaskUM taskUM, int id)

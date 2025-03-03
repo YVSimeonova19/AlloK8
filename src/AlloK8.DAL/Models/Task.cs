@@ -12,12 +12,14 @@ public class Task : AuditableEntity
 
     public int Position { get; set; }
 
-    // to remove start date
     public DateTime StartDate { get; set; }
     public DateTime DueDate { get; set; }
 
     public int ColumnId { get; set; }
     public Column Column { get; set; } = null!;
+
+    public int ProjectId { get; set; }
+    public Project Project { get; set; } = null!;
 
     public List<UserProfile> Assignees { get; } = [];
 }

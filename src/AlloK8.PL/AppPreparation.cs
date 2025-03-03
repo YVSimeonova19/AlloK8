@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using AlloK8.BLL.Common.Users;
 using AlloK8.BLL.Identity.Constants;
 using AlloK8.DAL;
+using AlloK8.DAL.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Task = System.Threading.Tasks.Task;
 
 namespace AlloK8.PL;
 
@@ -25,14 +27,45 @@ public static class AppPreparation
             if (!await dbContext.Users.AnyAsync())
             {
                 using var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
                 var user = new ApplicationUser
                 {
                     UserName = InitialAdminCredentials.AdminEmail,
                     Email = InitialAdminCredentials.AdminEmail,
                     EmailConfirmed = true,
                 };
-                var adminCreatedResult = await userManager.CreateAsync(user, InitialAdminCredentials.AdminPassword);
+
+                await userManager.CreateAsync(user, InitialAdminCredentials.AdminPassword);
                 await userService.CreateUserProfile(user.Id);
+            }
+
+            if (!await dbContext.Columns.AnyAsync())
+            {
+                var columns = new List<Column>
+                {
+                    new Column
+                    {
+                        Name = "todo",
+                        Position = 1,
+                    },
+                    new Column
+                    {
+                        Name = "doing",
+                        Position = 2,
+                    },
+                    new Column
+                    {
+                        Name = "done",
+                        Position = 3,
+                    },
+                };
+
+                foreach (var column in columns)
+                {
+                    await dbContext.Columns.AddAsync(column);
+                }
+
+                await dbContext.SaveChangesAsync();
             }
         }
         catch (Exception e)

@@ -33,6 +33,7 @@ public class KanbanController : Controller
     public async Task<IActionResult> Kanban()
     {
         var tasks = await this.taskService.GetAllTasks();
+
         var taskVMs = tasks
             .OrderBy(t => t.Position)
             .Select(t => new TaskVM
@@ -49,6 +50,8 @@ public class KanbanController : Controller
             .GroupBy(t => t.ColumnId)
             .ToDictionary(g => g.Key, g => g.ToList());
 
+        // this.ViewBag.ProjectId = projectId;
+
         return this.View(tasksByColumn);
     }
 
@@ -61,6 +64,7 @@ public class KanbanController : Controller
             CreatorId = (await this.userService.GetUserProfileByGuid(this.currentUser.UserId)).Id,
             CreatedOn = DateTime.Now,
             ColumnId = 1,
+            ProjectId = 1,
         };
 
         await this.taskService.CreateTask(taskIM);

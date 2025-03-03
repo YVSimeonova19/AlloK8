@@ -48,6 +48,15 @@ public class EntityContext
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
+        //Task(m) - Project(1)
+        builder
+            .Entity<Task>()
+            .HasOne(t => t.Project)
+            .WithMany(p => p.Tasks)
+            .HasForeignKey(t => t.ProjectId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
         // Task(1) - Creator(m)
         builder
             .Entity<Task>()
@@ -63,16 +72,6 @@ public class EntityContext
             .HasOne(t => t.UpdatedByUser)
             .WithMany(u => u.TasksUpdated)
             .HasForeignKey(t => t.UpdatedByUserId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
-
-        // COLUMN
-        // Column(m) - Project(1)
-        builder
-            .Entity<Column>()
-            .HasOne(c => c.Project)
-            .WithMany(b => b.Columns)
-            .HasForeignKey(c => c.ProjectId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 

@@ -10,6 +10,7 @@ public interface ITaskService
 
     Task<DAL.Models.Task> GetTaskById(int id);
     Task<List<DAL.Models.Task>> GetAllTasks();
+    Task<List<DAL.Models.Task>> GetAllTasksByProjectId(int projectId);
 
     Task<DAL.Models.Task> UpdateTask(TaskUM taskUM, int id);
 

@@ -20,5 +20,8 @@ public class TaskIM
 
     public int? ColumnId { get; set; }
 
+    [Required]
+    public int ProjectId { get; set; }
+
     // Add assignees
 }
