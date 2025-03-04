@@ -1,17 +1,19 @@
-﻿<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+﻿<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">@T.LogoutModalTitle</h5>
+                <h5 class="modal-title">Edit task</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">@T.LogoutModalMessage</div>
+            <div class="modal-body">
+                <p id="taskDetails">Loading...</p>
+            </div>
             <div class="modal-footer">
-                <form asp-action="Logout" asp-controller="Authentication">
+                <form asp-action="EditTask" asp-controller="Kanban">
                     <button class="btn btn-primary" type="submit">
-                        @T.LogoutButtonText
+                        Submit changes
                     </button>
                 </form>
             </div>

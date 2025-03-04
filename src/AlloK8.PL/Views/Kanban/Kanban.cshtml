@@ -18,9 +18,10 @@
                     <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(1, new List<TaskVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
+                                draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                                 @task.Title
-                                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="removeTask(this); event.stopPropagation();">
                                     <i class="remove ti-close"></i>
                                 </button>
                             </li>
@@ -76,7 +77,18 @@
     </div>
 </div>
 
+@await Html.PartialAsync("_EditTaskModal")
+
 <script>
+    // Open modal window for editing
+    function openTaskModal(element) {
+        let taskId = element.id.split("-")[1];
+
+        document.getElementById("taskDetails").innerText = "Task ID: " + taskId;
+
+        $("#taskModal").modal("show");
+    }
+    
     // Allow dropping
     function allowDrop(ev) {
         ev.preventDefault();
@@ -235,6 +247,7 @@
                 return 0;
         }
     }
+
 </script>
 
 <style>
