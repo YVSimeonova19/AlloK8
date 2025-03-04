@@ -21,7 +21,8 @@
                             <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                                 @task.Title
-                                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="removeTask(this); event.stopPropagation();">
+                                <button class="btn btn-icon bg-transparent text-danger ml-auto"
+                                        onclick="removeTask(this); event.stopPropagation();">
                                     <i class="remove ti-close"></i>
                                 </button>
                             </li>
@@ -44,9 +45,11 @@
                     <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(2, new List<TaskVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
+                                draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                                 @task.Title
-                                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                <button class="btn btn-icon bg-transparent text-danger ml-auto"
+                                        onclick="removeTask(this); event.stopPropagation();">
                                     <i class="remove ti-close"></i>
                                 </button>
                             </li>
@@ -63,9 +66,11 @@
                     <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(3, new List<TaskVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
+                                draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                                 @task.Title
-                                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                <button class="btn btn-icon bg-transparent text-danger ml-auto"
+                                        onclick="removeTask(this); event.stopPropagation();">
                                     <i class="remove ti-close"></i>
                                 </button>
                             </li>
@@ -193,9 +198,12 @@
                 taskItem.className = 'list-group-item draggable d-flex align-items-center';
                 taskItem.draggable = true;
                 taskItem.ondragstart = drag;
+                taskItem.onclick = function () {
+                    openTaskModal(this);
+                };
                 taskItem.innerHTML = `
                 ${newTask.title}
-                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="removeTask(this)">
+                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="removeTask(this); event.stopPropagation();">
                     <i class="remove ti-close"></i>
                 </button>`;
                 taskList.appendChild(taskItem);
