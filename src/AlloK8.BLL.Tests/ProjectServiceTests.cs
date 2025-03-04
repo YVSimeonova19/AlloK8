@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AlloK8.BLL.Common.Projects;
 using AlloK8.BLL.Common.Users;
 using AlloK8.Common.Models.Project;
@@ -8,7 +7,6 @@ using AlloK8.DAL;
 using AlloK8.DAL.Models;
 using FluentAssertions;
 using Moq;
-using Xunit;
 using Task = System.Threading.Tasks.Task;
 
 namespace AlloK8.BLL.Tests
@@ -29,10 +27,11 @@ namespace AlloK8.BLL.Tests
         private async Task SeedTestDataAsync()
         {
             var user = new UserProfile { Id = 1 };
-            var projects = new List<DAL.Models.Project>
+    
+            var projects = new List<Project>
             {
-                new DAL.Models.Project { Id = 1, Name = "Project 1", Users = new List<UserProfile> { user } },
-                new DAL.Models.Project { Id = 2, Name = "Project 2", Users = new List<UserProfile> { user } }
+                new Project { Id = 1, Name = "Project 1", Users = new List<UserProfile> { user } },
+                new Project { Id = 2, Name = "Project 2", Users = new List<UserProfile> { user } }
             };
 
             await dbContext.UserProfiles.AddAsync(user);
@@ -41,7 +40,7 @@ namespace AlloK8.BLL.Tests
         }
 
         [Fact]
-        public async Task GetProjectById_ExistingId_ShouldReturnProject()
+        public async Task GetProjectByIdAsync_ExistingId_ShouldReturnProject()
         {
             // Arrange
             await SeedTestDataAsync();
@@ -56,7 +55,7 @@ namespace AlloK8.BLL.Tests
         }
 
         [Fact]
-        public async Task GetProjectById_NonExistingId_ShouldThrowKeyNotFoundException()
+        public async Task GetProjectByIdAsync_NonExistingId_ShouldThrowKeyNotFoundException()
         {
             // Arrange
             await SeedTestDataAsync();
@@ -66,7 +65,7 @@ namespace AlloK8.BLL.Tests
         }
 
         [Fact]
-        public async Task GetAllProjects_ShouldReturnAllProjects()
+        public async Task GetAllProjectsAsync_ShouldReturnAllProjects()
         {
             // Arrange
             await SeedTestDataAsync();
@@ -80,7 +79,7 @@ namespace AlloK8.BLL.Tests
         }
 
         [Fact]
-        public async Task UpdateTask_ValidInput_ShouldReturnUpdatedProject()
+        public async Task UpdateTaskAsync_ValidInput_ShouldReturnUpdatedProject()
         {
             // Arrange
             await SeedTestDataAsync();
@@ -100,7 +99,7 @@ namespace AlloK8.BLL.Tests
         }
 
         [Fact]
-        public async Task DeleteProjectById_ValidId_ShouldDeleteProject()
+        public async Task DeleteProjectByIdAsync_ValidId_ShouldDeleteProject()
         {
             // Arrange
             await SeedTestDataAsync();
@@ -111,6 +110,52 @@ namespace AlloK8.BLL.Tests
             // Assert
             var deletedProject = await dbContext.Projects.FindAsync(1);
             deletedProject.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task CreateProjectAsync_ValidInput_ShouldCreateAndReturnProject()
+        {
+            // Arrange
+            var projectIM = new ProjectIM
+            {
+                Name = "New Project",
+                Description = "Project Description",
+                CreatorId = 1,
+                CreatedOn = DateTime.UtcNow,
+            };
+
+            await SeedTestDataAsync();
+
+            var user = this.dbContext.UserProfiles.Find(1);
+            mockUserService.Setup(s => s.GetUserProfileByIdAsync(1))
+                .ReturnsAsync(user);
+            
+            // Act
+            var result = await projectService.CreateProjectAsync(projectIM);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Name.Should().Be(projectIM.Name);
+            result.Description.Should().Be(projectIM.Description);
+            dbContext.Projects.Should().Contain(result);
+        }
+
+        [Fact]
+        public async Task GetProjectsByUserIdAsync_ValidUser_ShouldReturnProjects()
+        {
+            // Arrange
+            await SeedTestDataAsync();
+
+            var user = await dbContext.UserProfiles.FindAsync(1);
+            mockUserService.Setup(s => s.GetUserProfileByGuidAsync(user.ApplicationUserId))
+                .ReturnsAsync(user);
+
+            // Act
+            var result = await projectService.GetProjectsByUserIdAsync(user.ApplicationUserId);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(2);
         }
     }
 }
