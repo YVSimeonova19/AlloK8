@@ -6,9 +6,9 @@ namespace AlloK8.BLL.Common.Users;
 
 public interface IUserService
 {
-    Task<UserProfile> CreateUserProfile(Guid userId);
+    Task<UserProfile> CreateUserProfileAsync(Guid userId);
 
-    Task<UserProfile> GetUserProfileById(int id);
+    Task<UserProfile> GetUserProfileByIdAsync(int id);
 
-    Task<UserProfile> GetUserProfileByGuid(Guid? userGuid);
+    Task<UserProfile> GetUserProfileByGuidAsync(Guid? userGuid);
 }

@@ -22,7 +22,7 @@ internal class ProjectService : IProjectService
         this.userService = userService;
     }
 
-    public async Task<DAL.Models.Project> CreateProject(ProjectIM projectIM)
+    public async Task<DAL.Models.Project> CreateProjectAsync(ProjectIM projectIM)
     {
         var project = new DAL.Models.Project
         {
@@ -34,7 +34,7 @@ internal class ProjectService : IProjectService
             UpdatedOn = projectIM.CreatedOn,
         };
 
-        var user = await this.userService.GetUserProfileById(projectIM.CreatorId);
+        var user = await this.userService.GetUserProfileByIdAsync(projectIM.CreatorId);
         user.Projects.Add(project);
 
         this.context.Update(user);
@@ -43,7 +43,7 @@ internal class ProjectService : IProjectService
         return project;
     }
 
-    public async Task<DAL.Models.Project> GetProjectById(int id)
+    public async Task<DAL.Models.Project> GetProjectByIdAsync(int id)
     {
         var project = this.context.Projects.Find(id);
         if (project == null)
@@ -54,23 +54,23 @@ internal class ProjectService : IProjectService
         return project;
     }
 
-    public async Task<List<DAL.Models.Project>> GetAllProjects()
+    public async Task<List<DAL.Models.Project>> GetAllProjectsAsync()
     {
         return this.context.Projects.ToList();
     }
 
-    public async Task<List<DAL.Models.Project>> GetProjectsByUserId(Guid? userId)
+    public async Task<List<DAL.Models.Project>> GetProjectsByUserIdAsync(Guid? userId)
     {
-        var user = await this.userService.GetUserProfileByGuid(userId);
+        var user = await this.userService.GetUserProfileByGuidAsync(userId);
 
         return this.context.Projects
             .Where(p => p.Users.Contains(user))
             .ToList();
     }
 
-    public async Task<DAL.Models.Project> UpdateTask(ProjectUM projectUM, int id)
+    public async Task<DAL.Models.Project> UpdateTaskAsync(ProjectUM projectUM, int id)
     {
-        var project = await this.GetProjectById(id);
+        var project = await this.GetProjectByIdAsync(id);
 
         project.Name = projectUM.Title ?? project.Name;
         project.Description = projectUM.Description ?? project.Description;
@@ -81,9 +81,9 @@ internal class ProjectService : IProjectService
         return project;
     }
 
-    public async Task DeleteProjectById(int id)
+    public async Task DeleteProjectByIdAsync(int id)
     {
-        var project = await this.GetProjectById(id);
+        var project = await this.GetProjectByIdAsync(id);
 
         this.context.Projects.Remove(project);
         this.context.SaveChanges();

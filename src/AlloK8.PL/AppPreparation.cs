@@ -36,7 +36,7 @@ public static class AppPreparation
                 };
 
                 await userManager.CreateAsync(user, InitialAdminCredentials.AdminPassword);
-                await userService.CreateUserProfile(user.Id);
+                await userService.CreateUserProfileAsync(user.Id);
             }
 
             if (!await dbContext.Columns.AnyAsync())

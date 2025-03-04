@@ -17,7 +17,7 @@ internal class TaskService : ITaskService
         this.context = context;
     }
 
-    public async Task<DAL.Models.Task> CreateTask(TaskIM taskIM)
+    public async Task<DAL.Models.Task> CreateTaskAsync(TaskIM taskIM)
     {
         // Get the maximum position in the target column
         int maxPosition = await this.context.Tasks
@@ -47,7 +47,7 @@ internal class TaskService : ITaskService
         return task;
     }
 
-    public async Task<DAL.Models.Task> GetTaskById(int id)
+    public async Task<DAL.Models.Task> GetTaskByIdAsync(int id)
     {
         var task = this.context.Tasks.Find(id);
         if (task == null)
@@ -58,21 +58,21 @@ internal class TaskService : ITaskService
         return task;
     }
 
-    public async Task<List<DAL.Models.Task>> GetAllTasks()
+    public async Task<List<DAL.Models.Task>> GetAllTasksAsync()
     {
         return this.context.Tasks.ToList();
     }
 
-    public async Task<List<DAL.Models.Task>> GetAllTasksByProjectId(int projectId)
+    public async Task<List<DAL.Models.Task>> GetAllTasksByProjectIdAsync(int projectId)
     {
         return this.context.Tasks
             .Where(t => t.Project.Id == projectId)
             .ToList();
     }
 
-    public async Task<DAL.Models.Task> UpdateTask(TaskUM taskUM, int id)
+    public async Task<DAL.Models.Task> UpdateTaskAsync(TaskUM taskUM, int id)
     {
-        var task = await this.GetTaskById(id);
+        var task = await this.GetTaskByIdAsync(id);
 
         task.Title = taskUM.Title ?? task.Title;
         task.Description = taskUM.Description ?? task.Description;
@@ -85,9 +85,9 @@ internal class TaskService : ITaskService
         return task;
     }
 
-    public async Task<DAL.Models.Task> MoveTask(TaskUM taskUM, int id)
+    public async Task<DAL.Models.Task> MoveTaskAsync(TaskUM taskUM, int id)
     {
-        var task = await this.GetTaskById(id);
+        var task = await this.GetTaskByIdAsync(id);
 
         // Moving to a new column
         if (taskUM.ColumnId.HasValue && taskUM.ColumnId != task.ColumnId)
@@ -167,9 +167,9 @@ internal class TaskService : ITaskService
     }
 
 /*
-    public async Task<DAL.Models.Task> AssignTask(TaskUM taskUM, int id)
+    public async Task<DAL.Models.Task> AssignTaskAsync(TaskUM taskUM, int id)
     {
-        var task = await this.GetTaskById(id);
+        var task = await this.GetTaskByIdAsync(id);
 
         // Assuming taskUM.Assignees is a list of user IDs
         foreach (var userId in taskUM.Assignees)
@@ -187,9 +187,9 @@ internal class TaskService : ITaskService
         return task;
     }
 */
-    public async Task DeleteTaskById(int id)
+    public async Task DeleteTaskByIdAsync(int id)
     {
-        var task = await this.GetTaskById(id);
+        var task = await this.GetTaskByIdAsync(id);
 
         this.context.Tasks.Remove(task);
         this.context.SaveChanges();

@@ -16,7 +16,7 @@ internal class UserService : IUserService
         this.context = context;
     }
 
-    public async Task<UserProfile> CreateUserProfile(Guid userId)
+    public async Task<UserProfile> CreateUserProfileAsync(Guid userId)
     {
         var userProflie = new UserProfile
         {
@@ -29,7 +29,7 @@ internal class UserService : IUserService
         return userProflie;
     }
 
-    public async Task<UserProfile> GetUserProfileById(int id)
+    public async Task<UserProfile> GetUserProfileByIdAsync(int id)
     {
         var user = this.context.UserProfiles.Find(id);
 
@@ -41,7 +41,7 @@ internal class UserService : IUserService
         return user;
     }
 
-    public async Task<UserProfile> GetUserProfileByGuid(Guid? userGuid)
+    public async Task<UserProfile> GetUserProfileByGuidAsync(Guid? userGuid)
     {
         if (userGuid == null)
         {

@@ -6,7 +6,10 @@
 }
 
 <div class="content-wrapper">
-    <h3 class="mb-4">@projectName Kanban Board</h3>
+    <div class="row d-flex justify-content-between align-items-center my-auto mx-auto">
+        <h3 class="mb-4">@projectName Kanban Board</h3>
+        <button type="submit" class="btn btn-primary mr-2">Sort tasks by priority</button>
+    </div>
 
     <div class="row d-flex justify-content-between">
         <div class="col-md-4">
@@ -16,12 +19,12 @@
                     <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.GetValueOrDefault(1, new List<TaskVM>()))
                         {
-                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
-                            @task.Title
-                            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
-                                <i class="remove ti-close"></i>
-                            </button>
-                        </li>
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                                @task.Title
+                                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                    <i class="remove ti-close"></i>
+                                </button>
+                            </li>
                         }
                     </ul>
                     <div class="input-group mt-3">
@@ -41,12 +44,12 @@
                     <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.GetValueOrDefault(2, new List<TaskVM>()))
                         {
-                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
-                            @task.Title
-                            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
-                                <i class="remove ti-close"></i>
-                            </button>
-                        </li>
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                                @task.Title
+                                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                    <i class="remove ti-close"></i>
+                                </button>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -60,12 +63,12 @@
                     <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.GetValueOrDefault(3, new List<TaskVM>()))
                         {
-                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
-                            @task.Title
-                            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
-                                <i class="remove ti-close"></i>
-                            </button>
-                        </li>
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center" draggable="true" ondragstart="drag(event)">
+                                @task.Title
+                                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick='removeTask(this)'>
+                                    <i class="remove ti-close"></i>
+                                </button>
+                            </li>
                         }
                     </ul>
                 </div>

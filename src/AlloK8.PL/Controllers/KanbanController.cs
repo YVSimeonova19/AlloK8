@@ -32,7 +32,7 @@ public class KanbanController : Controller
     [HttpGet("/kanban")]
     public async Task<IActionResult> Kanban()
     {
-        var tasks = await this.taskService.GetAllTasks();
+        var tasks = await this.taskService.GetAllTasksAsync();
 
         var taskVMs = tasks
             .OrderBy(t => t.Position)
@@ -61,13 +61,13 @@ public class KanbanController : Controller
         var taskIM = new TaskIM
         {
             Title = title,
-            CreatorId = (await this.userService.GetUserProfileByGuid(this.currentUser.UserId)).Id,
+            CreatorId = (await this.userService.GetUserProfileByGuidAsync(this.currentUser.UserId)).Id,
             CreatedOn = DateTime.Now,
             ColumnId = 1,
             ProjectId = 1,
         };
 
-        await this.taskService.CreateTask(taskIM);
+        await this.taskService.CreateTaskAsync(taskIM);
 
         return this.RedirectToAction("Kanban");
     }
@@ -81,7 +81,7 @@ public class KanbanController : Controller
             Position = position,
         };
 
-        await this.taskService.MoveTask(taskUM, id);
+        await this.taskService.MoveTaskAsync(taskUM, id);
 
         return this.RedirectToAction("Kanban");
     }
@@ -89,7 +89,7 @@ public class KanbanController : Controller
     [HttpPost("/kanban/delete")]
     public async Task<IActionResult> DeleteTask(int id)
     {
-        await this.taskService.DeleteTaskById(id);
+        await this.taskService.DeleteTaskByIdAsync(id);
 
         return this.RedirectToAction("Kanban");
     }

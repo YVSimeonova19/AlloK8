@@ -32,7 +32,7 @@ public class ProjectsController : Controller
     [HttpGet("/projects")]
     public async Task<IActionResult> Projects()
     {
-        var projects = await this.projectService.GetProjectsByUserId(this.currentUser.UserId);
+        var projects = await this.projectService.GetProjectsByUserIdAsync(this.currentUser.UserId);
         var projectModels = new List<ProjectVM>();
 
         foreach (var project in projects)
@@ -66,11 +66,11 @@ public class ProjectsController : Controller
             {
                 Name = model.Name,
                 Description = model.Description,
-                CreatorId = (await this.userService.GetUserProfileByGuid(this.currentUser.UserId)).Id,
+                CreatorId = (await this.userService.GetUserProfileByGuidAsync(this.currentUser.UserId)).Id,
                 CreatedOn = DateTime.Now,
             };
 
-            var result = await this.projectService.CreateProject(project);
+            var result = await this.projectService.CreateProjectAsync(project);
 
             if (result != null)
             {

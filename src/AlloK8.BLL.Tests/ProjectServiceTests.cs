@@ -47,7 +47,7 @@ namespace AlloK8.BLL.Tests
             await SeedTestDataAsync();
 
             // Act
-            var result = await projectService.GetProjectById(1);
+            var result = await projectService.GetProjectByIdAsync(1);
 
             // Assert
             result.Should().NotBeNull();
@@ -62,7 +62,7 @@ namespace AlloK8.BLL.Tests
             await SeedTestDataAsync();
 
             // Act & Assert
-            await Assert.ThrowsAsync<KeyNotFoundException>(() => projectService.GetProjectById(999));
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => projectService.GetProjectByIdAsync(999));
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace AlloK8.BLL.Tests
             await SeedTestDataAsync();
 
             // Act
-            var result = await projectService.GetAllProjects();
+            var result = await projectService.GetAllProjectsAsync();
 
             // Assert
             result.Should().NotBeNull();
@@ -87,7 +87,7 @@ namespace AlloK8.BLL.Tests
             var projectUM = new ProjectUM { Title = "Updated Title", Description = "Updated Description" };
 
             // Act
-            var result = await projectService.UpdateTask(projectUM, 1);
+            var result = await projectService.UpdateTaskAsync(projectUM, 1);
 
             // Assert
             result.Should().NotBeNull();
@@ -106,7 +106,7 @@ namespace AlloK8.BLL.Tests
             await SeedTestDataAsync();
 
             // Act
-            await projectService.DeleteProjectById(1);
+            await projectService.DeleteProjectByIdAsync(1);
 
             // Assert
             var deletedProject = await dbContext.Projects.FindAsync(1);
