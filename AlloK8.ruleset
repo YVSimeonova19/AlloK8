@@ -10,6 +10,7 @@
         <Rule Id="SA1120" Action="None" />
         <Rule Id="SA1200" Action="None" />
         <Rule Id="SA1300" Action="None" />
+        <Rule Id="SA1401" Action="None" />
         <Rule Id="SA1512" Action="None" />
         <Rule Id="SA1515" Action="None" />
         <Rule Id="SA1516" Action="None" />

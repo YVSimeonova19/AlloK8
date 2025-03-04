@@ -37,11 +37,13 @@ public class ProjectsController : Controller
 
         foreach (var project in projects)
         {
+            var id = project.Id;
             var name = project.Name;
             var decription = project.Description;
 
             projectModels.Add(new ProjectVM()
             {
+                Id = id,
                 Name = name,
                 Description = decription,
             });

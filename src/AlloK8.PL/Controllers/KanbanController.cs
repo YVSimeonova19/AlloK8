@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AlloK8.BLL.Common.Projects;
 using AlloK8.BLL.Common.Tasks;
 using AlloK8.BLL.Common.Users;
 using AlloK8.BLL.Identity.Contracts;
@@ -19,21 +20,30 @@ public class KanbanController : Controller
     private readonly ITaskService taskService;
     private readonly ICurrentUser currentUser;
     private readonly IUserService userService;
+    private readonly IProjectService projectService;
 
     public KanbanController(
         ITaskService taskService,
         ICurrentUser currentUser,
-        IUserService userService)
+        IUserService userService,
+        IProjectService projectService)
     {
         this.taskService = taskService;
         this.currentUser = currentUser;
         this.userService = userService;
+        this.projectService = projectService;
     }
 
-    [HttpGet("/kanban")]
-    public async Task<IActionResult> Kanban()
+    [HttpGet("/projects/{projectId}/kanban")]
+    public async Task<IActionResult> Kanban(int projectId)
     {
-        var tasks = await this.taskService.GetAllTasksAsync();
+        var tasks = await this.taskService.GetAllTasksByProjectIdAsync(projectId);
+
+        var kanbanVM = new KanbanVM
+        {
+            ProjectId = projectId,
+            ProjectName = (await this.projectService.GetProjectByIdAsync(projectId)).Name,
+        };
 
         var taskVMs = tasks
             .OrderBy(t => t.Position)
@@ -47,13 +57,11 @@ public class KanbanController : Controller
             })
             .ToList();
 
-        var tasksByColumn = taskVMs
+        kanbanVM.TasksByColumn = taskVMs
             .GroupBy(t => t.ColumnId)
             .ToDictionary(g => g.Key, g => g.ToList());
 
-        // this.ViewBag.ProjectId = projectId;
-
-        return this.View(tasksByColumn);
+        return this.View(kanbanVM);
     }
 
     [HttpPost("/kanban/create")]
@@ -70,7 +78,7 @@ public class KanbanController : Controller
             CreatorId = (await this.userService.GetUserProfileByGuidAsync(this.currentUser.UserId)).Id,
             CreatedOn = DateTime.Now,
             ColumnId = request.ColumnId,
-            ProjectId = 1,
+            ProjectId = request.ProjectId,
         };
 
         var createdTask = await this.taskService.CreateTaskAsync(taskIM);
@@ -99,7 +107,6 @@ public class KanbanController : Controller
         }
         catch (Exception ex)
         {
-            // Log the exception (ex) as needed
             return this.StatusCode(500, new { success = false, message = ex.Message });
         }
     }

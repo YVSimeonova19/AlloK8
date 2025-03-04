@@ -18,12 +18,14 @@
         @foreach (var project in Model)
         {
             <div class="col-md-6 mb-4 stretch-card transparent">
-                <div class="card card-dark-blue">
-                    <div class="card-body">
-                        <p class="fs-30 mb-2">@project.Name</p>
-                        <p>@project.Description</p>
+                <a href="/projects/@project.Id/kanban" class="w-100 text-decoration-none">
+                    <div class="card card-dark-blue">
+                        <div class="card-body">
+                            <p class="fs-30 mb-2">@project.Name</p>
+                            <p>@project.Description</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         }
     </div>
