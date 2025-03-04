@@ -89,7 +89,7 @@
     }
 
     // Handle drop
-    function drop(ev) {
+    async function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         var taskId = data.split("-")[1];
@@ -129,70 +129,97 @@
             console.log("Appending to End. Position:", position);
         }
 
-        // Create and submit the form
-        var form = document.createElement("form");
-        form.method = "POST";
-        form.action = "/kanban/move";
+        // Send the move request to the server
+        try {
+            let response = await fetch('/kanban/move', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: taskId,
+                    columnId: getColumnIdFromColumnName(targetColumnId),
+                    position: position
+                })
+            });
 
-        var taskIdInput = document.createElement("input");
-        taskIdInput.type = "hidden";
-        taskIdInput.name = "id";
-        taskIdInput.value = taskId;
-        form.appendChild(taskIdInput);
-
-        var columnIdInput = document.createElement("input");
-        columnIdInput.type = "hidden";
-        columnIdInput.name = "columnId";
-        columnIdInput.value = getColumnIdFromColumnName(targetColumnId);
-        form.appendChild(columnIdInput);
-
-        var positionInput = document.createElement("input");
-        positionInput.type = "hidden";
-        positionInput.name = "position";
-        positionInput.value = position;
-        form.appendChild(positionInput);
-
-        document.body.appendChild(form);
-        form.submit();
+            if (response.ok) {
+                var taskElement = document.getElementById(data);
+                targetColumn.insertBefore(taskElement, tasks[position] || null);
+            } else {
+                console.error('Failed to move task');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     // Add a new task
-    function addTask(columnId) {
+    async function addTask(columnId) {
         let input = document.getElementById("newTask" + columnId.charAt(0).toUpperCase() + columnId.slice(1));
         let taskText = input.value.trim();
         if (taskText === "") return;
 
-        var form = document.createElement("form");
-        form.method = "POST";
-        form.action = "/kanban/create";
+        try {
+            let response = await fetch('/kanban/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: taskText,
+                    columnId: getColumnIdFromColumnName(columnId)
+                })
+            });
 
-        var titleInput = document.createElement("input");
-        titleInput.type = "hidden";
-        titleInput.name = "title";
-        titleInput.value = taskText;
-        form.appendChild(titleInput);
-
-        document.body.appendChild(form);
-        form.submit();
+            if (response.ok) {
+                let newTask = await response.json();
+                
+                let taskList = document.getElementById(columnId);
+                let taskItem = document.createElement('li');
+                taskItem.id = `task-${newTask.id}`;
+                taskItem.className = 'list-group-item draggable d-flex align-items-center';
+                taskItem.draggable = true;
+                taskItem.ondragstart = drag;
+                taskItem.innerHTML = `
+                ${newTask.title}
+                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="removeTask(this)">
+                    <i class="remove ti-close"></i>
+                </button>`;
+                taskList.appendChild(taskItem);
+                input.value = '';
+            } else {
+                console.error('Failed to add task');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     // Remove a task
-    function removeTask(button) {
+    async function removeTask(button) {
         let taskItem = button.parentElement;
         let taskId = taskItem.id.split("-")[1];
 
-        var form = document.createElement("form");
-        form.method = "POST";
-        form.action = "/kanban/delete";
+        try {
+            let response = await fetch('/kanban/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: taskId
+                })
+            });
 
-        var taskIdInput = document.createElement("input");
-        taskIdInput.type = "hidden";
-        taskIdInput.name = "id";
-        taskIdInput.value = taskId;
-        form.appendChild(taskIdInput);
-
-        document.body.appendChild(form);
-        form.submit();
+            if (response.ok) {
+                taskItem.remove();
+            } else {
+                console.error('Failed to delete task');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     // Map column names to IDs

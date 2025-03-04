@@ -6,6 +6,7 @@ using AlloK8.BLL.Common.Tasks;
 using AlloK8.BLL.Common.Users;
 using AlloK8.BLL.Identity.Contracts;
 using AlloK8.PL.Models;
+using AlloK8.PL.Models.Requests;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -56,41 +57,69 @@ public class KanbanController : Controller
     }
 
     [HttpPost("/kanban/create")]
-    public async Task<IActionResult> CreateTask(string title)
+    public async Task<IActionResult> CreateTask([FromBody] CreateTaskRequest request)
     {
+        if (request == null || string.IsNullOrWhiteSpace(request.Title))
+        {
+            return this.BadRequest(new { success = false, message = "Invalid task title" });
+        }
+
         var taskIM = new TaskIM
         {
-            Title = title,
+            Title = request.Title,
             CreatorId = (await this.userService.GetUserProfileByGuidAsync(this.currentUser.UserId)).Id,
             CreatedOn = DateTime.Now,
-            ColumnId = 1,
+            ColumnId = request.ColumnId,
             ProjectId = 1,
         };
 
-        await this.taskService.CreateTaskAsync(taskIM);
+        var createdTask = await this.taskService.CreateTaskAsync(taskIM);
 
-        return this.RedirectToAction("Kanban");
+        return this.Ok(new { success = true, id = createdTask.Id, title = createdTask.Title });
     }
 
     [HttpPost("/kanban/move")]
-    public async Task<IActionResult> MoveTask(int id, int columnId, int position)
+    public async Task<IActionResult> MoveTask([FromBody] MoveTaskRequest request)
     {
+        if (request == null || request.Id <= 0 || request.ColumnId <= 0 || request.Position < 0)
+        {
+            return this.BadRequest(new { success = false, message = "Invalid task data" });
+        }
+
         var taskUM = new TaskUM
         {
-            ColumnId = columnId,
-            Position = position,
+            ColumnId = request.ColumnId,
+            Position = request.Position,
         };
 
-        await this.taskService.MoveTaskAsync(taskUM, id);
-
-        return this.RedirectToAction("Kanban");
+        try
+        {
+            await this.taskService.MoveTaskAsync(taskUM, request.Id);
+            return this.Ok(new { success = true });
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (ex) as needed
+            return this.StatusCode(500, new { success = false, message = ex.Message });
+        }
     }
 
     [HttpPost("/kanban/delete")]
-    public async Task<IActionResult> DeleteTask(int id)
+    public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
     {
-        await this.taskService.DeleteTaskByIdAsync(id);
+        if (request == null || request.Id <= 0)
+        {
+            return this.BadRequest(new { success = false, message = "Invalid task ID" });
+        }
 
-        return this.RedirectToAction("Kanban");
+        try
+        {
+            await this.taskService.DeleteTaskByIdAsync(request.Id);
+            return this.Ok(new { success = true });
+        }
+        catch (Exception ex)
+        {
+            return this.StatusCode(500, new { success = false, message = ex.Message });
+        }
     }
 }
