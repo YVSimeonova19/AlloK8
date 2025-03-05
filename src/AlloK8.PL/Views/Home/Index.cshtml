@@ -1,26 +1,39 @@
-﻿@page
-@model IActionResult
-
-@{
+﻿@{
     Layout = "_Layout";
 }
 
 <div class="content-wrapper">
-    <div class="row">
-        <div class="col-md-12 grid-margin">
-            <div class="row">
-                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                    <h3 class="font-weight-bold">Welcome [Name]</h3>
+    <div class="container-fluid h-100">
+        <div class="row g-0 align-items-center h-100">
+            <div class="col-lg-5 px-lg-5 text-center">
+                <div>
+                    <h1 class="fw-bold">@T.LandingTitle1</h1>
+                    <h1 class="fw-bold text-primary mb-4">@T.LandingTitle2</h1>
                 </div>
+                <p class="lead mb-4">@T.LandingSubtext</p>
+                <div class="d-flex justify-content-center">
+                    <a href="/new-project" class="btn btn-primary btn-lg px-4">@T.GetStratedButtonLandingText</a>
+                </div>
+            </div>
+
+            <div class="col-lg-7 p-0 d-none d-lg-block text-center">
+                <img src="~/images/scrum-meeting.png" class="img-fluid" style="max-height: 80vh; width: auto;"
+                     alt="Scrum Meeting">
+            </div>
+
+            <div class="col-12 d-block d-lg-none mt-4 text-center">
+                <img src="~/images/scrum-meeting.png" class="img-fluid" style="max-height: 50vh; width: auto;"
+                     alt="Scrum Meeting">
             </div>
         </div>
     </div>
-    <div class="row">
-        @await Html.PartialAsync("_StatusBlocks")
-        
-        @await Html.PartialAsync("_ToDoList")
-    </div>
-    <div class="row">
-        @await Html.PartialAsync("_AdvancedTable")
-    </div>
 </div>
+
+<style>
+    .content-wrapper {
+        height: 85vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
+</style>

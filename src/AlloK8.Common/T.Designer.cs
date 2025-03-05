@@ -213,6 +213,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Започни.
+        /// </summary>
+        public static string GetStratedButtonLandingText {
+            get {
+                return ResourceManager.GetString("GetStratedButtonLandingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Вече имаш акаунт?.
         /// </summary>
         public static string HaveAccountText {
@@ -254,6 +263,33 @@ namespace AlloK8.Common {
         public static string KanbanBoardTitleText {
             get {
                 return ResourceManager.GetString("KanbanBoardTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Увеличете производителността на екипа си с това интуитивно решение за управление на проекти..
+        /// </summary>
+        public static string LandingSubtext {
+            get {
+                return ResourceManager.GetString("LandingSubtext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пригответе се да подобрите организацията си.
+        /// </summary>
+        public static string LandingTitle1 {
+            get {
+                return ResourceManager.GetString("LandingTitle1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to многократно с AlloK8.
+        /// </summary>
+        public static string LandingTitle2 {
+            get {
+                return ResourceManager.GetString("LandingTitle2", resourceCulture);
             }
         }
         
@@ -587,6 +623,15 @@ namespace AlloK8.Common {
         public static string UserLockedOutErrorMessage {
             get {
                 return ResourceManager.GetString("UserLockedOutErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добре дошли!.
+        /// </summary>
+        public static string WelcomeTitleText {
+            get {
+                return ResourceManager.GetString("WelcomeTitleText", resourceCulture);
             }
         }
         

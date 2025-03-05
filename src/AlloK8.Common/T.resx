@@ -198,4 +198,19 @@
     <data name="AddNewTaskInputLabel" xml:space="preserve">
         <value>Добави нова задача</value>
     </data>
+    <data name="WelcomeTitleText" xml:space="preserve">
+        <value>Добре дошли!</value>
+    </data>
+    <data name="LandingTitle1" xml:space="preserve">
+        <value>Пригответе се да подобрите организацията си</value>
+    </data>
+    <data name="LandingTitle2" xml:space="preserve">
+        <value>многократно с AlloK8</value>
+    </data>
+    <data name="LandingSubtext" xml:space="preserve">
+        <value>Увеличете производителността на екипа си с това интуитивно решение за управление на проекти.</value>
+    </data>
+    <data name="GetStratedButtonLandingText" xml:space="preserve">
+        <value>Започни</value>
+    </data>
 </root>
