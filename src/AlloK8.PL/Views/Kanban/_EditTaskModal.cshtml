@@ -1,4 +1,6 @@
-﻿<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-hidden="true">
+﻿@model TaskUpdateVM
+
+<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,9 +11,42 @@
             </div>
             <div class="modal-body">
                 <p id="taskDetails">Loading...</p>
-            </div>
-            <div class="modal-footer">
-                <form asp-action="EditTask" asp-controller="Kanban">
+                <form class="forms-sample" asp-controller="Kanban" asp-action="EditTask" method="post">
+                    <input type="hidden" asp-for="Id">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input asp-for="Title"
+                               class="form-control"
+                               id="title"
+                               type="text"
+                               placeholder="Title">
+                        <span class="text-danger text-small" asp-validation-for="Title"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input asp-for="Description"
+                               class="form-control"
+                               id="description"
+                               type = "text"
+                               placeholder="Description">
+                        <span class="text-danger text-small" asp-validation-for="Description"></span>
+                    </div>    
+                    <div class="form-group">
+                        <label for="start-date">Start date</label>
+                        <input asp-for="StartDate"
+                               class="form-control"
+                               id="start-date"
+                               type="date">
+                        <span class="text-danger text-small" asp-validation-for="StartDate"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="due-date">Due date</label>
+                        <input asp-for="DueDate"
+                               class="form-control"
+                               id="due-date"
+                               type="date">
+                        <span class="text-danger text-small" asp-validation-for="DueDate"></span>
+                    </div>
                     <button class="btn btn-primary" type="submit">
                         Submit changes
                     </button>
@@ -20,3 +55,36 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelector("#taskModal form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        let form = e.target;
+        let formData = new FormData(form);
+
+        try {
+            let response = await fetch(form.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                let updatedTask = await response.json();
+
+                // Update the task in the UI
+                let taskElement = document.getElementById(`task-${updatedTask.id}`);
+                if (taskElement) {
+                    taskElement.innerText = updatedTask.title;
+                }
+
+                // Close the modal
+                $("#taskModal").modal("hide");
+            } else {
+                console.error('Failed to update task');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>

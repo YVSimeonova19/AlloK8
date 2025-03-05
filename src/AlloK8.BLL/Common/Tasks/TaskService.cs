@@ -76,8 +76,9 @@ internal class TaskService : ITaskService
 
         task.Title = taskUM.Title ?? task.Title;
         task.Description = taskUM.Description ?? task.Description;
-        task.Position = taskUM.Position ?? task.Position;
+        task.StartDate = taskUM.StartDate ?? task.StartDate;
         task.DueDate = taskUM.DueDate ?? task.DueDate;
+        task.Position = taskUM.Position ?? task.Position;
 
         this.context.Tasks.Update(task);
         this.context.SaveChanges();

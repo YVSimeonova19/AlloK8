@@ -129,4 +129,41 @@ public class KanbanController : Controller
             return this.StatusCode(500, new { success = false, message = ex.Message });
         }
     }
+
+    [HttpGet("kanban/task/{id}")]
+    public async Task<IActionResult> GetTask(int id)
+    {
+        var task = await this.taskService.GetTaskByIdAsync(id);
+        if (task == null)
+        {
+            return this.NotFound();
+        }
+
+        return this.Ok(task);
+    }
+
+    [HttpPost("kanban/edit-task")]
+    public async Task<IActionResult> EditTask([FromForm] TaskUpdateVM model)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest(this.ModelState);
+        }
+
+        var taskUM = new TaskUM
+        {
+            Title = model.Title,
+            Description = model.Description,
+            StartDate = model.StartDate,
+            DueDate = model.DueDate,
+        };
+
+        var updatedTask = await this.taskService.UpdateTaskAsync(taskUM, model.Id);
+        if (updatedTask == null)
+        {
+            return this.NotFound();
+        }
+
+        return this.Ok(updatedTask);
+    }
 }

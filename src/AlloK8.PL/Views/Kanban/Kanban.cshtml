@@ -80,18 +80,43 @@
             </div>
         </div>
     </div>
+    @await Html.PartialAsync("_EditTaskModal", new TaskUpdateVM())
 </div>
-
-@await Html.PartialAsync("_EditTaskModal")
 
 <script>
     // Open modal window for editing
-    function openTaskModal(element) {
+    async function openTaskModal(element) {
         let taskId = element.id.split("-")[1];
 
-        document.getElementById("taskDetails").innerText = "Task ID: " + taskId;
+        // Fetch task details from the server
+        try {
+            let response = await fetch(`/kanban/task/${taskId}`);
+            if (response.ok) {
+                let task = await response.json();
 
-        $("#taskModal").modal("show");
+                // Populate the modal form
+                document.getElementById("title").value = task.title;
+                document.getElementById("description").value = task.description;
+                
+                //let startDate = new Date(task.startDate).toISOString().slice(0, 10);
+                //document.getElementById("start-date").value = startDate;
+
+                //let dueDate = new Date(task.dueDate).toISOString().slice(0, 10);
+                //document.getElementById("due-date").value = dueDate;
+                
+                document.getElementById("taskDetails").innerText = `Editing Task: ${task.title}`;
+
+                // Set the hidden task ID field
+                document.querySelector("input[name='Id']").value = task.id;
+
+                // Show the modal
+                $("#taskModal").modal("show");
+            } else {
+                console.error('Failed to fetch task details');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
     
     // Allow dropping
