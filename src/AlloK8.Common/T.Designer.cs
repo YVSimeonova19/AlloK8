@@ -69,6 +69,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добави нова задача.
+        /// </summary>
+        public static string AddNewTaskInputLabel {
+            get {
+                return ResourceManager.GetString("AddNewTaskInputLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Календар.
         /// </summary>
         public static string CalendarNavButtonText {
@@ -128,6 +137,24 @@ namespace AlloK8.Common {
         public static string CreateProjectTitleText {
             get {
                 return ResourceManager.GetString("CreateProjectTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Прави се.
+        /// </summary>
+        public static string DoingColumnLabel {
+            get {
+                return ResourceManager.GetString("DoingColumnLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Готово.
+        /// </summary>
+        public static string DoneColumnLabel {
+            get {
+                return ResourceManager.GetString("DoneColumnLabel", resourceCulture);
             }
         }
         
@@ -218,6 +245,15 @@ namespace AlloK8.Common {
         public static string IRememberedMyPasswordLinkText {
             get {
                 return ResourceManager.GetString("IRememberedMyPasswordLinkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Канбан Дъска.
+        /// </summary>
+        public static string KanbanBoardTitleText {
+            get {
+                return ResourceManager.GetString("KanbanBoardTitleText", resourceCulture);
             }
         }
         
@@ -506,6 +542,24 @@ namespace AlloK8.Common {
         public static string SignUpHeader2Text {
             get {
                 return ResourceManager.GetString("SignUpHeader2Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сортирай по приоритет.
+        /// </summary>
+        public static string SortByPriorityButtonText {
+            get {
+                return ResourceManager.GetString("SortByPriorityButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to За правене.
+        /// </summary>
+        public static string ToDoColumnLabel {
+            get {
+                return ResourceManager.GetString("ToDoColumnLabel", resourceCulture);
             }
         }
         

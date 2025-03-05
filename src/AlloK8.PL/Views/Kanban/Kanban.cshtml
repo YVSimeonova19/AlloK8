@@ -6,15 +6,15 @@
 
 <div class="content-wrapper">
     <div class="row d-flex justify-content-between align-items-center">
-        <h3 class="mb-4 ml-3">@Model.ProjectName Kanban Board</h3>
-        <button type="submit" class="btn btn-primary mr-3 mb-4">Sort tasks by priority</button>
+        <h3 class="mb-4 ml-3">@Model.ProjectName @T.KanbanBoardTitleText</h3>
+        <button type="submit" class="btn btn-primary mr-3 mb-4">@T.SortByPriorityButtonText</button>
     </div>
 
     <div class="row d-flex justify-content-between">
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">To Do</h4>
+            <div class="card" id="todo-card">
+                <div class="card-body mx-2 my-2">
+                    <h4 class="card-title">@T.ToDoColumnLabel</h4>
                     <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(1, new List<TaskVM>()))
                         {
@@ -29,7 +29,7 @@
                         }
                     </ul>
                     <div class="input-group mt-3">
-                        <input type="text" id="newTaskTodo" class="form-control" placeholder="Add new task">
+                        <input type="text" id="newTaskTodo" class="form-control" placeholder="@T.AddNewTaskInputLabel">
                         <button class="btn btn-icon bg-transparent text-primary" onclick="addTask('todo')">
                             <i class="icon-circle-plus"></i>
                         </button>
@@ -39,9 +39,9 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Doing</h4>
+            <div class="card" id="doing-card">
+                <div class="card-body mx-2 my-2">
+                    <h4 class="card-title">@T.DoingColumnLabel</h4>
                     <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(2, new List<TaskVM>()))
                         {
@@ -60,9 +60,9 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Done</h4>
+            <div class="card" id="done-card">
+                <div class="card-body mx-2 my-2">
+                    <h4 class="card-title">@T.DoneColumnLabel</h4>
                     <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(3, new List<TaskVM>()))
                         {
@@ -269,5 +269,15 @@
     .draggable {
         cursor: grab;
         margin: 5px;
+    }
+    
+    #todo-card {
+        border: 2px solid #f67268;
+    }
+    #doing-card {
+        border: 2px solid #58b0f6;
+    }
+    #done-card {
+        border: 2px solid #4cb050;
     }
 </style>

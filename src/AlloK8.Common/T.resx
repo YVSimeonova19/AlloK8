@@ -180,4 +180,22 @@
     <data name="CreateProjectButtonText" xml:space="preserve">
         <value>Създаване на проект</value>
     </data>
+    <data name="KanbanBoardTitleText" xml:space="preserve">
+        <value>Канбан Дъска</value>
+    </data>
+    <data name="SortByPriorityButtonText" xml:space="preserve">
+        <value>Сортирай по приоритет</value>
+    </data>
+    <data name="ToDoColumnLabel" xml:space="preserve">
+        <value>За правене</value>
+    </data>
+    <data name="DoingColumnLabel" xml:space="preserve">
+        <value>Прави се</value>
+    </data>
+    <data name="DoneColumnLabel" xml:space="preserve">
+        <value>Готово</value>
+    </data>
+    <data name="AddNewTaskInputLabel" xml:space="preserve">
+        <value>Добави нова задача</value>
+    </data>
 </root>
