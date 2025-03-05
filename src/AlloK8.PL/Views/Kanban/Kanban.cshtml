@@ -20,7 +20,7 @@
                         {
                             <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
-                                @task.Title
+                                <p>@task.Title</p>
                                 <button class="btn btn-icon bg-transparent text-danger ml-auto"
                                         onclick="removeTask(this); event.stopPropagation();">
                                     <i class="remove ti-close"></i>
@@ -47,7 +47,7 @@
                         {
                             <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
-                                @task.Title
+                                <p>@task.Title</p>
                                 <button class="btn btn-icon bg-transparent text-danger ml-auto"
                                         onclick="removeTask(this); event.stopPropagation();">
                                     <i class="remove ti-close"></i>
@@ -68,7 +68,7 @@
                         {
                             <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
-                                @task.Title
+                                <p>@task.Title</p>
                                 <button class="btn btn-icon bg-transparent text-danger ml-auto"
                                         onclick="removeTask(this); event.stopPropagation();">
                                     <i class="remove ti-close"></i>
@@ -98,11 +98,11 @@
                 document.getElementById("title").value = task.title;
                 document.getElementById("description").value = task.description;
                 
-                //let startDate = new Date(task.startDate).toISOString().slice(0, 10);
-                //document.getElementById("start-date").value = startDate;
+                let startDate = new Date(task.startDate).toISOString().slice(0, 10);
+                document.getElementById("start-date").value = startDate;
 
-                //let dueDate = new Date(task.dueDate).toISOString().slice(0, 10);
-                //document.getElementById("due-date").value = dueDate;
+                let dueDate = new Date(task.dueDate).toISOString().slice(0, 10);
+                document.getElementById("due-date").value = dueDate;
                 
                 document.getElementById("taskDetails").innerText = `Editing Task: ${task.title}`;
 

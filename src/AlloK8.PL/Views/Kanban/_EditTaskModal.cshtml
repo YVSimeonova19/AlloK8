@@ -75,7 +75,7 @@
                 // Update the task in the UI
                 let taskElement = document.getElementById(`task-${updatedTask.id}`);
                 if (taskElement) {
-                    taskElement.innerText = updatedTask.title;
+                    taskElement.querySelector("p").innerText = updatedTask.title;
                 }
 
                 // Close the modal

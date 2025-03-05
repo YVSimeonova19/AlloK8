@@ -14,10 +14,9 @@ public class TaskUpdateVM
     [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
     public string? Description { get; set; }
 
-    [Required(ErrorMessage = "Start date is required.")]
     [DataType(DataType.Date)]
     [Display(Name = "Start Date")]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
     [DataType(DataType.Date)]
     [Display(Name = "Due Date")]
