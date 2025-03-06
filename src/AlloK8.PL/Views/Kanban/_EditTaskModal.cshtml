@@ -4,35 +4,34 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit task</h5>
+                <h5 class="modal-title" id="modal-title"></h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p id="taskDetails">Loading...</p>
                 <form class="forms-sample" asp-controller="Kanban" asp-action="EditTask" method="post">
                     <input type="hidden" asp-for="Id">
                     <div class="form-group">
-                        <label for="title">Title</label>
+                        <label for="title">@T.TitleModalEditTaskText</label>
                         <input asp-for="Title"
                                class="form-control"
                                id="title"
                                type="text"
-                               placeholder="Title">
+                               placeholder="@T.TitleModalEditTaskText">
                         <span class="text-danger text-small" asp-validation-for="Title"></span>
                     </div>
                     <div class="form-group">
-                        <label for="description">Description</label>
+                        <label for="description">@T.DescriptionModalEditTaskText</label>
                         <input asp-for="Description"
                                class="form-control"
                                id="description"
                                type = "text"
-                               placeholder="Description">
+                               placeholder="@T.DescriptionModalEditTaskText">
                         <span class="text-danger text-small" asp-validation-for="Description"></span>
                     </div>    
                     <div class="form-group">
-                        <label for="start-date">Start date</label>
+                        <label for="start-date">@T.StartDateModalEditTaskText</label>
                         <input asp-for="StartDate"
                                class="form-control"
                                id="start-date"
@@ -40,7 +39,7 @@
                         <span class="text-danger text-small" asp-validation-for="StartDate"></span>
                     </div>
                     <div class="form-group">
-                        <label for="due-date">Due date</label>
+                        <label for="due-date">@T.DueDateModalEditTaskText</label>
                         <input asp-for="DueDate"
                                class="form-control"
                                id="due-date"
@@ -48,7 +47,7 @@
                         <span class="text-danger text-small" asp-validation-for="DueDate"></span>
                     </div>
                     <button class="btn btn-primary" type="submit">
-                        Submit changes
+                        @T.SubmitChangesModalEditButtonText
                     </button>
                 </form>
             </div>

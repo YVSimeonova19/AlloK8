@@ -141,6 +141,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Описание.
+        /// </summary>
+        public static string DescriptionModalEditTaskText {
+            get {
+                return ResourceManager.GetString("DescriptionModalEditTaskText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Прави се.
         /// </summary>
         public static string DoingColumnLabel {
@@ -155,6 +164,15 @@ namespace AlloK8.Common {
         public static string DoneColumnLabel {
             get {
                 return ResourceManager.GetString("DoneColumnLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Крайна дата.
+        /// </summary>
+        public static string DueDateModalEditTaskText {
+            get {
+                return ResourceManager.GetString("DueDateModalEditTaskText", resourceCulture);
             }
         }
         
@@ -587,6 +605,33 @@ namespace AlloK8.Common {
         public static string SortByPriorityButtonText {
             get {
                 return ResourceManager.GetString("SortByPriorityButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начална дата.
+        /// </summary>
+        public static string StartDateModalEditTaskText {
+            get {
+                return ResourceManager.GetString("StartDateModalEditTaskText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Запази промените.
+        /// </summary>
+        public static string SubmitChangesModalEditButtonText {
+            get {
+                return ResourceManager.GetString("SubmitChangesModalEditButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заглавие.
+        /// </summary>
+        public static string TitleModalEditTaskText {
+            get {
+                return ResourceManager.GetString("TitleModalEditTaskText", resourceCulture);
             }
         }
         

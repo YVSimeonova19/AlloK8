@@ -213,4 +213,19 @@
     <data name="GetStratedButtonLandingText" xml:space="preserve">
         <value>Започни</value>
     </data>
+    <data name="TitleModalEditTaskText" xml:space="preserve">
+        <value>Заглавие</value>
+    </data>
+    <data name="DescriptionModalEditTaskText" xml:space="preserve">
+        <value>Описание</value>
+    </data>
+    <data name="StartDateModalEditTaskText" xml:space="preserve">
+        <value>Начална дата</value>
+    </data>
+    <data name="DueDateModalEditTaskText" xml:space="preserve">
+        <value>Крайна дата</value>
+    </data>
+    <data name="SubmitChangesModalEditButtonText" xml:space="preserve">
+        <value>Запази промените</value>
+    </data>
 </root>
