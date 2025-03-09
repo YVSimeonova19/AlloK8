@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="content-wrapper">
+  <div class="card">
+    <div class="card-body">
+      <div id="calendar"></div>
+    </div>
+  </div>
+</div>
+
+<script src="~/fullcalendar-6.1.15/dist/index.global.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      selectable: true,
+      dayMaxEvents: true,
+      events: [
+        {
+          title: 'All Day Event',
+          start: '2025-03-01'
+        },
+        {
+          title: 'Conference',
+          start: '2025-03-11',
+          end: '2025-03-13'
+        },
+        {
+          title: 'Click for Google',
+          url: 'http://google.com/',
+          start: '2025-03-28'
+        }
+      ]
+    });
+
+    calendar.render();
+  });
+</script>
+
+<style>
+  #calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  .fc-scroller {
+    scrollbar-width: none;
+  }
+</style>
