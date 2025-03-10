@@ -2,7 +2,7 @@ using Microsoft.Build.Framework;
 
 namespace AlloK8.PL.Models;
 
-public class TaskVM
+public class TaskKanbanVM
 {
     [Required]
     public int Id { get; set; }

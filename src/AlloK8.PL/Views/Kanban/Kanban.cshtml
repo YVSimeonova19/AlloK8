@@ -16,7 +16,7 @@
                 <div class="card-body mx-2 my-2">
                     <h4 class="card-title">@T.ToDoColumnLabel</h4>
                     <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        @foreach (var task in Model.TasksByColumn.GetValueOrDefault(1, new List<TaskVM>()))
+                        @foreach (var task in Model.TasksByColumn.GetValueOrDefault(1, new List<TaskKanbanVM>()))
                         {
                             <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
@@ -43,7 +43,7 @@
                 <div class="card-body mx-2 my-2">
                     <h4 class="card-title">@T.DoingColumnLabel</h4>
                     <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        @foreach (var task in Model.TasksByColumn.GetValueOrDefault(2, new List<TaskVM>()))
+                        @foreach (var task in Model.TasksByColumn.GetValueOrDefault(2, new List<TaskKanbanVM>()))
                         {
                             <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
@@ -64,7 +64,7 @@
                 <div class="card-body mx-2 my-2">
                     <h4 class="card-title">@T.DoneColumnLabel</h4>
                     <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        @foreach (var task in Model.TasksByColumn.GetValueOrDefault(3, new List<TaskVM>()))
+                        @foreach (var task in Model.TasksByColumn.GetValueOrDefault(3, new List<TaskKanbanVM>()))
                         {
                             <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">

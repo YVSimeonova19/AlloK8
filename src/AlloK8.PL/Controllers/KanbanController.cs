@@ -47,7 +47,7 @@ public class KanbanController : Controller
 
         var taskVMs = tasks
             .OrderBy(t => t.Position)
-            .Select(t => new TaskVM
+            .Select(t => new TaskKanbanVM
             {
                 Id = t.Id,
                 Title = t.Title,
