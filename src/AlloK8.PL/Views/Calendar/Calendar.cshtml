@@ -30,8 +30,12 @@
     });
     
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      selectable: true,
+      locale: 'bg',
+      firstDay: 1,
       dayMaxEvents: true,
+      dayMaxEventRows: 3,
+      eventDisplay: 'block',
+      displayEventTime: false,
       events: events
     });
 
@@ -39,13 +43,4 @@
   });
 </script>
 
-<style>
-  #calendar {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  
-  .fc-scroller {
-    scrollbar-width: none;
-  }
-</style>
+<link rel="stylesheet" href="~/css/full-calendar.css">
