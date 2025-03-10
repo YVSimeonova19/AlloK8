@@ -1,4 +1,4 @@
-﻿@Model CalendarVM
+﻿@model CalendarVM
 
 @{
     Layout = "_Layout";
@@ -19,9 +19,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
 
-    var tasks = @Html.Raw(serializedTasks);
-
-    console.log("Loaded Tasks:", tasks);
+    var tasks = JSON.parse('@Html.Raw(serializedTasks)');
 
     var events = tasks.map(function (task) {
       return {
@@ -30,8 +28,6 @@
         end: task.end || task.start
       };
     });
-
-    console.log("Formatted Events:", events);
     
     var calendar = new FullCalendar.Calendar(calendarEl, {
       selectable: true,
