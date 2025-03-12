@@ -80,9 +80,9 @@ namespace AlloK8.Common {
         /// <summary>
         ///   Looks up a localized string similar to Календар.
         /// </summary>
-        public static string CalendarNavButtonText {
+        public static string CalendarButtonText {
             get {
-                return ResourceManager.GetString("CalendarNavButtonText", resourceCulture);
+                return ResourceManager.GetString("CalendarButtonText", resourceCulture);
             }
         }
         
@@ -141,6 +141,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изтрий.
+        /// </summary>
+        public static string DeleteDropdownButtonText {
+            get {
+                return ResourceManager.GetString("DeleteDropdownButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Описание.
         /// </summary>
         public static string DescriptionModalEditTaskText {
@@ -173,6 +182,15 @@ namespace AlloK8.Common {
         public static string DueDateModalEditTaskText {
             get {
                 return ResourceManager.GetString("DueDateModalEditTaskText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактирай.
+        /// </summary>
+        public static string EditDropdownButtonText {
+            get {
+                return ResourceManager.GetString("EditDropdownButtonText", resourceCulture);
             }
         }
         
@@ -281,6 +299,15 @@ namespace AlloK8.Common {
         public static string KanbanBoardTitleText {
             get {
                 return ResourceManager.GetString("KanbanBoardTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Канбан.
+        /// </summary>
+        public static string KanbanButtonText {
+            get {
+                return ResourceManager.GetString("KanbanButtonText", resourceCulture);
             }
         }
         
@@ -569,6 +596,15 @@ namespace AlloK8.Common {
         public static string SettingsButtonText {
             get {
                 return ResourceManager.GetString("SettingsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сподели.
+        /// </summary>
+        public static string ShareDropdownButtonText {
+            get {
+                return ResourceManager.GetString("ShareDropdownButtonText", resourceCulture);
             }
         }
         

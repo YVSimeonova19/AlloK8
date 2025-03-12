@@ -159,7 +159,7 @@
     <data name="CreateNewProjectNavButtonText" xml:space="preserve">
         <value>Нов проект</value>
     </data>
-    <data name="CalendarNavButtonText" xml:space="preserve">
+    <data name="CalendarButtonText" xml:space="preserve">
         <value>Календар</value>
     </data>
     <data name="YourProjectsTitleText" xml:space="preserve">
@@ -227,5 +227,17 @@
     </data>
     <data name="SubmitChangesModalEditButtonText" xml:space="preserve">
         <value>Запази промените</value>
+    </data>
+    <data name="KanbanButtonText" xml:space="preserve">
+        <value>Канбан</value>
+    </data>
+    <data name="EditDropdownButtonText" xml:space="preserve">
+        <value>Редактирай</value>
+    </data>
+    <data name="ShareDropdownButtonText" xml:space="preserve">
+        <value>Сподели</value>
+    </data>
+    <data name="DeleteDropdownButtonText" xml:space="preserve">
+        <value>Изтрий</value>
     </data>
 </root>

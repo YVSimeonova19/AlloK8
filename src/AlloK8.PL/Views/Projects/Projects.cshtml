@@ -23,15 +23,31 @@
     <div class="row">
         @foreach (var project in Model)
         {
-            <div class="col-md-6 mb-4 stretch-card transparent">
-                <a href="/projects/@project.Id/kanban" class="w-100 text-decoration-none">
-                    <div class="card card-dark-blue">
-                        <div class="card-body">
-                            <p class="fs-30 mb-2">@project.Name</p>
-                            <p>@project.Description</p>
+            <div class="col-md-4 col-sm-6 col-12 mb-4 stretch-card transparent">
+                <div class="card card-dark-blue">
+                    <div class="card-body ml-2 mt-2">
+                        <p class="fs-30 mb-3">@project.Name</p>
+                        <p>@project.Description</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end">
+                        <div class="btn-group" role="group">
+                            <a href="/projects/@project.Id/kanban" class="btn btn-outline-light text-light">@T.KanbanButtonText</a>
+                            <a href="/projects/@project.Id/calendar" class="btn btn-outline-light text-light">@T.CalendarButtonText</a>
+                            <div class="btn-group dropup">
+                                <button class="btn btn-outline-light text-light dropdown-toggle"
+                                        type="button" id="dropdown-@project.Id"
+                                        data-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-@project.Id">
+                                    <a class="dropdown-item" href="/projects/@project.Id/edit">@T.EditDropdownButtonText</a>
+                                    <a class="dropdown-item" href="/projects/@project.Id/share">@T.ShareDropdownButtonText</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="/projects/@project.Id/delete">@T.DeleteDropdownButtonText</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
         }
     </div>
