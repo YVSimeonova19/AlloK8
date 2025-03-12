@@ -14,6 +14,8 @@ public class TaskUpdateVM
     [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
     public string? Description { get; set; }
 
+    public bool IsPriority { get; set; }
+
     [DataType(DataType.Date)]
     [Display(Name = "Start Date")]
     public DateTime? StartDate { get; set; }

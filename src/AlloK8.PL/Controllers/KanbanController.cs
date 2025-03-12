@@ -154,6 +154,7 @@ public class KanbanController : Controller
         {
             Title = model.Title,
             Description = model.Description,
+            IsPriority = model.IsPriority,
             StartDate = model.StartDate,
             DueDate = model.DueDate,
         };

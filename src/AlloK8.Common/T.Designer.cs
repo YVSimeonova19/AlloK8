@@ -294,6 +294,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добави приоритет.
+        /// </summary>
+        public static string IsPriorityCheckLabel {
+            get {
+                return ResourceManager.GetString("IsPriorityCheckLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Канбан Дъска.
         /// </summary>
         public static string KanbanBoardTitleText {

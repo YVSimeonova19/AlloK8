@@ -24,7 +24,7 @@ internal class UserService : IUserService
         };
 
         this.context.UserProfiles.Add(userProflie);
-        this.context.SaveChanges();
+        await this.context.SaveChangesAsync();
 
         return userProflie;
     }

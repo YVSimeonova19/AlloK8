@@ -240,4 +240,7 @@
     <data name="DeleteDropdownButtonText" xml:space="preserve">
         <value>Изтрий</value>
     </data>
+    <data name="IsPriorityCheckLabel" xml:space="preserve">
+        <value>Добави приоритет</value>
+    </data>
 </root>

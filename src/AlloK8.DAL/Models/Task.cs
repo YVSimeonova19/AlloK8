@@ -9,6 +9,7 @@ public class Task : AuditableEntity
 {
     public string? Title { get; set; }
     public string? Description { get; set; }
+    public bool IsPriority { get; set; } = false;
 
     public int Position { get; set; }
 

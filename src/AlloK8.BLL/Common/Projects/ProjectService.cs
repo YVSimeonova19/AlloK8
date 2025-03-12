@@ -38,7 +38,7 @@ internal class ProjectService : IProjectService
         user.Projects.Add(project);
 
         this.context.Update(user);
-        this.context.SaveChanges();
+        await this.context.SaveChangesAsync();
 
         return project;
     }
@@ -76,7 +76,7 @@ internal class ProjectService : IProjectService
         project.Description = projectUM.Description ?? project.Description;
 
         this.context.Projects.Update(project);
-        this.context.SaveChanges();
+        await this.context.SaveChangesAsync();
 
         return project;
     }
@@ -86,6 +86,6 @@ internal class ProjectService : IProjectService
         var project = await this.GetProjectByIdAsync(id);
 
         this.context.Projects.Remove(project);
-        this.context.SaveChanges();
+        await this.context.SaveChangesAsync();
     }
 }
