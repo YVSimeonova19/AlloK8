@@ -18,4 +18,6 @@ public interface ITaskService
     // Task AssignTaskAsync(TaskUM taskUM, int id);
 
     Task DeleteTaskByIdAsync(int id);
+
+    Task<List<DAL.Models.Task>> PrioritizeTasksAsync(List<DAL.Models.Task> tasks);
 }

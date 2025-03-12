@@ -35,9 +35,18 @@ public class KanbanController : Controller
     }
 
     [HttpGet("/projects/{projectId}/kanban")]
-    public async Task<IActionResult> Kanban(int projectId)
+    public async Task<IActionResult> Kanban(int projectId, bool sortByPriority = false)
     {
         var tasks = await this.taskService.GetAllTasksByProjectIdAsync(projectId);
+
+        if (sortByPriority)
+        {
+            tasks = await this.taskService.PrioritizeTasksAsync(tasks);
+        }
+        else
+        {
+            tasks = tasks.OrderBy(t => t.Position).ToList();
+        }
 
         var kanbanVM = new KanbanVM
         {
@@ -46,12 +55,12 @@ public class KanbanController : Controller
         };
 
         var taskVMs = tasks
-            .OrderBy(t => t.Position)
             .Select(t => new TaskKanbanVM
             {
                 Id = t.Id,
                 Title = t.Title,
                 Description = t.Description,
+                IsPriority = t.IsPriority,
                 Position = t.Position,
                 ColumnId = t.ColumnId,
             })

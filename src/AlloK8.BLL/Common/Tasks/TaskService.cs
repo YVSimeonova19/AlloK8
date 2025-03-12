@@ -196,4 +196,26 @@ internal class TaskService : ITaskService
         this.context.Tasks.Remove(task);
         await this.context.SaveChangesAsync();
     }
+
+    public async Task<List<DAL.Models.Task>> PrioritizeTasksAsync(List<DAL.Models.Task> tasks)
+    {
+        // Create a priority queue with a custom comparer
+        var comparer = Comparer<bool>.Create((x, y) => y.CompareTo(x));
+        var priorityQueue = new PriorityQueue<DAL.Models.Task, bool>(comparer);
+
+        // Enqueue all tasks
+        foreach (var task in tasks)
+        {
+            priorityQueue.Enqueue(task, task.IsPriority);
+        }
+
+        // Dequeue tasks in priority order
+        List<DAL.Models.Task> prioritizedTasks = new List<DAL.Models.Task>();
+        while (priorityQueue.Count > 0)
+        {
+            prioritizedTasks.Add(priorityQueue.Dequeue());
+        }
+
+        return prioritizedTasks;
+    }
 }

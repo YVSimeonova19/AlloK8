@@ -7,7 +7,13 @@
 <div class="content-wrapper">
     <div class="row d-flex justify-content-between align-items-center">
         <h3 class="mb-4 ml-3">@Model.ProjectName @T.KanbanBoardTitleText</h3>
-        <button type="submit" class="btn btn-primary mr-3 mb-4">@T.SortByPriorityButtonText</button>
+        <div class="d-flex align-items-center mr-3 mb-4">
+            <span class="mr-2">@T.SortByPriorityButtonText</span>
+            <label class="role-switch">
+                <input type="checkbox" id="priorityToggle" onchange="togglePrioritySort(this)">
+                <span class="slider round"></span>
+            </label>
+        </div>
     </div>
 
     <div class="row d-flex justify-content-between">
@@ -18,7 +24,7 @@
                     <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(1, new List<TaskKanbanVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                                 <p>@task.Title</p>
                                 <button class="btn btn-icon bg-transparent text-danger ml-auto"
@@ -45,7 +51,7 @@
                     <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(2, new List<TaskKanbanVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                                 <p>@task.Title</p>
                                 <button class="btn btn-icon bg-transparent text-danger ml-auto"
@@ -66,7 +72,7 @@
                     <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(3, new List<TaskKanbanVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center"
+                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
                                 draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                                 <p>@task.Title</p>
                                 <button class="btn btn-icon bg-transparent text-danger ml-auto"
@@ -106,7 +112,8 @@
                 
                 document.getElementById("modal-title").innerText = `${task.title}`;
 
-                // Set the hidden task ID field
+                document.getElementById("is-priority").checked = task.isPriority;
+                
                 document.querySelector("input[name='Id']").value = task.id;
 
                 // Show the modal
@@ -281,6 +288,60 @@
         }
     }
 
+    // Toggle priority sorting
+    function togglePrioritySort(checkbox) {
+        const sortByPriority = checkbox.checked;
+        const projectId = @Model.ProjectId;
+
+        // Reload the page with the new sorting parameter
+        window.location.href = `/projects/${projectId}/kanban?sortByPriority=${sortByPriority}`;
+    }
+
+    // Initialize the toggle state based on the query parameter
+    document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sortByPriority = urlParams.get('sortByPriority') === 'true';
+        document.getElementById('priorityToggle').checked = sortByPriority;
+
+        // Enable or disable drag-and-drop based on the toggle state
+        if (sortByPriority) {
+            disableDragAndDrop();
+        } else {
+            enableDragAndDrop();
+        }
+    });
+
+    // Disable drag-and-drop functionality
+    function disableDragAndDrop() {
+        const draggableTasks = document.querySelectorAll('.draggable');
+        draggableTasks.forEach(task => {
+            task.draggable = false;
+            task.removeAttribute('ondragstart');
+            task.style.cursor = 'default';
+        });
+
+        const taskLists = document.querySelectorAll('.task-list');
+        taskLists.forEach(list => {
+            list.removeAttribute('ondrop');
+            list.removeAttribute('ondragover');
+        });
+    }
+
+    // Enable drag-and-drop functionality
+    function enableDragAndDrop() {
+        const draggableTasks = document.querySelectorAll('.draggable');
+        draggableTasks.forEach(task => {
+            task.draggable = true;
+            task.setAttribute('ondragstart', 'drag(event)');
+            task.style.cursor = 'grab';
+        });
+
+        const taskLists = document.querySelectorAll('.task-list');
+        taskLists.forEach(list => {
+            list.setAttribute('ondrop', 'drop(event)');
+            list.setAttribute('ondragover', 'allowDrop(event)');
+        });
+    }
 </script>
 
 <style>
@@ -295,6 +356,14 @@
         cursor: grab;
         margin: 5px;
     }
+
+    .list-group-item {
+        border: 1px solid rgba(0, 0, 0, 0.125) !important;
+    }
+
+    .list-group-item.priority-task {
+        border-left: 4px solid #4B49AC !important;
+    }
     
     #todo-card {
         border: 2px solid #f67268;
@@ -304,5 +373,56 @@
     }
     #done-card {
         border: 2px solid #4cb050;
+    }
+
+    /* Toggle switch container */
+    .role-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 25px;
+    }
+
+    /* Hide the default checkbox */
+    .role-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* Slider background */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: background-color 0.3s;
+        border-radius: 25px;
+    }
+
+    /* Slider circle */
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 21px;
+        width: 21px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: transform 0.3s;
+        border-radius: 50%;
+    }
+
+    /* Toggle switch when active */
+    input:checked + .slider {
+        background-color: #4B49AC;
+    }
+
+    /* Move the slider circle when active */
+    input:checked + .slider:before {
+        transform: translateX(25px);
     }
 </style>

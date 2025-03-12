@@ -12,6 +12,8 @@ public class TaskKanbanVM
 
     public string? Description { get; set; }
 
+    public bool IsPriority { get; set; }
+
     [Required]
     public int Position { get; set; }
 
