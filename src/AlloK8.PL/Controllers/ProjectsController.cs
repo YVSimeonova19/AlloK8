@@ -86,4 +86,46 @@ public class ProjectsController : Controller
 
         return this.View("CreateProject");
     }
+
+    [HttpPost("/projects/add-users")]
+    public async Task<IActionResult> AddUsers([FromBody] ProjectUpdateVM model)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest("Invalid request.");
+        }
+
+        try
+        {
+            foreach (var user in model.Users)
+            {
+                await this.projectService.AddUserToProjectAsync(model.Id, user.Id);
+            }
+
+            return this.Ok();
+        }
+        catch (Exception ex)
+        {
+            return this.BadRequest($"Error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("/api/users")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var users = await this.userService.GetAllUserProfilesAsync();
+        return this.Ok(users);
+    }
+
+    [HttpGet("api/users/search")]
+    public async Task<IActionResult> SearchUsersByEmail([FromQuery] string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return this.BadRequest("Email cannot be empty.");
+        }
+
+        var users = await this.userService.SearchUsersByEmailAsync(email);
+        return this.Ok(users);
+    }
 }

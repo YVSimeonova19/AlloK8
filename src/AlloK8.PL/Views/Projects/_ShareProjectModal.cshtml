@@ -1,0 +1,51 @@
+﻿@model ProjectUpdateVM
+
+<div class="modal fade" id="projectShareModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">share</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="shareProjectForm">
+                    <input type="hidden" name="Id">
+                    @await Html.PartialAsync("_UserSearch", @Model.AllUsers)
+                    <button class="btn btn-primary mt-2" type="submit">Add to project</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector("#shareProjectForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const projectId = form.querySelector('input[name="Id"]').value;
+        const selectedUsers = [...document.querySelectorAll('.selected-user')].map(user => ({
+            Id: user.dataset.id,
+            Email: user.querySelector('.user-name').textContent
+        }));
+
+        try {
+            const response = await fetch('/projects/add-users', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({Id: projectId, Users: selectedUsers})
+            });
+
+            if (response.ok) {
+                $('#projectShareModal').modal('hide');
+                alert("Users added successfully!");
+            } else {
+                alert("Failed to add users.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>

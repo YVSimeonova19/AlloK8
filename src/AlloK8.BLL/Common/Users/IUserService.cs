@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AlloK8.DAL.Models;
 
@@ -11,4 +12,8 @@ public interface IUserService
     Task<UserProfile> GetUserProfileByIdAsync(int id);
 
     Task<UserProfile> GetUserProfileByGuidAsync(Guid? userGuid);
+
+    Task<List<UserProfile>> GetAllUserProfilesAsync();
+
+    Task<List<UserProfile>> SearchUsersByEmailAsync(string email);
 }

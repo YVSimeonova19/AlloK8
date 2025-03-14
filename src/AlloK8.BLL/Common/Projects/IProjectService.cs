@@ -13,7 +13,11 @@ public interface IProjectService
     Task<List<DAL.Models.Project>> GetAllProjectsAsync();
     Task<List<DAL.Models.Project>> GetProjectsByUserIdAsync(Guid? userId);
 
-    Task<DAL.Models.Project> UpdateTaskAsync(ProjectUM projectUM, int id);
+    Task<DAL.Models.Project> UpdateProjectAsync(ProjectUM projectUM, int id);
 
     Task DeleteProjectByIdAsync(int id);
+
+    Task AddUserToProjectAsync(int projectId, int userId);
+
+    Task RemoveUserFromProjectAsync(int projectId, int userId);
 }

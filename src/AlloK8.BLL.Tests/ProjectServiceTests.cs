@@ -86,7 +86,7 @@ namespace AlloK8.BLL.Tests
             var projectUM = new ProjectUM { Title = "Updated Title", Description = "Updated Description" };
 
             // Act
-            var result = await projectService.UpdateTaskAsync(projectUM, 1);
+            var result = await projectService.UpdateProjectAsync(projectUM, 1);
 
             // Assert
             result.Should().NotBeNull();

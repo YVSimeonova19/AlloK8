@@ -26,23 +26,26 @@
             <div class="col-md-4 col-sm-6 col-12 mb-4 stretch-card transparent">
                 <div class="card card-dark-blue">
                     <div class="card-body ml-2 mt-2">
-                        <p class="fs-30 mb-3">@project.Name</p>
+                        <p class="fs-30 mb-3 project-title" data-project-id="@project.Id">@project.Name</p>
                         <p>@project.Description</p>
                     </div>
                     <div class="card-footer d-flex justify-content-end">
                         <div class="btn-group" role="group">
-                            <a href="/projects/@project.Id/kanban" class="btn btn-outline-light text-light">@T.KanbanButtonText</a>
-                            <a href="/projects/@project.Id/calendar" class="btn btn-outline-light text-light">@T.CalendarButtonText</a>
+                            <a href="/projects/@project.Id/kanban"
+                               class="btn btn-outline-light text-light">@T.KanbanButtonText</a>
+                            <a href="/projects/@project.Id/calendar"
+                               class="btn btn-outline-light text-light">@T.CalendarButtonText</a>
                             <div class="btn-group dropup">
-                                <button class="btn btn-outline-light text-light dropdown-toggle"
-                                        type="button" id="dropdown-@project.Id"
-                                        data-toggle="dropdown" aria-expanded="false">
+                                <button class="btn btn-outline-light text-light dropdown-toggle" type="button"
+                                        id="dropdown-@project.Id" data-toggle="dropdown" aria-expanded="false">
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-@project.Id">
-                                    <a class="dropdown-item" href="/projects/@project.Id/edit">@T.EditDropdownButtonText</a>
-                                    <a class="dropdown-item" href="/projects/@project.Id/share">@T.ShareDropdownButtonText</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" onclick="openEditModal(this)">@T.EditDropdownButtonText</a>
+                                    <a class="dropdown-item"
+                                       onclick="openShareModal(this)">@T.ShareDropdownButtonText</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="/projects/@project.Id/delete">@T.DeleteDropdownButtonText</a>
+                                    <a class="dropdown-item text-danger"
+                                       onclick="openDeleteModal(this)">@T.DeleteDropdownButtonText</a>
                                 </div>
                             </div>
                         </div>
@@ -51,4 +54,13 @@
             </div>
         }
     </div>
+    @await Html.PartialAsync("_ShareProjectModal", new ProjectUpdateVM())
 </div>
+
+<script>
+    function openShareModal(element) {
+        const projectId = element.closest('.card').querySelector('.project-title').dataset.projectId;
+        document.querySelector('#projectShareModal input[name="Id"]').value = projectId;
+        $('#projectShareModal').modal('show');
+    }
+</script>

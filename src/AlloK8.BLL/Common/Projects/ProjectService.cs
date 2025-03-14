@@ -68,7 +68,7 @@ internal class ProjectService : IProjectService
             .ToList();
     }
 
-    public async Task<DAL.Models.Project> UpdateTaskAsync(ProjectUM projectUM, int id)
+    public async Task<DAL.Models.Project> UpdateProjectAsync(ProjectUM projectUM, int id)
     {
         var project = await this.GetProjectByIdAsync(id);
 
@@ -87,5 +87,37 @@ internal class ProjectService : IProjectService
 
         this.context.Projects.Remove(project);
         await this.context.SaveChangesAsync();
+    }
+
+    public async Task AddUserToProjectAsync(int projectId, int userId)
+    {
+        var project = await this.GetProjectByIdAsync(projectId);
+        var user = await this.userService.GetUserProfileByIdAsync(userId);
+
+        if (project.Users.Any(u => u.Id == user.Id))
+        {
+            throw new Exception("User is already a member of this project.");
+        }
+
+        project.Users.Add(user);
+        this.context.Update(project);
+        await this.context.SaveChangesAsync();
+    }
+
+    public async Task RemoveUserFromProjectAsync(int projectId, int userId)
+    {
+        var project = await this.GetProjectByIdAsync(projectId);
+        var user = await this.userService.GetUserProfileByIdAsync(userId);
+
+        if (project.Users.Contains(user))
+        {
+            project.Users.Remove(user);
+            this.context.Update(project);
+            await this.context.SaveChangesAsync();
+        }
+        else
+        {
+            throw new InvalidOperationException("The user is not part of the project.");
+        }
     }
 }
