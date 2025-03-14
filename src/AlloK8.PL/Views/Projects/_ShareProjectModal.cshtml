@@ -12,7 +12,24 @@
             <div class="modal-body">
                 <form id="shareProjectForm">
                     <input type="hidden" name="Id">
-                    @await Html.PartialAsync("_UserSearch", @Model.AllUsers)
+
+                    <div class="user-search-bar">
+                        <label for="userSearchInput">search users</label>
+                        <input
+                            type="text"
+                            id="userSearchInput"
+                            class="form-control"
+                            placeholder="Search for users..."
+                            autocomplete="off"/>
+
+                        <div id="userResults" class="list-group mt-2"></div>
+                    </div>
+
+                    <div class="mt-3">
+                        <h6>selected:</h6>
+                        <div id="selectedUsers"></div>
+                    </div>
+                    
                     <button class="btn btn-primary mt-2" type="submit">Add to project</button>
                 </form>
             </div>
@@ -21,31 +38,158 @@
 </div>
 
 <script>
-    document.querySelector("#shareProjectForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
+    document.addEventListener("DOMContentLoaded", function () {
+        const userSearchInput = document.querySelector("#userSearchInput");
+        const userResults = document.querySelector("#userResults");
+        const selectedUsersContainer = document.querySelector("#selectedUsers");
+        let selectedUsers = []; // Keeps track of selected users by email or ID
 
-        const form = e.target;
-        const projectId = form.querySelector('input[name="Id"]').value;
-        const selectedUsers = [...document.querySelectorAll('.selected-user')].map(user => ({
-            Id: user.dataset.id,
-            Email: user.querySelector('.user-name').textContent
-        }));
-
-        try {
-            const response = await fetch('/projects/add-users', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({Id: projectId, Users: selectedUsers})
-            });
-
-            if (response.ok) {
-                $('#projectShareModal').modal('hide');
-                alert("Users added successfully!");
+        userSearchInput.addEventListener("input", async function () {
+            const email = userSearchInput.value.trim();
+            if (email.length >= 3) {
+                // Fetch users by email
+                try {
+                    var response = await fetch(`/api/users/search?email=${email}`);
+                    if (response.ok) {
+                        const users = await response.json();
+                        renderUserResults(users);
+                    } else {
+                        userResults.innerHTML = "<li class='list-group-item'>No users found.</li>";
+                    }
+                } catch (error) {
+                    console.error('Error fetching users:', error);
+                }
             } else {
-                alert("Failed to add users.");
+                userResults.innerHTML = "";
             }
-        } catch (error) {
-            console.error('Error:', error);
+        });
+
+        function renderUserResults(users) {
+            userResults.innerHTML = "";
+            users.forEach(user => {
+                const userItem = document.createElement("li");
+                userItem.classList.add("list-group-item");
+                userItem.textContent = user.email;
+                userItem.id = user.id;
+                userItem.addEventListener("click", function () {
+                    selectUser(user);
+                });
+                userResults.appendChild(userItem);
+            });
         }
+
+        function selectUser(user) {
+            if (!selectedUsers.find(u => u.Id === user.id)) {
+                selectedUsers.push({Id: user.id, Email: user.email});
+                const userBubble = document.createElement("div");
+                userBubble.classList.add("selected-user");
+                userBubble.id = user.id;
+
+                const userName = document.createElement("span");
+                userName.classList.add("user-name");
+                userName.textContent = user.email;
+
+                const removeButton = document.createElement("button");
+                removeButton.classList.add("remove-user-btn");
+                removeButton.textContent = "X";
+                removeButton.addEventListener("click", function () {
+                    removeUser(user.id);
+                });
+
+                userBubble.appendChild(userName);
+                userBubble.appendChild(removeButton);
+                selectedUsersContainer.appendChild(userBubble);
+                userResults.innerHTML = ""; // Clear results after selection
+                userSearchInput.value = ""; // Clear input field
+            }
+        }
+
+        function removeUser(userId) {
+            selectedUsers = selectedUsers.filter(user => user.Id !== userId);
+            const userBubble = selectedUsersContainer.querySelector(`.selected-user[data-id='${userId}']`);
+            if (userBubble) {
+                selectedUsersContainer.removeChild(userBubble);
+            }
+        }
+
+        document.querySelector("#shareProjectForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const projectId = form.querySelector('input[name="Id"]').value;
+
+            // Send the selected users to the backend
+            try {
+                const response = await fetch('/projects/add-users', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({Id: projectId, Users: selectedUsers})
+                });
+
+                if (response.ok) {
+                    $('#projectShareModal').modal('hide');
+                    alert("Users added successfully!");
+                } else {
+                    alert("Failed to add users.");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
     });
 </script>
+
+
+<style>
+    .user-search-bar {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        max-height: 150px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-item {
+        padding: 8px 16px;
+        cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    #selectedUsers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .selected-user {
+        display: flex;
+        align-items: center;
+        background-color: #e9ecef;
+        padding: 4px 8px;
+        border-radius: 16px;
+    }
+
+    .selected-user .user-name {
+        margin-right: 8px;
+    }
+
+    .selected-user .remove-user-btn {
+        background: none;
+        border: none;
+        color: #dc3545;
+        cursor: pointer;
+    }
+
+    .selected-user .remove-user-btn:hover {
+        color: #c82333;
+    }
+</style>
