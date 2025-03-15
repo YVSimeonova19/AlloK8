@@ -243,4 +243,79 @@
     <data name="IsPriorityCheckLabel" xml:space="preserve">
         <value>Добави приоритет</value>
     </data>
+    <data name="ShareProjectModalTitleText" xml:space="preserve">
+        <value>Сподели проекта</value>
+    </data>
+    <data name="CurrentProjectUsersModalText" xml:space="preserve">
+        <value>Потребители, добавени в проекта</value>
+    </data>
+    <data name="LoadingText" xml:space="preserve">
+        <value>Зарежда...</value>
+    </data>
+    <data name="SearchUsersTitleText" xml:space="preserve">
+        <value>Търси потребители</value>
+    </data>
+    <data name="SelectedUsersToAddTitleText" xml:space="preserve">
+        <value>Избрани потребители за добавяне</value>
+    </data>
+    <data name="AddToProjectButtonText" xml:space="preserve">
+        <value>Добави в проекта</value>
+    </data>
+    <data name="SearchForUsersPlaceholderText" xml:space="preserve">
+        <value>Търси потребители...</value>
+    </data>
+    <data name="ConfirmRemoveModalTitle" xml:space="preserve">
+        <value>Потвърдете премахването</value>
+    </data>
+    <data name="ConfirmRemoveModalText" xml:space="preserve">
+        <value>Сигурни ли сте, че искате да премахнете достъпа на този потребител до проекта?</value>
+    </data>
+    <data name="CancelButtonText" xml:space="preserve">
+        <value>Отхвърляне</value>
+    </data>
+    <data name="RemoveButtonText" xml:space="preserve">
+        <value>Премахване</value>
+    </data>
+    <data name="FailedToLoadUsersErrorMessageText" xml:space="preserve">
+        <value>Зареждането на потребители се провали.</value>
+    </data>
+    <data name="ErrorLoadingUsersErrorMessageText" xml:space="preserve">
+        <value>Грешка при зареждането на потребители.</value>
+    </data>
+    <data name="NoUsersInThisProjectYetMessageText" xml:space="preserve">
+        <value>Все още няма потребители в този проект.ъ</value>
+    </data>
+    <data name="UserRemovedSuccessfullyMessageText" xml:space="preserve">
+        <value>Потребителят беше премахнат успешно.</value>
+    </data>
+    <data name="FailedToRemoveUserFromProjectErrorMessageText" xml:space="preserve">
+        <value>Премахването на потребител беше неуспешно.</value>
+    </data>
+    <data name="AnErrorOccuredWhileRemovingUserFromProjectErrorMessageText" xml:space="preserve">
+        <value>Възникна проблем при премахването на потребител.</value>
+    </data>
+    <data name="NoUsersFoundMessageText" xml:space="preserve">
+        <value>Не бяха намерени потребители.</value>
+    </data>
+    <data name="UserAlreadyInProjectTitleText" xml:space="preserve">
+        <value>Потребителят вече е добавен в проекта</value>
+    </data>
+    <data name="IsAlreadyInYourSelectionText" xml:space="preserve">
+        <value>е вече избран от Вас.</value>
+    </data>
+    <data name="IsAlreadyAddedToTheProject" xml:space="preserve">
+        <value>е вече добавен в този проект.</value>
+    </data>
+    <data name="PleaseSelectUserToAddMessageText" xml:space="preserve">
+        <value>Моля, изберете поне един потребител за добавяне.</value>
+    </data>
+    <data name="UsersAddedSuccessfullyMessageText" xml:space="preserve">
+        <value>Потребителите бяха добавени успешно!</value>
+    </data>
+    <data name="FailedToAddUsersErrorText" xml:space="preserve">
+        <value>Добавянето на потребители се провали.</value>
+    </data>
+    <data name="ErrorWileAddingUsersErrorMessageText" xml:space="preserve">
+        <value>При добавянето на потребители възникна проблем.</value>
+    </data>
 </root>

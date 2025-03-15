@@ -1,37 +1,73 @@
 ﻿@model ProjectUpdateVM
 
 <div class="modal fade" id="projectShareModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">share</h5>
+                <h5 class="modal-title">@T.ShareProjectModalTitleText</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="shareProjectForm">
-                    <input type="hidden" name="Id">
-
-                    <div class="user-search-bar">
-                        <label for="userSearchInput">search users</label>
-                        <input
-                            type="text"
-                            id="userSearchInput"
-                            class="form-control"
-                            placeholder="Search for users..."
-                            autocomplete="off"/>
-
-                        <div id="userResults" class="list-group mt-2"></div>
-                    </div>
-
-                    <div class="mt-3">
-                        <h6>selected:</h6>
-                        <div id="selectedUsers"></div>
+                <div class="row">
+                    <div class="col-md-5 border-right">
+                        <h6 class="mb-3">@T.CurrentProjectUsersModalText</h6>
+                        <div id="currentProjectUsers" class="project-users-list">
+                            <!-- Users will be loaded here dynamically -->
+                            <div class="text-center py-3">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">@T.LoadingText</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <button class="btn btn-primary mt-2" type="submit">Add to project</button>
-                </form>
+                    <div class="col-md-7">
+                        <form id="shareProjectForm">
+                            <input type="hidden" name="Id">
+
+                            <div class="user-search-bar">
+                                <label for="userSearchInput">@T.SearchUsersTitleText</label>
+                                <input
+                                    type="text"
+                                    id="userSearchInput"
+                                    class="form-control"
+                                    placeholder="@T.SearchForUsersPlaceholderText"
+                                    autocomplete="off"/>
+                                <div id="validationError" class="invalid-feedback"></div>
+
+                                <div id="userResults" class="list-group mt-2 user-results-dropdown"></div>
+                            </div>
+
+                            <div class="mt-3">
+                                <h6>@T.SelectedUsersToAddTitleText:</h6>
+                                <div id="selectedUsers"></div>
+                            </div>
+
+                            <button class="btn btn-primary mt-4" type="submit">@T.AddToProjectButtonText</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="removeUserConfirmModal" tabindex="-1" role="dialog"
+     aria-labelledby="removeUserConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeUserConfirmModalLabel">@T.ConfirmRemoveModalTitle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">@T.ConfirmRemoveModalText</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@T.CancelButtonText</button>
+                <button type="button" class="btn btn-danger" id="confirmRemoveUser">@T.RemoveButtonText</button>
             </div>
         </div>
     </div>
@@ -42,11 +78,114 @@
         const userSearchInput = document.querySelector("#userSearchInput");
         const userResults = document.querySelector("#userResults");
         const selectedUsersContainer = document.querySelector("#selectedUsers");
+        const validationError = document.querySelector("#validationError");
+        const currentProjectUsers = document.querySelector("#currentProjectUsers");
         let selectedUsers = []; // Keeps track of selected users by email or ID
+        let projectUsers = []; // Keeps track of current project users
+        let userToRemove = null; // Store the user ID to be removed
+
+        // Function to load current project users
+        async function loadProjectUsers(projectId) {
+            try {
+                const response = await fetch(`/projects/${projectId}/users`);
+                if (response.ok) {
+                    projectUsers = await response.json();
+                    renderProjectUsers();
+                } else {
+                    currentProjectUsers.innerHTML = "<div class='text-center'>@Html.Raw(@T.FailedToLoadUsersErrorMessageText)</div>";
+                }
+            } catch (error) {
+                console.error('Error loading project users:', error);
+                currentProjectUsers.innerHTML = "<div class='text-center'>@Html.Raw(@T.ErrorLoadingUsersErrorMessageText)</div>";
+            }
+        }
+
+        // Render the current project users
+        function renderProjectUsers() {
+            if (projectUsers.length === 0) {
+                currentProjectUsers.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.NoUsersInThisProjectYetMessageText)</div>";
+                return;
+            }
+
+            currentProjectUsers.innerHTML = "";
+            projectUsers.forEach(user => {
+                const userItem = document.createElement("div");
+                userItem.classList.add("project-user-item");
+
+                const userEmail = document.createElement("span");
+                userEmail.textContent = user.email;
+                userEmail.classList.add("user-email");
+
+                // Add remove button
+                const removeButton = document.createElement("button");
+                removeButton.classList.add("remove-project-user-btn");
+                removeButton.innerHTML = "×";
+                removeButton.title = "@Html.Raw(@T.RemoveButtonText)";
+                removeButton.addEventListener("click", function () {
+                    showRemoveUserConfirmation(user.id);
+                });
+
+                userItem.appendChild(userEmail);
+                userItem.appendChild(removeButton);
+                currentProjectUsers.appendChild(userItem);
+            });
+        }
+
+        // Function to show the confirmation modal for removing a user
+        function showRemoveUserConfirmation(userId) {
+            userToRemove = userId;
+            $('#removeUserConfirmModal').modal('show');
+        }
+
+        // Event listener for the confirm button in the remove user modal
+        document.getElementById('confirmRemoveUser').addEventListener('click', function () {
+            if (userToRemove !== null) {
+                removeProjectUser(userToRemove);
+                $('#removeUserConfirmModal').modal('hide');
+                userToRemove = null;
+            }
+        });
+
+        // Function to remove a user from the project
+        async function removeProjectUser(userId) {
+            const projectId = document.querySelector('#shareProjectForm input[name="Id"]').value;
+
+            try {
+                const response = await fetch(`/projects/${projectId}/remove-user/${userId}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}
+                });
+
+                if (response.ok) {
+                    // Refresh the project users list
+                    await loadProjectUsers(projectId);
+
+                    // Show temporary success message
+                    const successMsg = document.createElement("div");
+                    successMsg.classList.add("alert", "alert-success", "mt-2", "mb-2");
+                    successMsg.textContent = "@Html.Raw(@T.UserRemovedSuccessfullyMessageText)";
+                    currentProjectUsers.insertAdjacentElement('beforebegin', successMsg);
+
+                    // Remove the message after 3 seconds
+                    setTimeout(() => {
+                        successMsg.remove();
+                    }, 3000);
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message || "@Html.Raw(@T.FailedToRemoveUserFromProjectErrorMessageText)");
+                }
+            } catch (error) {
+                console.error('Error removing user:', error);
+                alert("@Html.Raw(@T.AnErrorOccuredWhileRemovingUserFromProjectErrorMessageText)");
+            }
+        }
 
         userSearchInput.addEventListener("input", async function () {
             const email = userSearchInput.value.trim();
-            if (email.length >= 3) {
+            // Clear previous validation errors
+            hideValidationError();
+
+            if (email.length >= 1) {
                 // Fetch users by email
                 try {
                     var response = await fetch(`/api/users/search?email=${email}`);
@@ -54,7 +193,7 @@
                         const users = await response.json();
                         renderUserResults(users);
                     } else {
-                        userResults.innerHTML = "<li class='list-group-item'>No users found.</li>";
+                        userResults.innerHTML = "<li class='list-group-item'>@Html.Raw(@T.NoUsersFoundMessageText)</li>";
                     }
                 } catch (error) {
                     console.error('Error fetching users:', error);
@@ -66,42 +205,69 @@
 
         function renderUserResults(users) {
             userResults.innerHTML = "";
+
+            // Only show scrollbar if there are more than 5 users
+            if (users.length > 5) {
+                userResults.classList.add("scrollable");
+            } else {
+                userResults.classList.remove("scrollable");
+            }
+
             users.forEach(user => {
                 const userItem = document.createElement("li");
                 userItem.classList.add("list-group-item");
                 userItem.textContent = user.email;
-                userItem.id = user.id;
-                userItem.addEventListener("click", function () {
-                    selectUser(user);
-                });
+                userItem.dataset.id = user.id;
+
+                // Check if user is already in the project
+                const isInProject = projectUsers.some(projectUser => projectUser.id === user.id);
+                if (isInProject) {
+                    userItem.classList.add("disabled");
+                    userItem.title = "@Html.Raw(@T.UserAlreadyInProjectTitleText)";
+                } else {
+                    userItem.addEventListener("click", function () {
+                        selectUser(user);
+                    });
+                }
+
                 userResults.appendChild(userItem);
             });
         }
 
         function selectUser(user) {
-            if (!selectedUsers.find(u => u.Id === user.id)) {
-                selectedUsers.push({Id: user.id, Email: user.email});
-                const userBubble = document.createElement("div");
-                userBubble.classList.add("selected-user");
-                userBubble.id = user.id;
-
-                const userName = document.createElement("span");
-                userName.classList.add("user-name");
-                userName.textContent = user.email;
-
-                const removeButton = document.createElement("button");
-                removeButton.classList.add("remove-user-btn");
-                removeButton.textContent = "X";
-                removeButton.addEventListener("click", function () {
-                    removeUser(user.id);
-                });
-
-                userBubble.appendChild(userName);
-                userBubble.appendChild(removeButton);
-                selectedUsersContainer.appendChild(userBubble);
-                userResults.innerHTML = ""; // Clear results after selection
-                userSearchInput.value = ""; // Clear input field
+            // Check if already selected
+            if (selectedUsers.some(u => u.Id === user.id)) {
+                showValidationError(`${user.email} @Html.Raw(@T.IsAlreadyInYourSelectionText)`);
+                return;
             }
+
+            // Check if already in project
+            if (projectUsers.some(u => u.id === user.id)) {
+                showValidationError(`${user.email} @Html.Raw(T.IsAlreadyAddedToTheProject)`);
+                return;
+            }
+
+            selectedUsers.push({Id: user.id, Email: user.email});
+            const userBubble = document.createElement("div");
+            userBubble.classList.add("selected-user");
+            userBubble.dataset.id = user.id;
+
+            const userName = document.createElement("span");
+            userName.classList.add("user-name");
+            userName.textContent = user.email;
+
+            const removeButton = document.createElement("button");
+            removeButton.classList.add("remove-user-btn");
+            removeButton.textContent = "×";
+            removeButton.addEventListener("click", function () {
+                removeUser(user.id);
+            });
+
+            userBubble.appendChild(userName);
+            userBubble.appendChild(removeButton);
+            selectedUsersContainer.appendChild(userBubble);
+            userResults.innerHTML = ""; // Clear results after selection
+            userSearchInput.value = ""; // Clear input field
         }
 
         function removeUser(userId) {
@@ -112,11 +278,33 @@
             }
         }
 
+        function showValidationError(message) {
+            validationError.textContent = message;
+            userSearchInput.classList.add("is-invalid");
+            validationError.style.display = "block";
+        }
+
+        function hideValidationError() {
+            userSearchInput.classList.remove("is-invalid");
+            validationError.style.display = "none";
+        }
+
+        // When the modal is opened, load project users
+        $('#projectShareModal').on('shown.bs.modal', function () {
+            const projectId = document.querySelector('#shareProjectForm input[name="Id"]').value;
+            loadProjectUsers(projectId);
+        });
+
         document.querySelector("#shareProjectForm").addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const form = e.target;
             const projectId = form.querySelector('input[name="Id"]').value;
+
+            if (selectedUsers.length === 0) {
+                showValidationError("@Html.Raw(@T.PleaseSelectUserToAddMessageText)");
+                return;
+            }
 
             // Send the selected users to the backend
             try {
@@ -127,54 +315,85 @@
                 });
 
                 if (response.ok) {
-                    $('#projectShareModal').modal('hide');
-                    alert("Users added successfully!");
+                    // Refresh the current users list
+                    await loadProjectUsers(projectId);
+
+                    // Clear selected users
+                    selectedUsers = [];
+                    selectedUsersContainer.innerHTML = "";
+
+                    // Show success message
+                    const successMessage = document.createElement("div");
+                    successMessage.classList.add("alert", "alert-success", "mt-3");
+                    successMessage.textContent = "@Html.Raw(@T.UsersAddedSuccessfullyMessageText)";
+                    form.appendChild(successMessage);
+
+                    // Remove success message after 3 seconds
+                    setTimeout(() => {
+                        form.removeChild(successMessage);
+                    }, 3000);
                 } else {
-                    alert("Failed to add users.");
+                    const errorData = await response.json();
+                    showValidationError(errorData.message || "@Html.Raw(@T.FailedToAddUsersErrorText)");
                 }
             } catch (error) {
                 console.error('Error:', error);
+                showValidationError("@Html.Raw(@T.ErrorWileAddingUsersErrorMessageText)");
             }
         });
     });
 </script>
 
-
 <style>
     .user-search-bar {
         position: relative;
         width: 100%;
-        max-width: 400px;
     }
 
-    .dropdown-menu {
+    #userResults {
         width: 100%;
-        max-height: 150px;
-        overflow-y: auto;
         border: 1px solid #ddd;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: none;
     }
 
-    .dropdown-item {
+    #userResults:not(:empty) {
+        display: block;
+    }
+
+    /* Style for when there are more than 5 users */
+    #userResults.scrollable {
+        max-height: 215px; /* Approximately 5 items high (43px per item) */
+        overflow-y: auto;
+    }
+
+    .list-group-item {
         padding: 8px 16px;
         cursor: pointer;
     }
 
-    .dropdown-item:hover {
+    .list-group-item:hover {
         background-color: #f8f9fa;
+    }
+
+    .list-group-item.disabled {
+        background-color: #f0f0f0;
+        color: #6c757d;
+        cursor: not-allowed;
     }
 
     #selectedUsers {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
+        min-height: 50px;
     }
 
     .selected-user {
         display: flex;
         align-items: center;
         background-color: #e9ecef;
-        padding: 4px 8px;
+        padding: 4px 12px;
         border-radius: 16px;
     }
 
@@ -186,10 +405,66 @@
         background: none;
         border: none;
         color: #dc3545;
+        font-weight: bold;
         cursor: pointer;
+        padding: 0 4px;
     }
 
     .selected-user .remove-user-btn:hover {
         color: #c82333;
+    }
+
+    .invalid-feedback {
+        display: none;
+    }
+
+    .project-users-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .project-user-item {
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .user-email {
+        font-size: 0.9rem;
+        flex-grow: 1;
+    }
+
+    .remove-project-user-btn {
+        background: none;
+        border: none;
+        color: #dc3545;
+        font-weight: bold;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0 8px;
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+    }
+
+    .remove-project-user-btn:hover {
+        opacity: 1;
+        color: #c82333;
+    }
+
+    .border-right {
+        border-right: 1px solid #dee2e6;
+    }
+
+    .modal-lg {
+        max-width: 800px;
+    }
+
+    /* Make the dropdown items a consistent height */
+    .list-group-item {
+        height: 43px;
+        display: flex;
+        align-items: center;
     }
 </style>

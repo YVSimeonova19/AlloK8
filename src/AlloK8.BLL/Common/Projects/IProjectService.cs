@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AlloK8.Common.Models.Project;
+using AlloK8.Common.Models.User;
 
 namespace AlloK8.BLL.Common.Projects;
 
@@ -20,4 +21,6 @@ public interface IProjectService
     Task AddUserToProjectAsync(int projectId, int userId);
 
     Task RemoveUserFromProjectAsync(int projectId, int userId);
+
+    Task<List<UserVM>> GetAllUsersByProjectIdAsync(int projectId);
 }

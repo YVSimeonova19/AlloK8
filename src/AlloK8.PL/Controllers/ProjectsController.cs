@@ -110,10 +110,24 @@ public class ProjectsController : Controller
         }
     }
 
-    [HttpGet("/api/users")]
-    public async Task<IActionResult> GetAllUsers()
+    [HttpPost("/projects/{projectId}/remove-user/{userId}")]
+    public async Task<IActionResult> RemoveUserFromProject(int projectId, int userId)
     {
-        var users = await this.userService.GetAllUserProfilesAsync();
+        try
+        {
+            await this.projectService.RemoveUserFromProjectAsync(projectId, userId);
+            return this.Ok();
+        }
+        catch (Exception ex)
+        {
+            return this.BadRequest($"Error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("/projects/{projectId}/users")]
+    public async Task<IActionResult> GetProjectUsers(int projectId)
+    {
+        var users = await this.projectService.GetAllUsersByProjectIdAsync(projectId);
         return this.Ok(users);
     }
 

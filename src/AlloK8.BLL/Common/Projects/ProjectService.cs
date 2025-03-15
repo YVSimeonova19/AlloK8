@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.Users;
 using AlloK8.Common.Models.Project;
+using AlloK8.Common.Models.User;
 using AlloK8.DAL;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlloK8.BLL.Common.Projects;
 
@@ -45,7 +47,12 @@ internal class ProjectService : IProjectService
 
     public async Task<DAL.Models.Project> GetProjectByIdAsync(int id)
     {
-        var project = this.context.Projects.Find(id);
+        var project = await this.context.Projects
+            .Where(p => p.Id == id)
+            .Include(p => p.Users)
+            .ThenInclude(u => u.ApplicationUser)
+            .FirstOrDefaultAsync();
+
         if (project == null)
         {
             throw new KeyNotFoundException("Project not found");
@@ -56,16 +63,16 @@ internal class ProjectService : IProjectService
 
     public async Task<List<DAL.Models.Project>> GetAllProjectsAsync()
     {
-        return this.context.Projects.ToList();
+        return await this.context.Projects.ToListAsync();
     }
 
     public async Task<List<DAL.Models.Project>> GetProjectsByUserIdAsync(Guid? userId)
     {
         var user = await this.userService.GetUserProfileByGuidAsync(userId);
 
-        return this.context.Projects
+        return await this.context.Projects
             .Where(p => p.Users.Contains(user))
-            .ToList();
+            .ToListAsync();
     }
 
     public async Task<DAL.Models.Project> UpdateProjectAsync(ProjectUM projectUM, int id)
@@ -119,5 +126,24 @@ internal class ProjectService : IProjectService
         {
             throw new InvalidOperationException("The user is not part of the project.");
         }
+    }
+
+    public async Task<List<UserVM>> GetAllUsersByProjectIdAsync(int projectId)
+    {
+        var project = await this.GetProjectByIdAsync(projectId);
+        var userProfiles = project.Users.ToList();
+
+        var userVMs = new List<UserVM>();
+
+        foreach (var user in userProfiles)
+        {
+            userVMs.Add(new UserVM
+            {
+                Id = user.Id,
+                Email = user.ApplicationUser!.Email,
+            });
+        }
+
+        return userVMs;
     }
 }

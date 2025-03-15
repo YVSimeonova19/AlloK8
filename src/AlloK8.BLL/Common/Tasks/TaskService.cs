@@ -60,14 +60,14 @@ internal class TaskService : ITaskService
 
     public async Task<List<DAL.Models.Task>> GetAllTasksAsync()
     {
-        return this.context.Tasks.ToList();
+        return await this.context.Tasks.ToListAsync();
     }
 
     public async Task<List<DAL.Models.Task>> GetAllTasksByProjectIdAsync(int projectId)
     {
-        return this.context.Tasks
+        return await this.context.Tasks
             .Where(t => t.Project.Id == projectId)
-            .ToList();
+            .ToListAsync();
     }
 
     public async Task<DAL.Models.Task> UpdateTaskAsync(TaskUM taskUM, int id)
@@ -108,9 +108,9 @@ internal class TaskService : ITaskService
             newPosition = Math.Max(newPosition, 1);
 
             // Shift positions in the new column to make space
-            var tasksInNewColumn = this.context.Tasks
+            var tasksInNewColumn = await this.context.Tasks
                 .Where(t => t.ColumnId == taskUM.ColumnId && t.Position >= newPosition)
-                .ToList();
+                .ToListAsync();
 
             foreach (var t in tasksInNewColumn)
             {
@@ -118,9 +118,9 @@ internal class TaskService : ITaskService
             }
 
             // Shift positions in the old column to fill the gap
-            var tasksInOldColumn = this.context.Tasks
+            var tasksInOldColumn = await this.context.Tasks
                 .Where(t => t.ColumnId == task.ColumnId && t.Position > task.Position)
-                .ToList();
+                .ToListAsync();
 
             foreach (var t in tasksInOldColumn)
             {
@@ -136,9 +136,9 @@ internal class TaskService : ITaskService
             if (taskUM.Position > task.Position)
             {
                 // Moving down: Shift tasks between old and new positions up
-                var tasksToShift = this.context.Tasks
+                var tasksToShift = await this.context.Tasks
                     .Where(t => t.ColumnId == task.ColumnId && t.Position > task.Position && t.Position <= taskUM.Position)
-                    .ToList();
+                    .ToListAsync();
 
                 foreach (var t in tasksToShift)
                 {
@@ -148,9 +148,9 @@ internal class TaskService : ITaskService
             else
             {
                 // Moving up: Shift tasks between new and old positions down
-                var tasksToShift = this.context.Tasks
+                var tasksToShift = await this.context.Tasks
                     .Where(t => t.ColumnId == task.ColumnId && t.Position >= taskUM.Position && t.Position < task.Position)
-                    .ToList();
+                    .ToListAsync();
 
                 foreach (var t in tasksToShift)
                 {

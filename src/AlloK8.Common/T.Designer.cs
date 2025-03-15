@@ -78,11 +78,38 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добави в проекта.
+        /// </summary>
+        public static string AddToProjectButtonText {
+            get {
+                return ResourceManager.GetString("AddToProjectButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Възникна проблем при премахването на потребител..
+        /// </summary>
+        public static string AnErrorOccuredWhileRemovingUserFromProjectErrorMessageText {
+            get {
+                return ResourceManager.GetString("AnErrorOccuredWhileRemovingUserFromProjectErrorMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Календар.
         /// </summary>
         public static string CalendarButtonText {
             get {
                 return ResourceManager.GetString("CalendarButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Отхвърляне.
+        /// </summary>
+        public static string CancelButtonText {
+            get {
+                return ResourceManager.GetString("CancelButtonText", resourceCulture);
             }
         }
         
@@ -101,6 +128,24 @@ namespace AlloK8.Common {
         public static string ConfirmPasswordPlaceholderText {
             get {
                 return ResourceManager.GetString("ConfirmPasswordPlaceholderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сигурни ли сте, че искате да премахнете достъпа на този потребител до проекта?.
+        /// </summary>
+        public static string ConfirmRemoveModalText {
+            get {
+                return ResourceManager.GetString("ConfirmRemoveModalText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потвърдете премахването.
+        /// </summary>
+        public static string ConfirmRemoveModalTitle {
+            get {
+                return ResourceManager.GetString("ConfirmRemoveModalTitle", resourceCulture);
             }
         }
         
@@ -137,6 +182,15 @@ namespace AlloK8.Common {
         public static string CreateProjectTitleText {
             get {
                 return ResourceManager.GetString("CreateProjectTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потребители, добавени в проекта.
+        /// </summary>
+        public static string CurrentProjectUsersModalText {
+            get {
+                return ResourceManager.GetString("CurrentProjectUsersModalText", resourceCulture);
             }
         }
         
@@ -222,6 +276,51 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Грешка при зареждането на потребители..
+        /// </summary>
+        public static string ErrorLoadingUsersErrorMessageText {
+            get {
+                return ResourceManager.GetString("ErrorLoadingUsersErrorMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to При добавянето на потребители възникна проблем..
+        /// </summary>
+        public static string ErrorWileAddingUsersErrorMessageText {
+            get {
+                return ResourceManager.GetString("ErrorWileAddingUsersErrorMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавянето на потребители се провали..
+        /// </summary>
+        public static string FailedToAddUsersErrorText {
+            get {
+                return ResourceManager.GetString("FailedToAddUsersErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Зареждането на потребители се провали..
+        /// </summary>
+        public static string FailedToLoadUsersErrorMessageText {
+            get {
+                return ResourceManager.GetString("FailedToLoadUsersErrorMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Премахването на потребител беше неуспешно..
+        /// </summary>
+        public static string FailedToRemoveUserFromProjectErrorMessageText {
+            get {
+                return ResourceManager.GetString("FailedToRemoveUserFromProjectErrorMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Забравена парола?.
         /// </summary>
         public static string ForgotPasswordLinkText {
@@ -294,6 +393,24 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to е вече добавен в този проект..
+        /// </summary>
+        public static string IsAlreadyAddedToTheProject {
+            get {
+                return ResourceManager.GetString("IsAlreadyAddedToTheProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to е вече избран от Вас..
+        /// </summary>
+        public static string IsAlreadyInYourSelectionText {
+            get {
+                return ResourceManager.GetString("IsAlreadyInYourSelectionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Добави приоритет.
         /// </summary>
         public static string IsPriorityCheckLabel {
@@ -344,6 +461,15 @@ namespace AlloK8.Common {
         public static string LandingTitle2 {
             get {
                 return ResourceManager.GetString("LandingTitle2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Зарежда....
+        /// </summary>
+        public static string LoadingText {
+            get {
+                return ResourceManager.GetString("LoadingText", resourceCulture);
             }
         }
         
@@ -438,6 +564,24 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Не бяха намерени потребители..
+        /// </summary>
+        public static string NoUsersFoundMessageText {
+            get {
+                return ResourceManager.GetString("NoUsersFoundMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Все още няма потребители в този проект.ъ.
+        /// </summary>
+        public static string NoUsersInThisProjectYetMessageText {
+            get {
+                return ResourceManager.GetString("NoUsersInThisProjectYetMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Стара парола.
         /// </summary>
         public static string OldPasswordLabel {
@@ -510,6 +654,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Моля, изберете поне един потребител за добавяне..
+        /// </summary>
+        public static string PleaseSelectUserToAddMessageText {
+            get {
+                return ResourceManager.GetString("PleaseSelectUserToAddMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Име на проекта.
         /// </summary>
         public static string ProjectNameLabelText {
@@ -573,6 +726,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Премахване.
+        /// </summary>
+        public static string RemoveButtonText {
+            get {
+                return ResourceManager.GetString("RemoveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Смени паролата.
         /// </summary>
         public static string ResetPasswordButtonText {
@@ -587,6 +749,33 @@ namespace AlloK8.Common {
         public static string ResetPasswordTitle {
             get {
                 return ResourceManager.GetString("ResetPasswordTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Търси потребители....
+        /// </summary>
+        public static string SearchForUsersPlaceholderText {
+            get {
+                return ResourceManager.GetString("SearchForUsersPlaceholderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Търси потребители.
+        /// </summary>
+        public static string SearchUsersTitleText {
+            get {
+                return ResourceManager.GetString("SearchUsersTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Избрани потребители за добавяне.
+        /// </summary>
+        public static string SelectedUsersToAddTitleText {
+            get {
+                return ResourceManager.GetString("SelectedUsersToAddTitleText", resourceCulture);
             }
         }
         
@@ -614,6 +803,15 @@ namespace AlloK8.Common {
         public static string ShareDropdownButtonText {
             get {
                 return ResourceManager.GetString("ShareDropdownButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сподели проекта.
+        /// </summary>
+        public static string ShareProjectModalTitleText {
+            get {
+                return ResourceManager.GetString("ShareProjectModalTitleText", resourceCulture);
             }
         }
         
@@ -708,11 +906,38 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Потребителят вече е добавен в проекта.
+        /// </summary>
+        public static string UserAlreadyInProjectTitleText {
+            get {
+                return ResourceManager.GetString("UserAlreadyInProjectTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Профилът Ви е временно заключен.
         /// </summary>
         public static string UserLockedOutErrorMessage {
             get {
                 return ResourceManager.GetString("UserLockedOutErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потребителят беше премахнат успешно..
+        /// </summary>
+        public static string UserRemovedSuccessfullyMessageText {
+            get {
+                return ResourceManager.GetString("UserRemovedSuccessfullyMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потребителите бяха добавени успешно!.
+        /// </summary>
+        public static string UsersAddedSuccessfullyMessageText {
+            get {
+                return ResourceManager.GetString("UsersAddedSuccessfullyMessageText", resourceCulture);
             }
         }
         
