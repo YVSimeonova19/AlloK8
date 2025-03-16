@@ -87,6 +87,20 @@ public class ProjectsController : Controller
         return this.View("CreateProject");
     }
 
+    [HttpDelete("/projects/{id}/delete")]
+    public async Task<IActionResult> DeleteProject(int id)
+    {
+        try
+        {
+            await this.projectService.DeleteProjectByIdAsync(id);
+            return this.Ok();
+        }
+        catch (Exception ex)
+        {
+            return this.BadRequest(ex.Message);
+        }
+    }
+
     [HttpPost("/projects/add-users")]
     public async Task<IActionResult> AddUsers([FromBody] ProjectUpdateVM model)
     {

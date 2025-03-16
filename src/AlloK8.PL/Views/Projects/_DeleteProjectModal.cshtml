@@ -1,0 +1,50 @@
+﻿<div class="modal fade" id="projectDeleteModal" tabindex="-1" role="dialog"
+     aria-labelledby="projectDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="projectDeleteModalLabel">delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">are u sure u wanna delete dis proj</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@T.CancelButtonText</button>
+                <button type="button" class="btn btn-danger" id="confirmRemoveUser">delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("confirmRemoveUser").addEventListener("click", function () {
+            const modal = document.getElementById("projectDeleteModal");
+            const projectId = modal.getAttribute("data-project-id");
+
+            if (!projectId) {
+                console.error("Project ID not set.");
+                return;
+            }
+
+            fetch(`/projects/${projectId}/delete`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to delete project.");
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    $('#projectDeleteModal').modal('hide');
+                    location.reload();
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    });
+</script>

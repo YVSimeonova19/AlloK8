@@ -55,6 +55,7 @@
         }
     </div>
     @await Html.PartialAsync("_ShareProjectModal", new ProjectUpdateVM())
+    @await Html.PartialAsync("_DeleteProjectModal")
 </div>
 
 <script>
@@ -62,5 +63,10 @@
         const projectId = element.closest('.card').querySelector('.project-title').dataset.projectId;
         document.querySelector('#projectShareModal input[name="Id"]').value = projectId;
         $('#projectShareModal').modal('show');
+    }
+    
+    function openDeleteModal(element) {
+        const projectId = element.closest('.card').querySelector('.project-title').dataset.projectId;
+        $('#projectDeleteModal').modal('show');
     }
 </script>
