@@ -318,4 +318,19 @@
     <data name="ErrorWileAddingUsersErrorMessageText" xml:space="preserve">
         <value>При добавянето на потребители възникна проблем.</value>
     </data>
+    <data name="DeleteProjectModalTitle" xml:space="preserve">
+        <value>Изтриване на проект</value>
+    </data>
+    <data name="DeleteProjectModalText" xml:space="preserve">
+        <value>Сигурни ли сте, че искате да изтриете този проект?</value>
+    </data>
+    <data name="DeleteModalButtonText" xml:space="preserve">
+        <value>Изтриване</value>
+    </data>
+    <data name="ProjectSuccessfullyDeletedPopupText" xml:space="preserve">
+        <value>Проектът беше изтрит успешно.</value>
+    </data>
+    <data name="FailedToDeleteProjectErrorMessage" xml:space="preserve">
+        <value>Изтриването на проекта се провали. Моля, опитайте отново.</value>
+    </data>
 </root>

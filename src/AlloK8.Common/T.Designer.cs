@@ -204,6 +204,33 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изтриване.
+        /// </summary>
+        public static string DeleteModalButtonText {
+            get {
+                return ResourceManager.GetString("DeleteModalButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сигурни ли сте, че искате да изтриете този проект?.
+        /// </summary>
+        public static string DeleteProjectModalText {
+            get {
+                return ResourceManager.GetString("DeleteProjectModalText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изтриване на проект.
+        /// </summary>
+        public static string DeleteProjectModalTitle {
+            get {
+                return ResourceManager.GetString("DeleteProjectModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Описание.
         /// </summary>
         public static string DescriptionModalEditTaskText {
@@ -299,6 +326,15 @@ namespace AlloK8.Common {
         public static string FailedToAddUsersErrorText {
             get {
                 return ResourceManager.GetString("FailedToAddUsersErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изтриването на проекта се провали. Моля, опитайте отново..
+        /// </summary>
+        public static string FailedToDeleteProjectErrorMessage {
+            get {
+                return ResourceManager.GetString("FailedToDeleteProjectErrorMessage", resourceCulture);
             }
         }
         
@@ -677,6 +713,15 @@ namespace AlloK8.Common {
         public static string ProjectsNavButtonText {
             get {
                 return ResourceManager.GetString("ProjectsNavButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Проектът беше изтрит успешно..
+        /// </summary>
+        public static string ProjectSuccessfullyDeletedPopupText {
+            get {
+                return ResourceManager.GetString("ProjectSuccessfullyDeletedPopupText", resourceCulture);
             }
         }
         
