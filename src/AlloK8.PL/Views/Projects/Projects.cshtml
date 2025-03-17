@@ -64,9 +64,10 @@
         document.querySelector('#projectShareModal input[name="Id"]').value = projectId;
         $('#projectShareModal').modal('show');
     }
-    
+
     function openDeleteModal(element) {
-        const projectId = element.closest('.card').querySelector('.project-title').dataset.projectId;
+        const projectId = element.closest('.card').querySelector('.project-title').dataset.projectId;        
+        document.getElementById('projectDeleteModal').setAttribute('data-project-id', projectId);
         $('#projectDeleteModal').modal('show');
     }
 </script>
