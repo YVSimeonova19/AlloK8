@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.Projects;
+using AlloK8.BLL.Common.Search;
 using AlloK8.BLL.Common.Tasks;
 using AlloK8.BLL.Common.Users;
 using AlloK8.BLL.Identity.Contracts;
@@ -21,17 +22,20 @@ public class KanbanController : Controller
     private readonly ICurrentUser currentUser;
     private readonly IUserService userService;
     private readonly IProjectService projectService;
+    private readonly ISearchService searchService;
 
     public KanbanController(
         ITaskService taskService,
         ICurrentUser currentUser,
         IUserService userService,
-        IProjectService projectService)
+        IProjectService projectService,
+        ISearchService searchService)
     {
         this.taskService = taskService;
         this.currentUser = currentUser;
         this.userService = userService;
         this.projectService = projectService;
+        this.searchService = searchService;
     }
 
     [HttpGet("/projects/{projectId}/kanban")]
@@ -174,6 +178,63 @@ public class KanbanController : Controller
             return this.NotFound();
         }
 
-        return this.Ok(updatedTask);
+        try
+        {
+            foreach (var user in model.Users)
+            {
+                await this.taskService.AssignTaskAsync(model.Id, user.Id);
+            }
+
+            return this.Ok(updatedTask);
+        }
+        catch (Exception ex)
+        {
+            return this.BadRequest($"Error: {ex.Message}");
+        }
+    }
+
+    [HttpPost("kanban/assign-user")]
+    public async Task<IActionResult> AssignUserToTask([FromBody] AssignUserRequest request)
+    {
+        if (request == null || request.TaskId <= 0 || request.UserId <= 0)
+        {
+            return this.BadRequest(new { success = false, message = "Invalid request data" });
+        }
+
+        try
+        {
+            await this.taskService.AssignTaskAsync(request.TaskId, request.UserId);
+            return this.Ok();
+        }
+        catch (Exception ex)
+        {
+            return this.StatusCode(500, new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpPost("/kanban/{taskId}/remove-user/{userId}")]
+    public async Task<IActionResult> RemoveUserFromTask(int taskId, int userId)
+    {
+        try
+        {
+            await this.taskService.RemoveUserFromTaskAsync(taskId, userId);
+            return this.Ok();
+        }
+        catch (Exception ex)
+        {
+            return this.BadRequest($"Error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("kanban/users/search")]
+    public async Task<IActionResult> SearchUsersByEmail([FromQuery] string email, int projectId)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return this.BadRequest("Email cannot be empty.");
+        }
+
+        var users = await this.searchService.SearchTaskUsersByEmailAsync(email, projectId);
+        return this.Ok(users);
     }
 }

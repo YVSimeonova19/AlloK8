@@ -1,5 +1,6 @@
 ﻿using AlloK8.BLL.Common.EmailSending;
 using AlloK8.BLL.Common.Projects;
+using AlloK8.BLL.Common.Search;
 using AlloK8.BLL.Common.Tasks;
 using AlloK8.BLL.Common.Users;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ public static class DependencyInjection
         services.AddScoped<ITaskService, TaskService>();
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ISearchService, SearchService>();
 
         return services;
     }

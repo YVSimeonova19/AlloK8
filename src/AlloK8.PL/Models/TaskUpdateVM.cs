@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AlloK8.DAL.Models;
 
 namespace AlloK8.PL.Models;
 
@@ -23,4 +25,8 @@ public class TaskUpdateVM
     [DataType(DataType.Date)]
     [Display(Name = "Due Date")]
     public DateTime? DueDate { get; set; }
+
+    public List<UserProfile> Users { get; set; } = [];
+
+    public List<UserProfile> AllUsers { get; set; } = [];
 }

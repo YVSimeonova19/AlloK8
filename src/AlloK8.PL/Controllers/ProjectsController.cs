@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.Projects;
+using AlloK8.BLL.Common.Search;
 using AlloK8.BLL.Common.Users;
 using AlloK8.BLL.Identity.Contracts;
 using AlloK8.Common.Models.Project;
@@ -18,15 +20,18 @@ public class ProjectsController : Controller
     private readonly IProjectService projectService;
     private readonly ICurrentUser currentUser;
     private readonly IUserService userService;
+    private readonly ISearchService searchService;
 
     public ProjectsController(
         IProjectService projectService,
         ICurrentUser currentUser,
-        IUserService userService)
+        IUserService userService,
+        ISearchService searchService)
     {
         this.projectService = projectService;
         this.currentUser = currentUser;
         this.userService = userService;
+        this.searchService = searchService;
     }
 
     [HttpGet("/projects")]
@@ -134,7 +139,21 @@ public class ProjectsController : Controller
     {
         if (!this.ModelState.IsValid)
         {
-            return this.BadRequest("Invalid request.");
+            // Return detailed validation errors
+            var errors = this.ModelState
+                .Where(x => x!.Value!.Errors.Count > 0)
+                .Select(x => new
+                {
+                    Property = x.Key,
+                    Errors = x!.Value!.Errors.Select(e => e.ErrorMessage).ToList(),
+                })
+                .ToList();
+
+            return this.BadRequest(new
+            {
+                message = "Model validation failed",
+                validationErrors = errors,
+            });
         }
 
         try
@@ -181,7 +200,7 @@ public class ProjectsController : Controller
             return this.BadRequest("Email cannot be empty.");
         }
 
-        var users = await this.userService.SearchUsersByEmailAsync(email);
+        var users = await this.searchService.SearchUsersByEmailAsync(email);
         return this.Ok(users);
     }
 }

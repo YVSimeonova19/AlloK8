@@ -15,6 +15,4 @@ public interface IUserService
     Task<UserProfile> GetUserProfileByGuidAsync(Guid? userGuid);
 
     Task<List<UserProfile>> GetAllUserProfilesAsync();
-
-    Task<List<UserVM>> SearchUsersByEmailAsync(string email);
 }

@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AlloK8.Common.Models.User;
 using AlloK8.DAL;
 using AlloK8.DAL.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlloK8.BLL.Common.Users;
 
@@ -65,32 +63,5 @@ internal class UserService : IUserService
     {
         var users = this.context.UserProfiles.ToList();
         return users;
-    }
-
-    public async Task<List<UserVM>> SearchUsersByEmailAsync(string email)
-    {
-        var userVMs = new List<UserVM>();
-
-        if (string.IsNullOrWhiteSpace(email))
-        {
-            return userVMs;
-        }
-
-        var users = await this.context.ApplicationUsers
-            .Where(u => EF.Functions
-                .Like(u.Email!.ToLower(), $"%{email.ToLower()}%"))
-            .Include(u => u.UserProfile)
-            .ToListAsync();
-
-        foreach (var user in users)
-        {
-            userVMs.Add(new UserVM
-            {
-                Id = user.UserProfile!.Id,
-                Email = user.Email,
-            });
-        }
-
-        return userVMs;
     }
 }

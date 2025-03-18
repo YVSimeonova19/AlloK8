@@ -15,7 +15,9 @@ public interface ITaskService
     Task<DAL.Models.Task> UpdateTaskAsync(TaskUM taskUM, int id);
 
     Task<DAL.Models.Task> MoveTaskAsync(TaskUM taskUM, int id);
-    // Task AssignTaskAsync(TaskUM taskUM, int id);
+
+    Task AssignTaskAsync(int taskId, int userId);
+    Task RemoveUserFromTaskAsync(int taskId, int userId);
 
     Task DeleteTaskByIdAsync(int id);
 

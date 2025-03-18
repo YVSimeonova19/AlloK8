@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AlloK8.BLL.Common.Users;
 using AlloK8.DAL;
 using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
@@ -11,10 +12,14 @@ namespace AlloK8.BLL.Common.Tasks;
 internal class TaskService : ITaskService
 {
     private readonly EntityContext context;
+    private readonly IUserService userService;
 
-    public TaskService(EntityContext context)
+    public TaskService(
+        EntityContext context,
+        IUserService userService)
     {
         this.context = context;
+        this.userService = userService;
     }
 
     public async Task<DAL.Models.Task> CreateTaskAsync(TaskIM taskIM)
@@ -49,7 +54,12 @@ internal class TaskService : ITaskService
 
     public async Task<DAL.Models.Task> GetTaskByIdAsync(int id)
     {
-        var task = this.context.Tasks.Find(id);
+        var task = await this.context.Tasks
+            .Where(t => t.Id == id)
+            .Include(t => t.Assignees)
+            .ThenInclude(a => a.ApplicationUser)
+            .FirstOrDefaultAsync();
+
         if (task == null)
         {
             throw new KeyNotFoundException("Task not found");
@@ -168,27 +178,38 @@ internal class TaskService : ITaskService
         return task;
     }
 
-/*
-    public async Task<DAL.Models.Task> AssignTaskAsync(TaskUM taskUM, int id)
+    public async Task AssignTaskAsync(int taskId, int userId)
     {
-        var task = await this.GetTaskByIdAsync(id);
+        var task = await this.GetTaskByIdAsync(taskId);
+        var user = await this.userService.GetUserProfileByIdAsync(userId);
 
-        // Assuming taskUM.Assignees is a list of user IDs
-        foreach (var userId in taskUM.Assignees)
+        if (task.Assignees.Any(u => u.Id == user.Id))
         {
-            var user = this.context.UserProfiles.Find(userId);
-            if (user != null)
-            {
-                task.Assignees.Add(user);
-            }
+            throw new Exception("User is already assigned to this task.");
         }
 
-        this.context.Tasks.Update(task);
+        task.Assignees.Add(user);
+        this.context.Update(task);
         await this.context.SaveChangesAsync();
-
-        return task;
     }
-*/
+
+    public async Task RemoveUserFromTaskAsync(int taskId, int userId)
+    {
+        var task = await this.GetTaskByIdAsync(taskId);
+        var user = await this.userService.GetUserProfileByIdAsync(userId);
+
+        if (task.Assignees.Contains(user))
+        {
+            task.Assignees.Remove(user);
+            this.context.Update(task);
+            await this.context.SaveChangesAsync();
+        }
+        else
+        {
+            throw new Exception("User is not assigned to this task.");
+        }
+    }
+
     public async Task DeleteTaskByIdAsync(int id)
     {
         var task = await this.GetTaskByIdAsync(id);

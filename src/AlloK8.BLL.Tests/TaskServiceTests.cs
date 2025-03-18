@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AlloK8.BLL.Common.Tasks;
+using AlloK8.BLL.Common.Users;
 using AlloK8.DAL;
 using AlloK8.DAL.Models;
 using FluentAssertions;
@@ -11,12 +12,13 @@ namespace AlloK8.BLL.Tests;
 public class TaskServiceTests
 {
     private readonly EntityContext dbContext;
+    private readonly UserService userService;
     private readonly TaskService taskService;
 
     public TaskServiceTests()
     {
         dbContext = TestHelpers.CreateDbContext();
-        taskService = new TaskService(dbContext);
+        taskService = new TaskService(dbContext, userService);
     }
 
     private async Task SeedTestDataAsync()
