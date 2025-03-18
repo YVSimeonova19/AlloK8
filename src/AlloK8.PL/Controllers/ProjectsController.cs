@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.Projects;
 using AlloK8.BLL.Common.Search;
@@ -139,21 +138,7 @@ public class ProjectsController : Controller
     {
         if (!this.ModelState.IsValid)
         {
-            // Return detailed validation errors
-            var errors = this.ModelState
-                .Where(x => x!.Value!.Errors.Count > 0)
-                .Select(x => new
-                {
-                    Property = x.Key,
-                    Errors = x!.Value!.Errors.Select(e => e.ErrorMessage).ToList(),
-                })
-                .ToList();
-
-            return this.BadRequest(new
-            {
-                message = "Model validation failed",
-                validationErrors = errors,
-            });
+            return this.BadRequest("Invalid request.");
         }
 
         try
