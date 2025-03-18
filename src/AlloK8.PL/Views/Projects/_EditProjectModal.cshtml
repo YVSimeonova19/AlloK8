@@ -1,0 +1,74 @@
+@model ProjectUpdateVM
+
+<div class="modal fade" id="projectEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="forms-sample" asp-controller="Projects" asp-action="EditProject" method="post">
+                    <input type="hidden" asp-for="Id">
+                    <div class="form-group">
+                        <label for="name">@T.TitleModalEditTaskText</label>
+                        <input asp-for="Title"
+                               class="form-control"
+                               id="name"
+                               type="text"
+                               placeholder="@T.TitleModalEditTaskText">
+                        <span class="text-danger text-small" asp-validation-for="Title"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">@T.DescriptionModalEditTaskText</label>
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  id="description"
+                                  rows="3"
+                                  placeholder="@T.DescriptionModalEditTaskText"></textarea>
+                        <span class="text-danger text-small" asp-validation-for="Description"></span>
+                    </div>
+                    <button class="btn btn-primary mt-2" type="submit">
+                        @T.SubmitChangesModalEditButtonText
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector("#projectEditModal form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        let form = e.target;
+        let formData = new FormData(form);
+
+        try {
+            let response = await fetch(form.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                let updatedProject = await response.json();
+
+                // Update the project in the UI
+                let projectCard = document.querySelector(`.project-title[data-project-id="${updatedProject.id}"]`).closest('.card');
+                if (projectCard) {
+                    projectCard.querySelector(".project-title").innerText = updatedProject.title;
+                    projectCard.querySelector("#project-description").innerText = updatedProject.description;
+                }
+
+                // Close the modal
+                $("#projectEditModal").modal("hide");
+            } else {
+                console.error('Failed to update project');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>

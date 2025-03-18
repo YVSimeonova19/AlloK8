@@ -87,6 +87,34 @@ public class ProjectsController : Controller
         return this.View("CreateProject");
     }
 
+    [HttpPost("projects/edit-project")]
+    public async Task<IActionResult> EditProject([FromForm] ProjectUpdateVM model)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest(this.ModelState);
+        }
+
+        var projectUM = new ProjectUM
+        {
+            Title = model.Title,
+            Description = model.Description,
+        };
+
+        var updatedProject = await this.projectService.UpdateProjectAsync(projectUM, model.Id);
+        if (updatedProject == null)
+        {
+            return this.NotFound();
+        }
+
+        return this.Ok(new
+        {
+            id = updatedProject.Id,
+            title = updatedProject.Name,
+            description = updatedProject.Description,
+        });
+    }
+
     [HttpDelete("/projects/{id}/delete")]
     public async Task<IActionResult> DeleteProject(int id)
     {

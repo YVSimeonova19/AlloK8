@@ -27,7 +27,7 @@
                 <div class="card card-dark-blue">
                     <div class="card-body ml-2 mt-2">
                         <p class="fs-30 mb-3 project-title" data-project-id="@project.Id">@project.Name</p>
-                        <p>@project.Description</p>
+                        <p id="project-description">@project.Description</p>
                     </div>
                     <div class="card-footer d-flex justify-content-end">
                         <div class="btn-group" role="group">
@@ -56,6 +56,7 @@
     </div>
     @await Html.PartialAsync("_ShareProjectModal", new ProjectUpdateVM())
     @await Html.PartialAsync("_DeleteProjectModal")
+    @await Html.PartialAsync("_EditProjectModal", new ProjectUpdateVM())
 </div>
 
 <script>
@@ -69,5 +70,19 @@
         const projectId = element.closest('.card').querySelector('.project-title').dataset.projectId;        
         document.getElementById('projectDeleteModal').setAttribute('data-project-id', projectId);
         $('#projectDeleteModal').modal('show');
+    }
+
+    function openEditModal(element) {
+        const projectId = element.closest('.card').querySelector('.project-title').dataset.projectId;
+        const projectName = element.closest('.card').querySelector('.project-title').innerText;
+        const projectDescription = element.closest('.card').querySelector('.card-body #project-description').innerText;
+
+        document.querySelector('#projectEditModal input[name="Id"]').value = projectId;
+        document.querySelector('#projectEditModal input[name="Title"]').value = projectName;
+        document.querySelector('#projectEditModal textarea[name="Description"]').value = projectDescription;
+        
+        document.getElementById("modal-title").innerText = projectName;
+
+        $('#projectEditModal').modal('show');
     }
 </script>
