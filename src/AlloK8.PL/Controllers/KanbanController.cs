@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -152,7 +153,27 @@ public class KanbanController : Controller
             return this.NotFound();
         }
 
-        return this.Ok(task);
+        var taskViewModel = new
+        {
+            id = task.Id,
+            title = task.Title,
+            description = task.Description,
+            startDate = task.StartDate,
+            dueDate = task.DueDate,
+            isPriority = task.IsPriority,
+            columnId = task.ColumnId,
+            position = task.Position,
+            users = task.Assignees.Select(u => new
+            {
+                id = u.Id,
+                applicationUser = new
+                {
+                    email = u.ApplicationUser!.Email,
+                },
+            }).ToList(),
+        };
+
+        return this.Ok(taskViewModel);
     }
 
     [HttpPost("kanban/edit-task")]
@@ -180,12 +201,37 @@ public class KanbanController : Controller
 
         try
         {
-            foreach (var user in model.Users)
+            if (model.Users != null)
             {
-                await this.taskService.AssignTaskAsync(model.Id, user.Id);
+                foreach (var user in model.Users)
+                {
+                    await this.taskService.AssignTaskAsync(model.Id, user.Id);
+                }
             }
 
-            return this.Ok(updatedTask);
+            var refreshedTask = await this.taskService.GetTaskByIdAsync(model.Id);
+
+            var responseDto = new
+            {
+                id = refreshedTask.Id,
+                title = refreshedTask.Title,
+                description = refreshedTask.Description,
+                startDate = refreshedTask.StartDate,
+                dueDate = refreshedTask.DueDate,
+                isPriority = refreshedTask.IsPriority,
+                columnId = refreshedTask.ColumnId,
+                position = refreshedTask.Position,
+                users = refreshedTask.Assignees?.Select(u => new
+                {
+                    id = u.Id,
+                    applicationUser = new
+                    {
+                        email = u.ApplicationUser!.Email,
+                    },
+                }).ToList(),
+            };
+
+            return this.Ok(responseDto);
         }
         catch (Exception ex)
         {

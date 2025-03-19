@@ -176,48 +176,20 @@
         // Function to assign a user to a task
         async function assignUserToTask(taskId, userId) {
             try {
-                // We'll use the EditTask controller method for this
-                // Initially we need to get the task to see what users are already assigned
-                const response = await fetch(`/kanban/task/${taskId}`);
-                if (!response.ok) {
-                    throw new Error(`Failed to get task: ${response.status}`);
-                }
-
-                const task = await response.json();
-
-                // Create a form with the task data
-                const formData = new FormData();
-                formData.append('Id', taskId);
-                formData.append('Title', task.title || '');
-                formData.append('Description', task.description || '');
-                formData.append('IsPriority', task.isPriority || false);
-
-                if (task.startDate) {
-                    formData.append('StartDate', new Date(task.startDate).toISOString().split('T')[0]);
-                }
-
-                if (task.dueDate) {
-                    formData.append('DueDate', new Date(task.dueDate).toISOString().split('T')[0]);
-                }
-
-                // Add all existing users
-                if (task.users && task.users.length > 0) {
-                    task.users.forEach(u => {
-                        formData.append('Users[]', u.id);
-                    });
-                }
-
-                // Add the new user
-                formData.append('Users[]', userId);
-
-                // Submit the form to update the task
-                const updateResponse = await fetch('/kanban/edit-task', {
+                // Use the dedicated AssignUserToTask endpoint instead of EditTask
+                const response = await fetch('/kanban/assign-user', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        taskId: taskId,
+                        userId: userId
+                    })
                 });
 
-                if (!updateResponse.ok) {
-                    throw new Error(`Failed to assign user: ${updateResponse.status}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to assign user: ${response.status}`);
                 }
 
                 return true;
@@ -236,12 +208,19 @@
             }
 
             try {
-                // Call API to unassign user using your endpoint
+                // Fix POST request by properly sending it with fetch
                 const response = await fetch(`/kanban/${taskId}/remove-user/${userId}`, {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    // Empty body or add anti-forgery token if needed
+                    body: JSON.stringify({})
                 });
 
                 if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', errorText);
                     throw new Error(`Failed to remove user: ${response.status}`);
                 }
 
@@ -263,7 +242,7 @@
                 }, 3000);
             } catch (error) {
                 console.error('Error removing user:', error);
-                alert("Failed to remove user from the task");
+                alert("Failed to remove user from the task: " + error.message);
             }
         }
 
@@ -446,12 +425,20 @@
                 addUsersButton.appendChild(loadingIndicator);
                 addUsersButton.disabled = true;
 
-                // For each selected user, add them to the assigned users array and submit
+                // For each selected user, make a direct call to the assign endpoint
                 for (const user of selectedUsers) {
                     // Check if user is not already in assigned users
                     if (!assignedUsers.some(u => u.id === user.id)) {
-                        // Use the controller's AssignTaskAsync method
-                        await assignUserToTask(taskId, user.id);
+                        await fetch('/kanban/assign-user', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                taskId: parseInt(taskId),
+                                userId: parseInt(user.id)
+                            })
+                        });
 
                         // Add to our local list
                         assignedUsers.push({
@@ -484,7 +471,7 @@
                 }, 3000);
             } catch (error) {
                 console.error("Error assigning users:", error);
-                showValidationError("Failed to assign users to the task");
+                showValidationError("Failed to assign users to the task: " + error.message);
             } finally {
                 // Remove loading indicator and re-enable button
                 addUsersButton.disabled = false;
