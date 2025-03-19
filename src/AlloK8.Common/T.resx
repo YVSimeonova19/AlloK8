@@ -333,4 +333,43 @@
     <data name="FailedToDeleteProjectErrorMessage" xml:space="preserve">
         <value>Изтриването на проекта се провали. Моля, опитайте отново.</value>
     </data>
+    <data name="DeleteTaskSureModalText" xml:space="preserve">
+        <value>Сигурни ли сте, че искате да изтриете тази задача?</value>
+    </data>
+    <data name="AssignUsersLabel" xml:space="preserve">
+        <value>Задайте потребители</value>
+    </data>
+    <data name="TaskUsersLabel" xml:space="preserve">
+        <value>Потребители, отговорни за задачата:</value>
+    </data>
+    <data name="CannotRemoveUserUnsavedError" xml:space="preserve">
+        <value>Не можете да премахвате потребител от незапазена задача!</value>
+    </data>
+    <data name="FailedToRemoveUserFromTaskErrorMessageText" xml:space="preserve">
+        <value>Възникна грешка при премахването на потребителя от задачата.</value>
+    </data>
+    <data name="NoUsersAssignedText" xml:space="preserve">
+        <value>Няма зададени потребители</value>
+    </data>
+    <data name="ErrorSearchingUsers" xml:space="preserve">
+        <value>Възникна грешка при търсенето</value>
+    </data>
+    <data name="IsAlreadyAssignedText" xml:space="preserve">
+        <value>е вече зададен.</value>
+    </data>
+    <data name="PleaseSelectAtLeastOneUserText" xml:space="preserve">
+        <value>Моля, изберете поне един потребител!</value>
+    </data>
+    <data name="ErrorAddingUserToAnUnsavedTask" xml:space="preserve">
+        <value>Моля, първо запазете промените преди да добавяте потребители.</value>
+    </data>
+    <data name="TaskUpdatedSuccessfullyMessageText" xml:space="preserve">
+        <value>Задачата беше обновена успешно!</value>
+    </data>
+    <data name="FailedToUpdateTaskText" xml:space="preserve">
+        <value>Обновяването на задачата се провали. Моля, опитайте отново.</value>
+    </data>
+    <data name="ErrorWhileUpdatingTaskMessageText" xml:space="preserve">
+        <value>Възникна проблем при обновяването на задачата. Моля, опитайте отново.</value>
+    </data>
 </root>

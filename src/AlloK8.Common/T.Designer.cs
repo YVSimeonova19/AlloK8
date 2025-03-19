@@ -96,6 +96,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Задайте потребители.
+        /// </summary>
+        public static string AssignUsersLabel {
+            get {
+                return ResourceManager.GetString("AssignUsersLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Календар.
         /// </summary>
         public static string CalendarButtonText {
@@ -110,6 +119,15 @@ namespace AlloK8.Common {
         public static string CancelButtonText {
             get {
                 return ResourceManager.GetString("CancelButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не можете да премахвате потребител от незапазена задача!.
+        /// </summary>
+        public static string CannotRemoveUserUnsavedError {
+            get {
+                return ResourceManager.GetString("CannotRemoveUserUnsavedError", resourceCulture);
             }
         }
         
@@ -231,6 +249,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Сигурни ли сте, че искате да изтриете тази задача?.
+        /// </summary>
+        public static string DeleteTaskSureModalText {
+            get {
+                return ResourceManager.GetString("DeleteTaskSureModalText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Описание.
         /// </summary>
         public static string DescriptionModalEditTaskText {
@@ -303,11 +330,38 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Моля, първо запазете промените преди да добавяте потребители..
+        /// </summary>
+        public static string ErrorAddingUserToAnUnsavedTask {
+            get {
+                return ResourceManager.GetString("ErrorAddingUserToAnUnsavedTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Грешка при зареждането на потребители..
         /// </summary>
         public static string ErrorLoadingUsersErrorMessageText {
             get {
                 return ResourceManager.GetString("ErrorLoadingUsersErrorMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Възникна грешка при търсенето.
+        /// </summary>
+        public static string ErrorSearchingUsers {
+            get {
+                return ResourceManager.GetString("ErrorSearchingUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Възникна проблем при обновяването на задачата. Моля, опитайте отново..
+        /// </summary>
+        public static string ErrorWhileUpdatingTaskMessageText {
+            get {
+                return ResourceManager.GetString("ErrorWhileUpdatingTaskMessageText", resourceCulture);
             }
         }
         
@@ -353,6 +407,24 @@ namespace AlloK8.Common {
         public static string FailedToRemoveUserFromProjectErrorMessageText {
             get {
                 return ResourceManager.GetString("FailedToRemoveUserFromProjectErrorMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Възникна грешка при премахването на потребителя от задачата..
+        /// </summary>
+        public static string FailedToRemoveUserFromTaskErrorMessageText {
+            get {
+                return ResourceManager.GetString("FailedToRemoveUserFromTaskErrorMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обновяването на задачата се провали. Моля, опитайте отново..
+        /// </summary>
+        public static string FailedToUpdateTaskText {
+            get {
+                return ResourceManager.GetString("FailedToUpdateTaskText", resourceCulture);
             }
         }
         
@@ -434,6 +506,15 @@ namespace AlloK8.Common {
         public static string IsAlreadyAddedToTheProject {
             get {
                 return ResourceManager.GetString("IsAlreadyAddedToTheProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to е вече зададен..
+        /// </summary>
+        public static string IsAlreadyAssignedText {
+            get {
+                return ResourceManager.GetString("IsAlreadyAssignedText", resourceCulture);
             }
         }
         
@@ -600,6 +681,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Няма зададени потребители.
+        /// </summary>
+        public static string NoUsersAssignedText {
+            get {
+                return ResourceManager.GetString("NoUsersAssignedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Не бяха намерени потребители..
         /// </summary>
         public static string NoUsersFoundMessageText {
@@ -686,6 +776,15 @@ namespace AlloK8.Common {
         public static string PasswordTooShortErrorMessage {
             get {
                 return ResourceManager.GetString("PasswordTooShortErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Моля, изберете поне един потребител!.
+        /// </summary>
+        public static string PleaseSelectAtLeastOneUserText {
+            get {
+                return ResourceManager.GetString("PleaseSelectAtLeastOneUserText", resourceCulture);
             }
         }
         
@@ -911,6 +1010,24 @@ namespace AlloK8.Common {
         public static string SubmitChangesModalEditButtonText {
             get {
                 return ResourceManager.GetString("SubmitChangesModalEditButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задачата беше обновена успешно!.
+        /// </summary>
+        public static string TaskUpdatedSuccessfullyMessageText {
+            get {
+                return ResourceManager.GetString("TaskUpdatedSuccessfullyMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потребители, отговорни за задачата:.
+        /// </summary>
+        public static string TaskUsersLabel {
+            get {
+                return ResourceManager.GetString("TaskUsersLabel", resourceCulture);
             }
         }
         

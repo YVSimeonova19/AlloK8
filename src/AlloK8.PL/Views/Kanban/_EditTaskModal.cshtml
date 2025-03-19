@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>assign user</label>
+                                <label>@T.AssignUsersLabel</label>
                                 <div class="user-search-bar">
                                     <input type="text"
                                            id="userSearchInput"
@@ -49,11 +49,11 @@
                                 </div>
 
                                 <div class="mt-3">
-                                    <h6>selected users:</h6>
+                                    <h6>@T.SelectedUsersToAddTitleText</h6>
                                     <div id="selectedUsers"></div>
                                     <button type="button" id="addUsersButton"
                                             class="btn btn-outline-primary btn-sm mt-3">
-                                        Add Selected Users
+                                        @T.AssignUsersLabel
                                     </button>
                                 </div>
                             </div>
@@ -62,12 +62,12 @@
                         <!-- Right side: Assigned Users, Dates, Priority -->
                         <div class="col-md-4">
                             <div class="form-group">
-                                <h6>assigned users</h6>
+                                <h6>@T.TaskUsersLabel</h6>
                                 <div id="assignedUsers" class="assigned-users-list">
                                     <!-- Loading indicator -->
                                     <div class="text-center py-3">
                                         <div class="spinner-border text-primary" role="status">
-                                            <span class="sr-only">Loading...</span>
+                                            <span class="sr-only">@T.LoadingText</span>
                                         </div>
                                     </div>
                                 </div>
@@ -165,11 +165,11 @@
                     console.log("Assigned users:", assignedUsers); // Debug log
                     renderAssignedUsers();
                 } else {
-                    assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>Error loading users</div>";
+                    assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.ErrorLoadingUsersErrorMessageText)</div>";
                 }
             } catch (error) {
                 console.error('Error loading assigned users:', error);
-                assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>Error loading users</div>";
+                assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.ErrorLoadingUsersErrorMessageText)</div>";
             }
         }
 
@@ -203,7 +203,7 @@
         async function removeAssignedUser(userId) {
             const taskId = document.querySelector('#taskModal input[name="Id"]').value;
             if (!taskId) {
-                alert("Cannot remove user from an unsaved task");
+                alert("@Html.Raw(@T.CannotRemoveUserUnsavedError)");
                 return;
             }
 
@@ -233,7 +233,7 @@
                 // Show temporary success message
                 const successMsg = document.createElement("div");
                 successMsg.classList.add("alert", "alert-success", "mt-2", "mb-2");
-                successMsg.textContent = "User removed successfully";
+                successMsg.textContent = "@Html.Raw(@T.UsersAddedSuccessfullyMessageText)";
                 assignedUsersContainer.insertAdjacentElement('beforebegin', successMsg);
 
                 // Remove the message after 3 seconds
@@ -242,7 +242,7 @@
                 }, 3000);
             } catch (error) {
                 console.error('Error removing user:', error);
-                alert("Failed to remove user from the task: " + error.message);
+                alert("@Html.Raw(@T.FailedToRemoveUserFromTaskErrorMessageText): " + error.message);
             }
         }
 
@@ -251,7 +251,7 @@
             assignedUsersContainer.innerHTML = "";
 
             if (assignedUsers.length === 0) {
-                assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>no users assigned</div>";
+                assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.NoUsersAssignedText)</div>";
                 return;
             }
 
@@ -303,11 +303,11 @@
                         const users = await response.json();
                         renderUserResults(users);
                     } else {
-                        userResults.innerHTML = "<li class='list-group-item'>no users found</li>";
+                        userResults.innerHTML = "<li class='list-group-item'>@Html.Raw(@T.NoUsersFoundMessageText)</li>";
                     }
                 } catch (error) {
                     console.error('Error searching users:', error);
-                    userResults.innerHTML = "<li class='list-group-item'>error searching users</li>";
+                    userResults.innerHTML = "<li class='list-group-item'>@Html.Raw(@T.ErrorSearchingUsers)</li>";
                 }
             } else {
                 userResults.innerHTML = "";
@@ -354,13 +354,13 @@
         function selectUser(user) {
             // Check if already selected
             if (selectedUsers.some(u => u.id === user.id)) {
-                showValidationError(`${getUserEmail(user)} is already selected`);
+                showValidationError(`${getUserEmail(user)} @Html.Raw(@T.IsAlreadyInYourSelectionText)`);
                 return;
             }
 
             // Check if already assigned
             if (assignedUsers.some(u => u.id === user.id)) {
-                showValidationError(`${getUserEmail(user)} is already assigned`);
+                showValidationError(`${getUserEmail(user)} @Html.Raw(@T.IsAlreadyAssignedText)`);
                 return;
             }
 
@@ -407,13 +407,13 @@
         // Handle adding users without submitting the entire form
         addUsersButton.addEventListener("click", async function () {
             if (selectedUsers.length === 0) {
-                showValidationError("Please select at least one user to add");
+                showValidationError("@Html.Raw(@T.PleaseSelectAtLeastOneUserText)");
                 return;
             }
 
             const taskId = document.querySelector('#taskModal input[name="Id"]').value;
             if (!taskId) {
-                showValidationError("Cannot add users to an unsaved task");
+                showValidationError("@Html.Raw(@T.ErrorAddingUserToAnUnsavedTask)");
                 return;
             }
 
@@ -460,7 +460,7 @@
                 // Show success message
                 const successMessage = document.createElement("div");
                 successMessage.className = "alert alert-success mt-2";
-                successMessage.textContent = "Users assigned successfully!";
+                successMessage.textContent = "@Html.Raw(@T.UsersAddedSuccessfullyMessageText)";
                 selectedUsersContainer.appendChild(successMessage);
 
                 // Remove success message after 3 seconds
@@ -504,7 +504,7 @@
                 loadAssignedUsers(taskId);
             } else {
                 // For new tasks, there are no assigned users
-                assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>no users assigned</div>";
+                assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.NoUsersAssignedText)</div>";
             }
 
             // Reset selected users
@@ -553,7 +553,7 @@
                     // Show success message
                     const successMessage = document.createElement("div");
                     successMessage.classList.add("alert", "alert-success", "mb-3");
-                    successMessage.innerHTML = "Task updated successfully!";
+                    successMessage.innerHTML = "@Html.Raw(@T.TaskUpdatedSuccessfullyMessageText)";
                     form.prepend(successMessage);
 
                     // Remove message after 3 seconds
@@ -565,11 +565,11 @@
                 } else {
                     let errorData = await response.text();
                     console.error('Failed to update task:', errorData);
-                    alert('Failed to update task. Please try again.');
+                    alert('@Html.Raw(@T.FailedToUpdateTaskText)');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred while updating the task.');
+                alert('@Html.Raw(@T.ErrorWhileUpdatingTaskMessageText)');
             }
         });
     });
