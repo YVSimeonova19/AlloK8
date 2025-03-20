@@ -9,4 +9,5 @@ public class Label : Entity
     public string? Color { get; set; }
 
     public List<DAL.Models.Task> Tasks { get; } = [];
+    public List<Project> Projects { get; } = [];
 }

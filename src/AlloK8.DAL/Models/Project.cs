@@ -12,4 +12,5 @@ public class Project : AuditableEntity
     public ICollection<Task> Tasks { get; } = new List<Task>();
 
     public List<UserProfile> Users { get; set;  } = [];
+    public List<Label> Labels { get; } = [];
 }
