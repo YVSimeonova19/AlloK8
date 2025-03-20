@@ -8,11 +8,22 @@
     <div class="row d-flex justify-content-between align-items-center">
         <h3 class="mb-4 ml-3">@Model.ProjectName @T.KanbanBoardTitleText</h3>
         <div class="d-flex align-items-center mr-3 mb-4">
-            <span class="mr-2">@T.SortByPriorityButtonText</span>
-            <label class="role-switch">
-                <input type="checkbox" id="priorityToggle" onchange="togglePrioritySort(this)">
-                <span class="slider round"></span>
-            </label>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdownButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @T.FilterDropdownText
+                </button>
+                <div class="dropdown-menu p-2" aria-labelledby="filterDropdownButton">
+                    <div class="d-flex justify-content-between align-items-center px-2 py-1">
+                        <span>@T.SortByPriorityButtonText</span>
+                        <input type="checkbox" id="priorityCheckbox" onchange="togglePrioritySort(this)">
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center px-2 py-1">
+                        <span>@T.OnlyMineButtonText</span>
+                        <input type="checkbox" id="onlyMineCheckbox" onchange="toggleOnlyMine(this)">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -24,14 +35,14 @@
                     <ul class="list-group task-list" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(1, new List<TaskKanbanVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
-                                draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
-                                <p>@task.Title</p>
-                                <button class="btn btn-icon bg-transparent text-danger ml-auto"
-                                        onclick="removeTask(this); event.stopPropagation();">
-                                    <i class="remove ti-close"></i>
-                                </button>
-                            </li>
+                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
+                            draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
+                            <p>@task.Title</p>
+                            <button class="btn btn-icon bg-transparent text-danger ml-auto"
+                                    onclick="removeTask(this); event.stopPropagation();">
+                                <i class="remove ti-close"></i>
+                            </button>
+                        </li>
                         }
                     </ul>
                     <div class="input-group mt-3">
@@ -51,14 +62,14 @@
                     <ul class="list-group task-list" id="doing" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(2, new List<TaskKanbanVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
-                                draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
-                                <p>@task.Title</p>
-                                <button class="btn btn-icon bg-transparent text-danger ml-auto"
-                                        onclick="removeTask(this); event.stopPropagation();">
-                                    <i class="remove ti-close"></i>
-                                </button>
-                            </li>
+                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
+                            draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
+                            <p>@task.Title</p>
+                            <button class="btn btn-icon bg-transparent text-danger ml-auto"
+                                    onclick="removeTask(this); event.stopPropagation();">
+                                <i class="remove ti-close"></i>
+                            </button>
+                        </li>
                         }
                     </ul>
                 </div>
@@ -72,14 +83,14 @@
                     <ul class="list-group task-list" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
                         @foreach (var task in Model.TasksByColumn.GetValueOrDefault(3, new List<TaskKanbanVM>()))
                         {
-                            <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
-                                draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
-                                <p>@task.Title</p>
-                                <button class="btn btn-icon bg-transparent text-danger ml-auto"
-                                        onclick="removeTask(this); event.stopPropagation();">
-                                    <i class="remove ti-close"></i>
-                                </button>
-                            </li>
+                        <li id="task-@task.Id" class="list-group-item draggable d-flex align-items-center @(task.IsPriority ? "priority-task" : "")"
+                            draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
+                            <p>@task.Title</p>
+                            <button class="btn btn-icon bg-transparent text-danger ml-auto"
+                                    onclick="removeTask(this); event.stopPropagation();">
+                                <i class="remove ti-close"></i>
+                            </button>
+                        </li>
                         }
                     </ul>
                 </div>
@@ -103,19 +114,19 @@
                 // Populate the modal form
                 document.getElementById("title").value = task.title;
                 document.getElementById("description").value = task.description;
-                
+
                 let startDate = new Date(task.startDate).toISOString().slice(0, 10);
                 document.getElementById("start-date").value = startDate;
 
                 let dueDate = new Date(task.dueDate).toISOString().slice(0, 10);
                 document.getElementById("due-date").value = dueDate;
-                
+
                 document.getElementById("modal-title").innerText = `${task.title}`;
 
                 document.getElementById("is-priority").checked = task.isPriority;
-                
+
                 document.querySelector("input[name='Id']").value = task.id;
-                
+
 
                 // Show the modal
                 $("#taskModal").modal("show");
@@ -126,7 +137,7 @@
             console.error('Error:', error);
         }
     }
-    
+
     // Allow dropping
     function allowDrop(ev) {
         ev.preventDefault();
@@ -231,7 +242,7 @@
 
             if (response.ok) {
                 let newTask = await response.json();
-                
+
                 let taskList = document.getElementById(columnId);
                 let taskItem = document.createElement('li');
                 taskItem.id = `task-${newTask.id}`;
@@ -269,7 +280,7 @@
         if (!confirm("@Html.Raw(@T.DeleteTaskSureModalText)")) {
             return;
         }
-        
+
         let taskItem = button.parentElement;
         let taskId = taskItem.id.split("-")[1];
 
@@ -325,11 +336,33 @@
         window.location.href = `/projects/${projectId}/kanban?sortByPriority=${sortByPriority}`;
     }
 
+    // Toggle only mine filter
+    function toggleOnlyMine(checkbox) {
+        const onlyMine = checkbox.checked;
+        const projectId = @Model.ProjectId;
+
+        // Get the current URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        // Preserve the priority sort parameter if it exists
+        const sortByPriority = urlParams.get('sortByPriority');
+
+        let url = `/projects/${projectId}/kanban?onlyMine=${onlyMine}`;
+        if (sortByPriority) {
+            url += `&sortByPriority=${sortByPriority}`;
+        }
+
+        // Reload the page with the new filtering parameter
+        window.location.href = url;
+    }
+
     // Initialize the toggle state based on the query parameter
     document.addEventListener("DOMContentLoaded", function () {
         const urlParams = new URLSearchParams(window.location.search);
         const sortByPriority = urlParams.get('sortByPriority') === 'true';
-        document.getElementById('priorityToggle').checked = sortByPriority;
+        const onlyMine = urlParams.get('onlyMine') === 'true';
+
+        document.getElementById('priorityCheckbox').checked = sortByPriority;
+        document.getElementById('onlyMineCheckbox').checked = onlyMine;
 
         // Enable or disable drag-and-drop based on the toggle state
         if (sortByPriority) {
@@ -418,7 +451,7 @@
     .list-group-item.priority-task {
         border-left: 4px solid #4B49AC !important;
     }
-    
+
     #todo-card {
         border: 2px solid #f67268;
     }
@@ -429,54 +462,38 @@
         border: 2px solid #4cb050;
     }
 
-    /* Toggle switch container */
-    .role-switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 25px;
+    /* Animation for task movement success */
+    .move-success {
+        background-color: rgba(75, 192, 192, 0.2);
+        transition: background-color 0.5s;
     }
 
-    /* Hide the default checkbox */
-    .role-switch input {
+    /* Animation for task addition */
+    .task-added {
         opacity: 0;
-        width: 0;
-        height: 0;
+        animation: taskFadeIn 0.5s forwards;
     }
 
-    /* Slider background */
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: background-color 0.3s;
-        border-radius: 25px;
+    @@-webkit-keyframes taskFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
-    /* Slider circle */
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 21px;
-        width: 21px;
-        left: 2px;
-        bottom: 2px;
-        background-color: white;
-        transition: transform 0.3s;
-        border-radius: 50%;
+    @@-webkit-keyframes taskFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
-    /* Toggle switch when active */
-    input:checked + .slider {
-        background-color: #4B49AC;
-    }
-
-    /* Move the slider circle when active */
-    input:checked + .slider:before {
-        transform: translateX(25px);
+    /* Notification styling */
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1050;
+        min-width: 250px;
+        padding: 15px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: opacity 0.3s;
     }
 </style>

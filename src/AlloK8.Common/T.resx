@@ -184,7 +184,7 @@
         <value>Канбан Дъска</value>
     </data>
     <data name="SortByPriorityButtonText" xml:space="preserve">
-        <value>Сортирай по приоритет</value>
+        <value>По приоритет</value>
     </data>
     <data name="ToDoColumnLabel" xml:space="preserve">
         <value>За правене</value>
@@ -371,5 +371,11 @@
     </data>
     <data name="ErrorWhileUpdatingTaskMessageText" xml:space="preserve">
         <value>Възникна проблем при обновяването на задачата. Моля, опитайте отново.</value>
+    </data>
+    <data name="FilterDropdownText" xml:space="preserve">
+        <value>Филтрирай</value>
+    </data>
+    <data name="OnlyMineButtonText" xml:space="preserve">
+        <value>Само моите</value>
     </data>
 </root>

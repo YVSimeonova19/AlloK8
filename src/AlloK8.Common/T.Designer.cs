@@ -429,6 +429,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Филтрирай.
+        /// </summary>
+        public static string FilterDropdownText {
+            get {
+                return ResourceManager.GetString("FilterDropdownText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Забравена парола?.
         /// </summary>
         public static string ForgotPasswordLinkText {
@@ -717,6 +726,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Само моите.
+        /// </summary>
+        public static string OnlyMineButtonText {
+            get {
+                return ResourceManager.GetString("OnlyMineButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Потвърдената парола не съвпада.
         /// </summary>
         public static string PasswordIsDifferentThanConfirmedErrorMessage {
@@ -987,7 +1005,7 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сортирай по приоритет.
+        ///   Looks up a localized string similar to По приоритет.
         /// </summary>
         public static string SortByPriorityButtonText {
             get {
