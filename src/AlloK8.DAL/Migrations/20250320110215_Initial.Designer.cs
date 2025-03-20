@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlloK8.DAL.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20250312181225_AddTaskPriority")]
-    partial class AddTaskPriority
+    [Migration("20250320110215_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -138,6 +138,28 @@ namespace AlloK8.DAL.Migrations
                     b.ToTable("Columns");
                 });
 
+            modelBuilder.Entity("AlloK8.DAL.Models.Label", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Labels");
+                });
+
             modelBuilder.Entity("AlloK8.DAL.Models.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -247,6 +269,21 @@ namespace AlloK8.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("UserProfiles");
+                });
+
+            modelBuilder.Entity("LabelTask", b =>
+                {
+                    b.Property<int>("LabelsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TasksId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LabelsId", "TasksId");
+
+                    b.HasIndex("TasksId");
+
+                    b.ToTable("LabelTask");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -445,6 +482,21 @@ namespace AlloK8.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("LabelTask", b =>
+                {
+                    b.HasOne("AlloK8.DAL.Models.Label", null)
+                        .WithMany()
+                        .HasForeignKey("LabelsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AlloK8.DAL.Models.Task", null)
+                        .WithMany()
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

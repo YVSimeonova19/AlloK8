@@ -267,7 +267,7 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Прави се.
+        ///   Looks up a localized string similar to Започнато.
         /// </summary>
         public static string DoingColumnLabel {
             get {
@@ -546,7 +546,7 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Канбан Дъска.
+        ///   Looks up a localized string similar to канбан дъска.
         /// </summary>
         public static string KanbanBoardTitleText {
             get {
@@ -1059,7 +1059,7 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to За правене.
+        ///   Looks up a localized string similar to Задачи.
         /// </summary>
         public static string ToDoColumnLabel {
             get {

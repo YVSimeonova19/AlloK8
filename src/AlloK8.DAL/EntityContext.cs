@@ -19,6 +19,7 @@ public class EntityContext
     public DbSet<Task> Tasks { get; set; }
     public DbSet<Column> Columns { get; set; }
     public DbSet<Project> Projects { get; set; }
+    public DbSet<Label> Labels { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -74,6 +75,11 @@ public class EntityContext
             .HasForeignKey(t => t.UpdatedByUserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
+
+        // Task(m) - Label(m)
+        builder.Entity<Task>()
+            .HasMany(t => t.Labels)
+            .WithMany(l => l.Tasks);
 
         // PROJECT
         // Project(m) - UserProfile(m)

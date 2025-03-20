@@ -23,4 +23,6 @@ public class Task : AuditableEntity
     public Project Project { get; set; } = null!;
 
     public List<UserProfile> Assignees { get; } = [];
+
+    public List<Label> Labels { get; } = [];
 }

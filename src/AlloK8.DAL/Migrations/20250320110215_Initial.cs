@@ -52,6 +52,35 @@ namespace AlloK8.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Columns",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Position = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Columns", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Labels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Labels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -207,43 +236,6 @@ namespace AlloK8.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Boards",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProjectId = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedByUserId = table.Column<int>(type: "int", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedByUserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Boards", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Boards_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Boards_UserProfiles_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Boards_UserProfiles_UpdatedByUserId",
-                        column: x => x.UpdatedByUserId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProjectUserProfile",
                 columns: table => new
                 {
@@ -268,51 +260,6 @@ namespace AlloK8.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BoardUserProfile",
-                columns: table => new
-                {
-                    BoardsId = table.Column<int>(type: "int", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BoardUserProfile", x => new { x.BoardsId, x.UsersId });
-                    table.ForeignKey(
-                        name: "FK_BoardUserProfile_Boards_BoardsId",
-                        column: x => x.BoardsId,
-                        principalTable: "Boards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BoardUserProfile_UserProfiles_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Columns",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Position = table.Column<int>(type: "int", nullable: false),
-                    BoardId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Columns", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Columns_Boards_BoardId",
-                        column: x => x.BoardId,
-                        principalTable: "Boards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tasks",
                 columns: table => new
                 {
@@ -320,10 +267,12 @@ namespace AlloK8.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsPriority = table.Column<bool>(type: "bit", nullable: false),
                     Position = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ColumnId = table.Column<int>(type: "int", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedByUserId = table.Column<int>(type: "int", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -339,6 +288,12 @@ namespace AlloK8.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_Tasks_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Tasks_UserProfiles_CreatedByUserId",
                         column: x => x.CreatedByUserId,
                         principalTable: "UserProfiles",
@@ -350,6 +305,30 @@ namespace AlloK8.DAL.Migrations
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LabelTask",
+                columns: table => new
+                {
+                    LabelsId = table.Column<int>(type: "int", nullable: false),
+                    TasksId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LabelTask", x => new { x.LabelsId, x.TasksId });
+                    table.ForeignKey(
+                        name: "FK_LabelTask_Labels_LabelsId",
+                        column: x => x.LabelsId,
+                        principalTable: "Labels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LabelTask_Tasks_TasksId",
+                        column: x => x.TasksId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -416,31 +395,9 @@ namespace AlloK8.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Boards_CreatedByUserId",
-                table: "Boards",
-                column: "CreatedByUserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Boards_ProjectId",
-                table: "Boards",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Boards_UpdatedByUserId",
-                table: "Boards",
-                column: "UpdatedByUserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BoardUserProfile_UsersId",
-                table: "BoardUserProfile",
-                column: "UsersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Columns_BoardId",
-                table: "Columns",
-                column: "BoardId");
+                name: "IX_LabelTask_TasksId",
+                table: "LabelTask",
+                column: "TasksId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_CreatedByUserId",
@@ -465,14 +422,17 @@ namespace AlloK8.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_CreatedByUserId",
                 table: "Tasks",
-                column: "CreatedByUserId",
-                unique: true);
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_ProjectId",
+                table: "Tasks",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_UpdatedByUserId",
                 table: "Tasks",
-                column: "UpdatedByUserId",
-                unique: true);
+                column: "UpdatedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskUserProfile_TasksId",
@@ -505,7 +465,7 @@ namespace AlloK8.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BoardUserProfile");
+                name: "LabelTask");
 
             migrationBuilder.DropTable(
                 name: "ProjectUserProfile");
@@ -517,13 +477,13 @@ namespace AlloK8.DAL.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Labels");
+
+            migrationBuilder.DropTable(
                 name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "Columns");
-
-            migrationBuilder.DropTable(
-                name: "Boards");
 
             migrationBuilder.DropTable(
                 name: "Projects");
