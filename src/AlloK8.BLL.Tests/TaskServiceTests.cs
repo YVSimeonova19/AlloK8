@@ -128,20 +128,6 @@ public class TaskServiceTests
     }
 
     [Fact]
-    public async Task GetAllTasks_ShouldReturnAllTasks()
-    {
-        // Arrange
-        await SeedTestDataAsync();
-
-        // Act
-        var result = await taskService.GetAllTasksAsync();
-
-        // Assert
-        result.Should().NotBeNull();
-        result.Count.Should().Be(4);
-    }
-
-    [Fact]
     public async Task GetAllTasksByProjectId_ShouldReturnTasksForSpecificProject()
     {
         // Arrange

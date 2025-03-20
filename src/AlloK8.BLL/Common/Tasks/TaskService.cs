@@ -68,15 +68,18 @@ internal class TaskService : ITaskService
         return task;
     }
 
-    public async Task<List<DAL.Models.Task>> GetAllTasksAsync()
-    {
-        return await this.context.Tasks.ToListAsync();
-    }
-
     public async Task<List<DAL.Models.Task>> GetAllTasksByProjectIdAsync(int projectId)
     {
         return await this.context.Tasks
             .Where(t => t.Project.Id == projectId)
+            .ToListAsync();
+    }
+
+    public async Task<List<DAL.Models.Task>> GetAllTasksByAssigneeIdAsync(int projectId, int assigneeId)
+    {
+        return await this.context.Tasks
+            .Where(t => t.Project.Id == projectId)
+            .Where(t => t.Assignees.Any(a => a.Id == assigneeId))
             .ToListAsync();
     }
 

@@ -13,6 +13,7 @@ using AlloK8.PL.Models.Requests;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Task = AlloK8.DAL.Models.Task;
 
 namespace AlloK8.PL.Controllers;
 
@@ -40,9 +41,19 @@ public class KanbanController : Controller
     }
 
     [HttpGet("/projects/{projectId}/kanban")]
-    public async Task<IActionResult> Kanban(int projectId, bool sortByPriority = false)
+    public async Task<IActionResult> Kanban(int projectId, bool sortByPriority = false, bool onlyMine = false)
     {
-        var tasks = await this.taskService.GetAllTasksByProjectIdAsync(projectId);
+        var tasks = new List<Task>();
+
+        if (onlyMine)
+        {
+            var assignee = this.userService.GetUserProfileByGuidAsync(this.currentUser.UserId).Result;
+            tasks = await this.taskService.GetAllTasksByAssigneeIdAsync(projectId, assignee.Id);
+        }
+        else
+        {
+            tasks = await this.taskService.GetAllTasksByProjectIdAsync(projectId);
+        }
 
         if (sortByPriority)
         {

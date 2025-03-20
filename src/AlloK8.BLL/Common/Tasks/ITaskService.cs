@@ -9,8 +9,8 @@ public interface ITaskService
     Task<DAL.Models.Task> CreateTaskAsync(TaskIM taskIM);
 
     Task<DAL.Models.Task> GetTaskByIdAsync(int id);
-    Task<List<DAL.Models.Task>> GetAllTasksAsync();
     Task<List<DAL.Models.Task>> GetAllTasksByProjectIdAsync(int projectId);
+    Task<List<AlloK8.DAL.Models.Task>> GetAllTasksByAssigneeIdAsync(int projectId, int assigneeId);
 
     Task<DAL.Models.Task> UpdateTaskAsync(TaskUM taskUM, int id);
 
