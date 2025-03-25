@@ -1,4 +1,5 @@
 ﻿using AlloK8.BLL.Common.EmailSending;
+using AlloK8.BLL.Common.Labels;
 using AlloK8.BLL.Common.Projects;
 using AlloK8.BLL.Common.Search;
 using AlloK8.BLL.Common.Tasks;
@@ -20,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ISearchService, SearchService>();
+        services.AddScoped<ILabelService, LabelService>();
 
         return services;
     }
