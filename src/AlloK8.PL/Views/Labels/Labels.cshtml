@@ -1,0 +1,103 @@
+@model List<LabelVM>
+
+@{
+    Layout = "_Layout";
+    var projectId = this.ViewBag.ProjectId;
+}
+
+<div class="content-wrapper">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2 class="font-weight-bold">Labels</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="/projects/@projectId/new-label" class="btn btn-primary">
+                <i class="icon-circle-plus menu-icon"></i>
+                <span class="menu-title">new label</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-light">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>@Model.Count labels</span>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <tbody>
+                    @foreach (var label in Model)
+                    {
+                    <tr>
+                        <td width="200">
+                                    <span class="badge" style="background-color: @label.Color; color: @GetTextColor(label.Color); padding: 5px 10px; font-size: 14px; border-radius: 15px;">
+                                        @label.Title
+                                    </span>
+                        </td>
+                        <td>@label.Description</td>
+                        <td width="180">
+                            <div class="btn-group float-right">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="openEditModal(@label.Id, '@label.Title', '@label.Description', '@label.Color')">
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="openDeleteModal(@label.Id)">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @* @await Html.PartialAsync("_DeleteLabelModal") *@
+    @* @await Html.PartialAsync("_EditLabelModal", new LabelUpdateVM()) *@
+</div>
+
+@* <script> *@
+@*     function openDeleteModal(labelId) { *@
+@*         document.getElementById('labelDeleteModal').setAttribute('data-label-id', labelId); *@
+@*         $('#labelDeleteModal').modal('show'); *@
+@*     } *@
+@* *@
+@*     function openEditModal(labelId, title, description, color) { *@
+@*         document.querySelector('#labelEditModal input[name="Id"]').value = labelId; *@
+@*         document.querySelector('#labelEditModal input[name="Title"]').value = title; *@
+@*         document.querySelector('#labelEditModal textarea[name="Description"]').value = description; *@
+@*         document.querySelector('#labelEditModal input[name="Color"]').value = color; *@
+@* *@
+@*         document.getElementById("modal-title").innerText = title; *@
+@* *@
+@*         $('#labelEditModal').modal('show'); *@
+@*     } *@
+@* </script> *@
+
+@functions {
+    public string GetTextColor(string? backgroundColor) 
+    {
+        if (string.IsNullOrEmpty(backgroundColor)) 
+        {
+            return "#000000";
+        }
+
+        var color = backgroundColor.TrimStart('#');
+
+        if (int.TryParse(color, System.Globalization.NumberStyles.HexNumber, null, out var hexColor)) 
+        {
+            var r = ((hexColor >> 16) & 0xFF);
+            var g = ((hexColor >> 8) & 0xFF);
+            var b = (hexColor & 0xFF);
+
+            var brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+
+            return brightness > 130 ? "#000000" : "#FFFFFF";
+        }
+
+        return "#000000";
+    }
+}
