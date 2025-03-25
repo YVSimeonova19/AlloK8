@@ -11,4 +11,7 @@ public class LabelIM
 
     [Required]
     public string? Color { get; set; }
+
+    [Required]
+    public int ProjectId { get; set; }
 }

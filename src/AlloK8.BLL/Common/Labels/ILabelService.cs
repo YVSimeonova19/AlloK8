@@ -14,7 +14,7 @@ public interface ILabelService
     Task<List<Label>> GetLabelsByTaskIdAsync(int taskId);
     Task<List<Label>> GetLabelsByProjectIdAsync(int projectId);
 
-    Task<Label> EditLabelAsync(LabelUM labelUM);
+    Task<Label> EditLabelAsync(LabelUM labelUM, int labelId);
 
     Task DeleteLabelAsync(int id);
 }

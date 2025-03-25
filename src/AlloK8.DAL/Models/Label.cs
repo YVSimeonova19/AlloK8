@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace AlloK8.DAL.Models;
@@ -9,5 +10,7 @@ public class Label : Entity
     public string? Color { get; set; }
 
     public List<DAL.Models.Task> Tasks { get; } = [];
-    public List<Project> Projects { get; } = [];
+
+    public int ProjectId { get; set; }
+    public Project Project { get; set; } = null!;
 }

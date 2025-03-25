@@ -106,10 +106,10 @@ public class EntityContext
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Project(m) - Label(m)
+        // Project(m) - Label(1)
         builder.Entity<Project>()
             .HasMany(t => t.Labels)
-            .WithMany(l => l.Projects);
+            .WithOne(l => l.Project);
 
         base.OnModelCreating(builder);
     }
