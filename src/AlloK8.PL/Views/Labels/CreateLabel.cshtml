@@ -7,16 +7,16 @@
 <div class="content-wrapper">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">create label</h4>
-            <p class="card-description">subtitle</p>
+            <h4 class="card-title">Create Label</h4>
+            <p class="card-description">Subtitle</p>
             <form class="forms-sample" asp-controller="Labels" asp-action="CreateLabel" method="post">
                 <div class="form-group">
-                    <label for="name">title</label>
+                    <label for="name">Title</label>
                     <input asp-for="Title"
                            class="form-control"
                            id="name"
                            autocomplete="off"
-                           placeholder="title">
+                           placeholder="Title">
                 </div>
                 <div class="form-group">
                     <label for="description">@T.ShortDescriptionLabelText</label>
@@ -27,16 +27,56 @@
                            placeholder="@T.ShortDescriptionLabelText">
                 </div>
                 <div class="form-group">
-                    <label for="color">color</label>
-                    <input asp-for="Color"
-                           class="form-control"
-                           id="color"
-                           autocomplete="off"
-                           placeholder="color">
+                    <label for="color">Color</label>
+                    <div class="d-flex">
+                        <input asp-for="Color"
+                               type="hidden"
+                               id="color"
+                               value="#4B49AC">
+                        <!-- Color preview square -->
+                        <div class="color-preview" style="width: 36px; height: 36px; background-color: #4B49AC; border-radius: 4px 0 0 4px; cursor: pointer;"></div>
+                        <!-- Text input with hex value -->
+                        <input type="text"
+                               id="colorDisplay"
+                               value="#4B49AC"
+                               readonly
+                               style="height: 36px; border: 1px solid #ced4da; border-left: none; border-radius: 0 4px 4px 0; background-color: #f8f9fc; padding: 0.375rem 0.75rem; max-width: 100px; cursor: pointer;">
+                        <!-- Hidden actual color picker -->
+                        <input type="color"
+                               id="colorPicker"
+                               value="#4B49AC"
+                               style="opacity: 0; width: 0; position: absolute;">
+                    </div>
                 </div>
                 <button type="submit"
-                        class="btn btn-primary mr-2">create label</button>
+                        class="btn btn-primary mr-2">Create Label</button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const colorInput = document.getElementById('color');
+        const colorPreview = document.querySelector('.color-preview');
+        const colorDisplay = document.getElementById('colorDisplay');
+        const colorPicker = document.getElementById('colorPicker');
+
+        // Open color picker when clicking on the preview or text input
+        colorPreview.addEventListener('click', function() {
+            colorPicker.click();
+        });
+
+        colorDisplay.addEventListener('click', function() {
+            colorPicker.click();
+        });
+
+        // Update all values when color is selected
+        colorPicker.addEventListener('input', function(e) {
+            const selectedColor = e.target.value;
+            colorInput.value = selectedColor;
+            colorPreview.style.backgroundColor = selectedColor;
+            colorDisplay.value = selectedColor;
+        });
+    });
+</script>
