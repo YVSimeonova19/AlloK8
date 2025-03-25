@@ -12,6 +12,6 @@ public class LabelUpdateVM
     [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
     public string? Description { get; set; }
 
-    [StringLength(6, ErrorMessage = "Color HEX cannot exceed 6 characters.")]
+    [StringLength(7, ErrorMessage = "Color HEX cannot exceed 6 characters.")]
     public string? Color { get; set; }
 }

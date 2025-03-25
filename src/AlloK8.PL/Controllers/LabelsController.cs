@@ -94,4 +94,34 @@ public class LabelsController : Controller
             return this.BadRequest(ex.Message);
         }
     }
+
+    [HttpPost("/labels/{labelId}/edit")]
+    public async Task<IActionResult> EditLabel(int labelId, [FromForm] LabelUpdateVM model)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest(this.ModelState);
+        }
+
+        var labelUM = new LabelUM
+        {
+            Title = model.Title,
+            Description = model.Description,
+            Color = model.Color,
+        };
+
+        var updatedLabel = await this.labelService.EditLabelAsync(labelUM, labelId);
+        if (updatedLabel == null)
+        {
+            return this.NotFound();
+        }
+
+        return this.Ok(new
+        {
+            id = updatedLabel.Id,
+            title = updatedLabel.Title,
+            description = updatedLabel.Description,
+            color = updatedLabel.Color,
+        });
+    }
 }
