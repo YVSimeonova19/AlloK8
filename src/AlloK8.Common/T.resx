@@ -378,4 +378,25 @@
     <data name="OnlyMineButtonText" xml:space="preserve">
         <value>Само моите</value>
     </data>
+    <data name="DeleteLabelModalTitle" xml:space="preserve">
+        <value>Изтриване на етикет</value>
+    </data>
+    <data name="DeleteLabelModalText" xml:space="preserve">
+        <value>Сигурни ли сте, че искате да изтриете този етикет?</value>
+    </data>
+    <data name="LabelSuccessfullyDeletedPopupText" xml:space="preserve">
+        <value>Етикетът беше изтрит успешно.</value>
+    </data>
+    <data name="FailedToDeleteLabelErrorMessage" xml:space="preserve">
+        <value>Изтриването на етиката се провали.</value>
+    </data>
+    <data name="LabelsViewTitle" xml:space="preserve">
+        <value>Етикети</value>
+    </data>
+    <data name="NewLabelButtonText" xml:space="preserve">
+        <value>Нов етикет</value>
+    </data>
+    <data name="LabelsWordText" xml:space="preserve">
+        <value>етикета</value>
+    </data>
 </root>

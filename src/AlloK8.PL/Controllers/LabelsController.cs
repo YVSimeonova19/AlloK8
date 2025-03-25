@@ -80,4 +80,18 @@ public class LabelsController : Controller
 
         return this.View("CreateLabel");
     }
+
+    [HttpDelete("labels/{labelId}/delete")]
+    public async Task<IActionResult> DeleteLabel(int labelId)
+    {
+        try
+        {
+            await this.labelService.DeleteLabelAsync(labelId);
+            return this.Ok();
+        }
+        catch (Exception ex)
+        {
+            return this.BadRequest(ex.Message);
+        }
+    }
 }

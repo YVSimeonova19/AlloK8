@@ -222,6 +222,24 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Сигурни ли сте, че искате да изтриете този етикет?.
+        /// </summary>
+        public static string DeleteLabelModalText {
+            get {
+                return ResourceManager.GetString("DeleteLabelModalText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изтриване на етикет.
+        /// </summary>
+        public static string DeleteLabelModalTitle {
+            get {
+                return ResourceManager.GetString("DeleteLabelModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Изтриване.
         /// </summary>
         public static string DeleteModalButtonText {
@@ -380,6 +398,15 @@ namespace AlloK8.Common {
         public static string FailedToAddUsersErrorText {
             get {
                 return ResourceManager.GetString("FailedToAddUsersErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изтриването на етиката се провали..
+        /// </summary>
+        public static string FailedToDeleteLabelErrorMessage {
+            get {
+                return ResourceManager.GetString("FailedToDeleteLabelErrorMessage", resourceCulture);
             }
         }
         
@@ -564,6 +591,33 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Етикетът беше изтрит успешно..
+        /// </summary>
+        public static string LabelSuccessfullyDeletedPopupText {
+            get {
+                return ResourceManager.GetString("LabelSuccessfullyDeletedPopupText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Етикети.
+        /// </summary>
+        public static string LabelsViewTitle {
+            get {
+                return ResourceManager.GetString("LabelsViewTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to етикета.
+        /// </summary>
+        public static string LabelsWordText {
+            get {
+                return ResourceManager.GetString("LabelsWordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Увеличете производителността на екипа си с това интуитивно решение за управление на проекти..
         /// </summary>
         public static string LandingSubtext {
@@ -668,6 +722,15 @@ namespace AlloK8.Common {
         public static string LogoutNavButtonText {
             get {
                 return ResourceManager.GetString("LogoutNavButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нов етикет.
+        /// </summary>
+        public static string NewLabelButtonText {
+            get {
+                return ResourceManager.GetString("NewLabelButtonText", resourceCulture);
             }
         }
         

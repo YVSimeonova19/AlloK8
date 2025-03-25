@@ -8,12 +8,12 @@
 <div class="content-wrapper">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h2 class="font-weight-bold">Labels</h2>
+            <h2 class="font-weight-bold">@T.LabelsViewTitle</h2>
         </div>
         <div class="col-md-4 text-right">
             <a href="/projects/@projectId/new-label" class="btn btn-primary">
                 <i class="icon-circle-plus menu-icon"></i>
-                <span class="menu-title">new label</span>
+                <span class="menu-title">@T.NewLabelButtonText</span>
             </a>
         </div>
     </div>
@@ -21,7 +21,7 @@
     <div class="card">
         <div class="card-header bg-light">
             <div class="d-flex justify-content-between align-items-center">
-                <span>@Model.Count labels</span>
+                <span>@Model.Count @T.LabelsWordText</span>
             </div>
         </div>
         <div class="card-body p-0">
@@ -40,10 +40,10 @@
                         <td width="180">
                             <div class="btn-group float-right">
                                 <button type="button" class="btn btn-outline-secondary btn-sm" onclick="openEditModal(@label.Id, '@label.Title', '@label.Description', '@label.Color')">
-                                    Edit
+                                    @T.EditDropdownButtonText
                                 </button>
                                 <button type="button" class="btn btn-outline-danger btn-sm" onclick="openDeleteModal(@label.Id)">
-                                    Delete
+                                    @T.DeleteDropdownButtonText
                                 </button>
                             </div>
                         </td>
@@ -55,27 +55,27 @@
         </div>
     </div>
 
-    @* @await Html.PartialAsync("_DeleteLabelModal") *@
+    @await Html.PartialAsync("_DeleteLabelModal")
     @* @await Html.PartialAsync("_EditLabelModal", new LabelUpdateVM()) *@
 </div>
 
-@* <script> *@
-@*     function openDeleteModal(labelId) { *@
-@*         document.getElementById('labelDeleteModal').setAttribute('data-label-id', labelId); *@
-@*         $('#labelDeleteModal').modal('show'); *@
-@*     } *@
-@* *@
-@*     function openEditModal(labelId, title, description, color) { *@
-@*         document.querySelector('#labelEditModal input[name="Id"]').value = labelId; *@
-@*         document.querySelector('#labelEditModal input[name="Title"]').value = title; *@
-@*         document.querySelector('#labelEditModal textarea[name="Description"]').value = description; *@
-@*         document.querySelector('#labelEditModal input[name="Color"]').value = color; *@
-@* *@
-@*         document.getElementById("modal-title").innerText = title; *@
-@* *@
-@*         $('#labelEditModal').modal('show'); *@
-@*     } *@
-@* </script> *@
+<script>
+    function openDeleteModal(labelId) {
+        document.getElementById('labelDeleteModal').setAttribute('data-label-id', labelId);
+        $('#labelDeleteModal').modal('show');
+    }
+
+    function openEditModal(labelId, title, description, color) {
+        document.querySelector('#labelEditModal input[name="Id"]').value = labelId;
+        document.querySelector('#labelEditModal input[name="Title"]').value = title;
+        document.querySelector('#labelEditModal textarea[name="Description"]').value = description;
+        document.querySelector('#labelEditModal input[name="Color"]').value = color;
+
+        document.getElementById("modal-title").innerText = title;
+
+        $('#labelEditModal').modal('show');
+    }
+</script>
 
 @functions {
     public string GetTextColor(string? backgroundColor) 
