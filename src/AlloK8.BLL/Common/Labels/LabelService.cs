@@ -10,7 +10,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace AlloK8.BLL.Common.Labels;
 
-public class LabelService : ILabelService
+internal class LabelService : ILabelService
 {
     private readonly EntityContext context;
 

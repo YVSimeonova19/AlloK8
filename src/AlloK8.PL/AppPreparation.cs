@@ -7,6 +7,7 @@ using AlloK8.DAL.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Task = System.Threading.Tasks.Task;
 
@@ -14,8 +15,10 @@ namespace AlloK8.PL;
 
 public static class AppPreparation
 {
-    public static async Task PrepareAsync(this IApplicationBuilder app)
+    public static async Task PrepareAsync(this IApplicationBuilder app, IConfiguration configuration)
     {
+        var licenseKey = configuration.GetSection("Syncfusion").GetSection("LicenseKey").Value;
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey);
         try
         {
             using var scope = app.ApplicationServices.CreateScope();

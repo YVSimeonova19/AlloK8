@@ -78,6 +78,8 @@ internal class TaskService : ITaskService
     {
         return await this.context.Tasks
             .Where(t => t.Project.Id == projectId)
+            .Include(t => t.Assignees)
+            .Include(t => t.Labels)
             .ToListAsync();
     }
 

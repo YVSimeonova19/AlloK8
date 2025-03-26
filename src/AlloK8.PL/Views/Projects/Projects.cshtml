@@ -41,11 +41,23 @@
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/projects/@project.Id/labels">@T.LabelsViewTitle</a>
-                                    <a class="dropdown-item" onclick="openEditModal(this)">@T.EditDropdownButtonText</a>
-                                    <a class="dropdown-item"
+                                    <a class="dropdown-item" href="javascript:void(0)"
+                                       onclick="openEditModal(this)">@T.EditDropdownButtonText</a>
+                                    <a class="dropdown-item" href="javascript:void(0)"
                                        onclick="openShareModal(this)">@T.ShareDropdownButtonText</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">
+                                        @{
+                                            Html.BeginForm("CreateReport", "Projects", new { projectId = @project.Id }, FormMethod.Get);
+                                            {
+                                                <div>
+                                                    <input type="submit" value="Get report" style="background-color: transparent; border: none"/>
+                                                </div>
+                                            }
+                                            Html.EndForm();
+                                        }
+                                    </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger"
+                                    <a class="dropdown-item text-danger" href="javascript:void(0)"
                                        onclick="openDeleteModal(this)">@T.DeleteDropdownButtonText</a>
                                 </div>
                             </div>
