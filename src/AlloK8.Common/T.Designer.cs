@@ -285,7 +285,7 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Започнато.
+        ///   Looks up a localized string similar to В процес.
         /// </summary>
         public static string DoingColumnLabel {
             get {

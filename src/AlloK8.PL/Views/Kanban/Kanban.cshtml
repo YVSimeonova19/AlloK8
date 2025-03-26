@@ -108,7 +108,6 @@
     async function openTaskModal(element) {
         let taskId = element.id.split("-")[1];
 
-        // Fetch task details from the server
         try {
             let response = await fetch(`/kanban/task/${taskId}`);
             if (response.ok) {
@@ -127,11 +126,12 @@
                 if (titleInput) titleInput.value = task.title || '';
                 if (descriptionInput) descriptionInput.value = task.description || '';
 
-                // Handle date inputs safely
+                // Handle date inputs with more robust parsing
                 if (startDateInput && task.startDate) {
                     try {
-                        let startDate = new Date(task.startDate).toISOString().slice(0, 10);
-                        startDateInput.value = startDate;
+                        // Convert to local date input format (YYYY-MM-DD)
+                        let startDate = new Date(task.startDate);
+                        startDateInput.value = startDate.toISOString().slice(0, 10);
                     } catch (dateError) {
                         console.warn('Error parsing start date:', dateError);
                         startDateInput.value = '';
@@ -140,8 +140,9 @@
 
                 if (dueDateInput && task.dueDate) {
                     try {
-                        let dueDate = new Date(task.dueDate).toISOString().slice(0, 10);
-                        dueDateInput.value = dueDate;
+                        // Convert to local date input format (YYYY-MM-DD)
+                        let dueDate = new Date(task.dueDate);
+                        dueDateInput.value = dueDate.toISOString().slice(0, 10);
                     } catch (dateError) {
                         console.warn('Error parsing due date:', dateError);
                         dueDateInput.value = '';
@@ -154,29 +155,16 @@
 
                 if (taskIdInput) taskIdInput.value = task.id || '';
 
-                // Ensure the modal exists before trying to show it
+                // Show the modal
                 const taskModal = $('#taskModal');
                 if (taskModal.length) {
                     taskModal.modal("show");
-                } else {
-                    console.error('Task modal not found');
                 }
             } else {
                 console.error('Failed to fetch task details');
-                // Fallback: try to show the modal even without fetching details
-                const taskModal = $('#taskModal');
-                if (taskModal.length) {
-                    taskModal.modal("show");
-                }
             }
         } catch (error) {
             console.error('Error:', error);
-
-            // Fallback: try to show the modal even on error
-            const taskModal = $('#taskModal');
-            if (taskModal.length) {
-                taskModal.modal("show");
-            }
         }
     }
 

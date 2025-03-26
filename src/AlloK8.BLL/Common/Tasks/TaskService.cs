@@ -6,6 +6,7 @@ using AlloK8.BLL.Common.Labels;
 using AlloK8.BLL.Common.Users;
 using AlloK8.DAL;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Task = System.Threading.Tasks.Task;
 
 namespace AlloK8.BLL.Common.Tasks;
@@ -95,8 +96,17 @@ internal class TaskService : ITaskService
         task.Title = taskUM.Title ?? task.Title;
         task.Description = taskUM.Description ?? task.Description;
         task.IsPriority = taskUM.IsPriority ?? task.IsPriority;
-        task.StartDate = taskUM.StartDate ?? task.StartDate;
-        task.DueDate = taskUM.DueDate ?? task.DueDate;
+
+        if (taskUM.StartDate.HasValue)
+        {
+            task.StartDate = DateTime.SpecifyKind(taskUM.StartDate.Value.Date, DateTimeKind.Utc);
+        }
+
+        if (taskUM.DueDate.HasValue)
+        {
+            task.DueDate = taskUM.DueDate.Value.Date;
+        }
+
         task.Position = taskUM.Position ?? task.Position;
 
         this.context.Tasks.Update(task);

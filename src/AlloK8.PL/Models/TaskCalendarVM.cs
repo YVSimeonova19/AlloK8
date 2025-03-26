@@ -1,4 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.XPath;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlloK8.PL.Models;
 

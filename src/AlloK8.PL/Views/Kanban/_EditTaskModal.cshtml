@@ -734,6 +734,43 @@
             userResults.innerHTML = "";
         });
 
+        // Comprehensive date handling function
+        function convertToServerDate(inputDate) {
+            if (!inputDate) return null;
+
+            try {
+                // Log the raw input
+                console.log('Raw Input Date:', inputDate);
+
+                // Parse the input date with specific mm/dd/yyyy format
+                const [month, day, year] = inputDate.split('/').map(Number);
+
+                console.log('Parsed Components:', { year, month, day });
+
+                // Create a date object at midnight in local time
+                const parsedDate = new Date(year, month - 1, day);
+
+                console.log('Parsed Date Object:', parsedDate);
+                console.log('Parsed Date Timestamp:', parsedDate.getTime());
+                console.log('Is Valid Date:', !isNaN(parsedDate.getTime()));
+
+                if (isNaN(parsedDate.getTime())) {
+                    console.error('Invalid date format:', inputDate);
+                    return null;
+                }
+
+                // Convert to ISO string at midnight
+                const isoDate = parsedDate.toISOString().split('T')[0] + 'T00:00:00Z';
+
+                console.log('Final ISO Date:', isoDate);
+
+                return isoDate;
+            } catch (error) {
+                console.error('Date conversion error:', error);
+                return null;
+            }
+        }
+
         // Handle the form submission with fetch
         document.querySelector("#taskModal form").addEventListener("submit", async function (e) {
             e.preventDefault();
@@ -741,16 +778,59 @@
             let form = e.target;
             let formData = new FormData(form);
 
-            // Add the selected users to the form data
-            selectedUsers.forEach((user, index) => {
-                // Use Users[] format to match the controller's expectation
-                formData.append(`Users[]`, user.id);
-            });
+            // Get date inputs
+            const startDateInput = document.getElementById("start-date");
+            const dueDateInput = document.getElementById("due-date");
+
+            // Create a new FormData to replace the original
+            let adjustedFormData = new FormData();
+
+            // Copy all existing form data
+            for (let [key, value] of formData.entries()) {
+                // Special handling for start and due dates
+                if (key === "StartDate" && startDateInput) {
+                    // Convert from YYYY-MM-DD to mm/dd/yyyy
+                    const rawDate = startDateInput.value;
+                    const [year, month, day] = rawDate.split('-');
+                    const formattedDate = `${month}/${day}/${year}`;
+
+                    console.log('Start Date Input Raw:', rawDate);
+                    console.log('Formatted Date:', formattedDate);
+
+                    const convertedDate = convertToServerDate(formattedDate);
+
+                    if (convertedDate) {
+                        console.log('Converted Start Date:', convertedDate);
+                        adjustedFormData.append(key, convertedDate);
+                    } else {
+                        console.error('Failed to convert start date');
+                    }
+                } else if (key === "DueDate" && dueDateInput) {
+                    // Convert from YYYY-MM-DD to mm/dd/yyyy
+                    const rawDate = dueDateInput.value;
+                    const [year, month, day] = rawDate.split('-');
+                    const formattedDate = `${month}/${day}/${year}`;
+
+                    console.log('Due Date Input Raw:', rawDate);
+                    console.log('Formatted Date:', formattedDate);
+
+                    const convertedDate = convertToServerDate(formattedDate);
+
+                    if (convertedDate) {
+                        console.log('Converted Due Date:', convertedDate);
+                        adjustedFormData.append(key, convertedDate);
+                    } else {
+                        console.error('Failed to convert due date');
+                    }
+                } else {
+                    adjustedFormData.append(key, value);
+                }
+            }
 
             try {
                 let response = await fetch(form.action, {
                     method: 'POST',
-                    body: formData
+                    body: adjustedFormData
                 });
 
                 if (response.ok) {
