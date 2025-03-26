@@ -59,7 +59,7 @@
                             </div>
                         </div>
 
-                        <!-- Right side: Assigned Users, Dates, Priority -->
+                        <!-- Right side: Assigned Users, Dates, Priority, and now Labels -->
                         <div class="col-md-4">
                             <div class="form-group">
                                 <h6>@T.TaskUsersLabel</h6>
@@ -68,6 +68,23 @@
                                     <div class="text-center py-3">
                                         <div class="spinner-border text-primary" role="status">
                                             <span class="sr-only">@T.LoadingText</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Labels</label>
+                                <div class="label-search-container">
+                                    <div id="selectedLabels" class="selected-labels mb-2"></div>
+                                    <div class="available-labels-container">
+                                        <div id="availableLabels" class="available-labels-list">
+                                            <!-- Loading indicator -->
+                                            <div class="text-center py-3">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -124,6 +141,12 @@
         let selectedUsers = []; // New users to be added
         let assignedUsers = []; // Currently assigned users
 
+        // Label variables
+        const selectedLabelsContainer = document.getElementById("selectedLabels");
+        const availableLabelsContainer = document.getElementById("availableLabels");
+        let availableLabels = []; // All labels for the project
+        let selectedLabels = []; // Selected labels for the task
+
         // Helper function to extract email from different user object structures
         function getUserEmail(user) {
             if (user.email) return user.email;
@@ -152,6 +175,202 @@
             return document.querySelector('#projectId')?.value || '';
         }
 
+        // Function to determine text color based on background color
+        function getTextColor(backgroundColor) {
+            if (!backgroundColor) return '#000000';
+
+            // Add # if it's not already there
+            if (!backgroundColor.startsWith('#')) {
+                backgroundColor = '#' + backgroundColor;
+            }
+
+            const color = backgroundColor.replace('#', '');
+            const r = parseInt(color.substr(0, 2), 16);
+            const g = parseInt(color.substr(2, 2), 16);
+            const b = parseInt(color.substr(4, 2), 16);
+
+            const brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+
+            return brightness > 130 ? '#000000' : '#FFFFFF';
+        }
+
+        // Load available labels for the project
+        async function loadAvailableLabels() {
+            try {
+                const projectId = getProjectIdFromUrl();
+                if (!projectId) {
+                    availableLabelsContainer.innerHTML = "<div class='text-center text-muted'>Cannot determine project ID</div>";
+                    return;
+                }
+
+                const response = await fetch(`/projects/${projectId}/labels/all`);
+                if (response.ok) {
+                    availableLabels = await response.json();
+                    renderAvailableLabels();
+                } else {
+                    availableLabelsContainer.innerHTML = "<div class='text-center text-muted'>Error loading labels</div>";
+                }
+            } catch (error) {
+                availableLabelsContainer.innerHTML = "<div class='text-center text-muted'>Error loading labels</div>";
+            }
+        }
+
+        // Load labels for the task
+        async function loadTaskLabels(taskId) {
+            try {
+                const response = await fetch(`/kanban/task/${taskId}/labels`);
+                if (response.ok) {
+                    selectedLabels = await response.json();
+                    renderSelectedLabels();
+                }
+            } catch (error) {
+                // Silently fail - we'll just show no labels
+                selectedLabels = [];
+                renderSelectedLabels();
+            }
+        }
+
+        // Render available labels
+        function renderAvailableLabels() {
+            availableLabelsContainer.innerHTML = "";
+
+            if (availableLabels.length === 0) {
+                availableLabelsContainer.innerHTML = "<div class='text-center text-muted'>No labels available</div>";
+                return;
+            }
+
+            const labelsList = document.createElement("div");
+            labelsList.classList.add("available-labels");
+
+            availableLabels.forEach(label => {
+                // Skip if the label is already selected
+                if (selectedLabels.some(l => l.id === label.id)) {
+                    return;
+                }
+
+                const labelItem = document.createElement("div");
+                labelItem.classList.add("available-label");
+                labelItem.dataset.id = label.id;
+
+                const labelBadge = document.createElement("span");
+                labelBadge.classList.add("label-badge");
+                labelBadge.style.backgroundColor = label.color;
+                labelBadge.style.color = getTextColor(label.color);
+                labelBadge.textContent = label.title;
+
+                labelItem.appendChild(labelBadge);
+                labelItem.addEventListener("click", () => {
+                    selectLabel(label);
+                });
+
+                labelsList.appendChild(labelItem);
+            });
+
+            availableLabelsContainer.appendChild(labelsList);
+        }
+
+        // Render selected labels
+        function renderSelectedLabels() {
+            selectedLabelsContainer.innerHTML = "";
+
+            if (selectedLabels.length === 0) {
+                const emptyMessage = document.createElement("div");
+                emptyMessage.classList.add("text-muted", "small");
+                emptyMessage.textContent = "No labels selected";
+                selectedLabelsContainer.appendChild(emptyMessage);
+                return;
+            }
+
+            selectedLabels.forEach(label => {
+                const labelItem = document.createElement("div");
+                labelItem.classList.add("selected-label");
+                labelItem.dataset.id = label.id;
+
+                const labelBadge = document.createElement("span");
+                labelBadge.classList.add("label-badge");
+                labelBadge.style.backgroundColor = label.color;
+                labelBadge.style.color = getTextColor(label.color);
+                labelBadge.textContent = label.title;
+
+                const removeButton = document.createElement("button");
+                removeButton.classList.add("remove-label-btn");
+                removeButton.innerHTML = "×";
+                removeButton.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    removeLabel(label.id);
+                });
+
+                const hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = "LabelIds[]";
+                hiddenInput.value = label.id;
+
+                labelItem.appendChild(labelBadge);
+                labelItem.appendChild(removeButton);
+                labelItem.appendChild(hiddenInput);
+                selectedLabelsContainer.appendChild(labelItem);
+            });
+
+            // Update available labels display
+            renderAvailableLabels();
+        }
+
+        // Select a label
+        function selectLabel(label) {
+            // Check if already selected
+            if (selectedLabels.some(l => l.id === label.id)) {
+                return;
+            }
+
+            // Add to selected labels
+            selectedLabels.push(label);
+
+            // Update UI
+            renderSelectedLabels();
+        }
+
+        // Remove a label
+        async function removeLabel(labelId) {
+            // Find the label object before removing it from selectedLabels
+            const removedLabel = selectedLabels.find(label => label.id === labelId);
+
+            // Remove from selected labels
+            selectedLabels = selectedLabels.filter(label => label.id !== labelId);
+
+            // Update UI for selected labels
+            renderSelectedLabels();
+
+            // If we found the removed label, add it back to availableLabels
+            if (removedLabel) {
+                // Make sure it's not already in availableLabels
+                if (!availableLabels.some(label => label.id === removedLabel.id)) {
+                    availableLabels.push(removedLabel);
+                }
+
+                // Re-render the available labels to show the newly available label
+                renderAvailableLabels();
+            }
+
+            // If the task is already saved, also remove the association in the backend
+            const taskId = document.querySelector('#taskModal input[name="Id"]').value;
+            if (taskId) {
+                try {
+                    const response = await fetch(`/kanban/task/${taskId}/labels/${labelId}/remove`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Failed to remove label: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('Error removing label:', error);
+                }
+            }
+        }
+
         // Load assigned users from the task data
         async function loadAssignedUsers(taskId) {
             try {
@@ -159,16 +378,13 @@
                 const response = await fetch(`/kanban/task/${taskId}`);
                 if (response.ok) {
                     const taskData = await response.json();
-                    console.log("Task data:", taskData); // Debug log
                     // Assuming the task data includes users
                     assignedUsers = taskData.users || [];
-                    console.log("Assigned users:", assignedUsers); // Debug log
                     renderAssignedUsers();
                 } else {
                     assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.ErrorLoadingUsersErrorMessageText)</div>";
                 }
             } catch (error) {
-                console.error('Error loading assigned users:', error);
                 assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.ErrorLoadingUsersErrorMessageText)</div>";
             }
         }
@@ -317,8 +533,6 @@
         // Render the search results
         function renderUserResults(users) {
             userResults.innerHTML = "";
-
-            console.log("Search results users:", users); // Debug log
 
             // Add scrollbar if more than 5 users
             if (users.length > 5) {
@@ -499,12 +713,18 @@
         $('#taskModal').on('shown.bs.modal', function () {
             const taskId = document.querySelector('#taskModal input[name="Id"]').value;
 
-            // Only load users if we have a valid task ID
+            // Load labels for the project
+            loadAvailableLabels();
+
+            // Only load users and task labels if we have a valid task ID
             if (taskId) {
                 loadAssignedUsers(taskId);
+                loadTaskLabels(taskId);
             } else {
-                // For new tasks, there are no assigned users
+                // For new tasks, there are no assigned users or labels
                 assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.NoUsersAssignedText)</div>";
+                selectedLabels = [];
+                renderSelectedLabels();
             }
 
             // Reset selected users
@@ -546,8 +766,6 @@
                         } else {
                             taskElement.classList.remove("priority-task");
                         }
-
-                        // Update any user-related UI elements if needed
                     }
 
                     // Show success message
@@ -708,5 +926,80 @@
 
     .modal-lg {
         max-width: 800px;
+    }
+
+    /* Label styling */
+    .label-search-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .selected-labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 40px;
+    }
+
+    .selected-label {
+        display: flex;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 2px 8px;
+        border-radius: 16px;
+        border: 1px solid #dee2e6;
+    }
+
+    .label-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+    }
+
+    .remove-label-btn {
+        background: none;
+        border: none;
+        color: #dc3545;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 0 4px;
+        margin-left: 4px;
+    }
+
+    .remove-label-btn:hover {
+        color: #c82333;
+    }
+
+    .available-labels-container {
+        margin-top: 8px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 8px;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .available-labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .available-label {
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        padding: 2px;
+        transition: border-color 0.2s;
+    }
+
+    .available-label:hover {
+        border-color: #6c757d;
+    }
+    
+    /* Center vertically the modal window */
+    .modal .modal-dialog {
+        margin-top: 20px !important;
     }
 </style>

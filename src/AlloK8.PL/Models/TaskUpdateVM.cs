@@ -27,6 +27,11 @@ public class TaskUpdateVM
     public DateTime? DueDate { get; set; }
 
     public List<UserProfile> Users { get; set; } = [];
-
     public List<UserProfile> AllUsers { get; set; } = [];
+
+    public List<Label> Labels { get; set; } = [];
+    public List<Label> AllLabels { get; set; } = [];
+
+    [Display(Name = "Label IDs")]
+    public List<int> LabelIds { get; set; } = [];
 }

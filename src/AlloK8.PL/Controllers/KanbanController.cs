@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AlloK8.BLL.Common.Labels;
 using AlloK8.BLL.Common.Projects;
 using AlloK8.BLL.Common.Search;
 using AlloK8.BLL.Common.Tasks;
@@ -25,19 +26,22 @@ public class KanbanController : Controller
     private readonly IUserService userService;
     private readonly IProjectService projectService;
     private readonly ISearchService searchService;
+    private readonly ILabelService labelService;
 
     public KanbanController(
         ITaskService taskService,
         ICurrentUser currentUser,
         IUserService userService,
         IProjectService projectService,
-        ISearchService searchService)
+        ISearchService searchService,
+        ILabelService labelService)
     {
         this.taskService = taskService;
         this.currentUser = currentUser;
         this.userService = userService;
         this.projectService = projectService;
         this.searchService = searchService;
+        this.labelService = labelService;
     }
 
     [HttpGet("/projects/{projectId}/kanban")]
@@ -220,6 +224,23 @@ public class KanbanController : Controller
                 }
             }
 
+            if (model.LabelIds != null && model.LabelIds.Any())
+            {
+                var currentLabels = await this.labelService.GetLabelsByTaskIdAsync(model.Id);
+                foreach (var label in currentLabels)
+                {
+                    if (!model.LabelIds.Contains(label.Id))
+                    {
+                        await this.taskService.RemoveLabelFromTaskAsync(model.Id, label.Id);
+                    }
+                }
+
+                foreach (var labelId in model.LabelIds)
+                {
+                    await this.taskService.AddLabelToTaskAsync(model.Id, labelId);
+                }
+            }
+
             var refreshedTask = await this.taskService.GetTaskByIdAsync(model.Id);
 
             var responseDto = new
@@ -239,6 +260,12 @@ public class KanbanController : Controller
                     {
                         email = u.ApplicationUser!.Email,
                     },
+                }).ToList(),
+                labels = refreshedTask.Labels?.Select(l => new
+                {
+                    id = l.Id,
+                    title = l.Title,
+                    color = l.Color,
                 }).ToList(),
             };
 
@@ -261,6 +288,25 @@ public class KanbanController : Controller
         try
         {
             await this.taskService.AssignTaskAsync(request.TaskId, request.UserId);
+            return this.Ok();
+        }
+        catch (Exception ex)
+        {
+            return this.StatusCode(500, new { success = false, message = ex.Message });
+        }
+    }
+
+    [HttpPost("/kanban/assign-label")]
+    public async Task<IActionResult> AssignLabelToTask([FromBody] AssignLabelRequest request)
+    {
+        if (request == null || request.TaskId <= 0 || request.LabelId <= 0)
+        {
+            return this.BadRequest(new { success = false, message = "Invalid request data" });
+        }
+
+        try
+        {
+            await this.taskService.AddLabelToTaskAsync(request.TaskId, request.LabelId);
             return this.Ok();
         }
         catch (Exception ex)

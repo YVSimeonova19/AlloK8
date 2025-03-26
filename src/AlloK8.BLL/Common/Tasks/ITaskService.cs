@@ -19,6 +19,9 @@ public interface ITaskService
     Task AssignTaskAsync(int taskId, int userId);
     Task RemoveUserFromTaskAsync(int taskId, int userId);
 
+    Task AddLabelToTaskAsync(int taskId, int labelId);
+    Task RemoveLabelFromTaskAsync(int taskId, int labelId);
+
     Task DeleteTaskByIdAsync(int id);
 
     Task<List<DAL.Models.Task>> PrioritizeTasksAsync(List<DAL.Models.Task> tasks);

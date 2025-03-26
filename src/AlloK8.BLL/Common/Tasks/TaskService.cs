@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AlloK8.BLL.Common.Labels;
 using AlloK8.BLL.Common.Users;
 using AlloK8.DAL;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,16 @@ internal class TaskService : ITaskService
 {
     private readonly EntityContext context;
     private readonly IUserService userService;
+    private readonly ILabelService labelService;
 
     public TaskService(
         EntityContext context,
-        IUserService userService)
+        IUserService userService,
+        ILabelService labelService)
     {
         this.context = context;
         this.userService = userService;
+        this.labelService = labelService;
     }
 
     public async Task<DAL.Models.Task> CreateTaskAsync(TaskIM taskIM)
@@ -58,6 +62,7 @@ internal class TaskService : ITaskService
             .Where(t => t.Id == id)
             .Include(t => t.Assignees)
             .ThenInclude(a => a.ApplicationUser)
+            .Include(t => t.Labels)
             .FirstOrDefaultAsync();
 
         if (task == null)
@@ -241,5 +246,37 @@ internal class TaskService : ITaskService
         }
 
         return prioritizedTasks;
+    }
+
+    public async Task AddLabelToTaskAsync(int taskId, int labelId)
+    {
+        var task = await this.GetTaskByIdAsync(taskId);
+        var label = await this.labelService.GetLabelByIdAsync(labelId);
+
+        if (task.Labels.Any(u => u.Id == label.Id))
+        {
+            throw new Exception("Label is already assigned to this task.");
+        }
+
+        task.Labels.Add(label);
+        this.context.Update(task);
+        await this.context.SaveChangesAsync();
+    }
+
+    public async Task RemoveLabelFromTaskAsync(int taskId, int labelId)
+    {
+        var task = await this.GetTaskByIdAsync(taskId);
+        var label = await this.labelService.GetLabelByIdAsync(labelId);
+
+        if (task.Labels.Contains(label))
+        {
+            task.Labels.Remove(label);
+            this.context.Update(task);
+            await this.context.SaveChangesAsync();
+        }
+        else
+        {
+            throw new Exception("Label is not assigned to this task.");
+        }
     }
 }

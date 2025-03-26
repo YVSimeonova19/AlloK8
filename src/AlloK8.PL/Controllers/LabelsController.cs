@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.Labels;
+using AlloK8.BLL.Common.Tasks;
 using AlloK8.Common.Models.Label;
 using AlloK8.PL.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -15,14 +17,32 @@ namespace AlloK8.PL.Controllers;
 public class LabelsController : Controller
 {
     private readonly ILabelService labelService;
+    private readonly ITaskService taskService;
 
-    public LabelsController(ILabelService labelService)
+    public LabelsController(
+        ILabelService labelService,
+        ITaskService taskService)
     {
         this.labelService = labelService;
+        this.taskService = taskService;
     }
 
     [HttpGet("/projects/{projectId}/labels")]
     public async Task<IActionResult> Labels(int projectId)
+    {
+        var labels = await this.GetProjectLabels(projectId);
+
+        if (labels is OkObjectResult okResult)
+        {
+            var labelVMs = okResult.Value as List<LabelVM>;
+            return this.View(labelVMs);
+        }
+
+        return this.View();
+    }
+
+    [HttpGet("/projects/{projectId}/labels/all")]
+    public async Task<IActionResult> GetProjectLabels(int projectId)
     {
         try
         {
@@ -38,7 +58,7 @@ public class LabelsController : Controller
 
             this.ViewBag.ProjectId = projectId;
 
-            return this.View(labelVMs);
+            return this.Ok(labelVMs);
         }
         catch (Exception ex)
         {
@@ -123,5 +143,42 @@ public class LabelsController : Controller
             description = updatedLabel.Description,
             color = updatedLabel.Color,
         });
+    }
+
+    [HttpGet("/kanban/task/{taskId}/labels")]
+    public async Task<IActionResult> GetTaskLabels(int taskId)
+    {
+        try
+        {
+            var labels = await this.labelService.GetLabelsByTaskIdAsync(taskId);
+
+            var labelVMs = labels.Select(label => new LabelVM
+            {
+                Id = label.Id,
+                Title = label.Title,
+                Description = label.Description,
+                Color = label.Color,
+            }).ToList();
+
+            return this.Ok(labelVMs);
+        }
+        catch (Exception ex)
+        {
+            return this.BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("/kanban/task/{taskId}/labels/{labelId}/remove")]
+    public async Task<IActionResult> RemoveLabelFromTask(int taskId, int labelId)
+    {
+        try
+        {
+            await this.taskService.RemoveLabelFromTaskAsync(taskId, labelId);
+            return this.Ok();
+        }
+        catch (Exception ex)
+        {
+            return this.BadRequest($"Error: {ex.Message}");
+        }
     }
 }
