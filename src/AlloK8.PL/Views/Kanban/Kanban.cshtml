@@ -114,30 +114,141 @@
             if (response.ok) {
                 let task = await response.json();
 
-                // Populate the modal form
-                document.getElementById("title").value = task.title;
-                document.getElementById("description").value = task.description;
+                // Get modal elements
+                const titleInput = document.getElementById("title");
+                const descriptionInput = document.getElementById("description");
+                const startDateInput = document.getElementById("start-date");
+                const dueDateInput = document.getElementById("due-date");
+                const modalTitleElement = document.getElementById("modal-title");
+                const isPriorityCheckbox = document.getElementById("is-priority");
+                const taskIdInput = document.querySelector("input[name='Id']");
 
-                let startDate = new Date(task.startDate).toISOString().slice(0, 10);
-                document.getElementById("start-date").value = startDate;
+                // Safely set values with null checks
+                if (titleInput) titleInput.value = task.title || '';
+                if (descriptionInput) descriptionInput.value = task.description || '';
 
-                let dueDate = new Date(task.dueDate).toISOString().slice(0, 10);
-                document.getElementById("due-date").value = dueDate;
+                // Handle date inputs safely
+                if (startDateInput && task.startDate) {
+                    try {
+                        let startDate = new Date(task.startDate).toISOString().slice(0, 10);
+                        startDateInput.value = startDate;
+                    } catch (dateError) {
+                        console.warn('Error parsing start date:', dateError);
+                        startDateInput.value = '';
+                    }
+                }
 
-                document.getElementById("modal-title").innerText = `${task.title}`;
+                if (dueDateInput && task.dueDate) {
+                    try {
+                        let dueDate = new Date(task.dueDate).toISOString().slice(0, 10);
+                        dueDateInput.value = dueDate;
+                    } catch (dateError) {
+                        console.warn('Error parsing due date:', dateError);
+                        dueDateInput.value = '';
+                    }
+                }
 
-                document.getElementById("is-priority").checked = task.isPriority;
+                if (modalTitleElement) modalTitleElement.innerText = task.title || 'Edit Task';
 
-                document.querySelector("input[name='Id']").value = task.id;
+                if (isPriorityCheckbox) isPriorityCheckbox.checked = task.isPriority || false;
 
+                if (taskIdInput) taskIdInput.value = task.id || '';
 
-                // Show the modal
-                $("#taskModal").modal("show");
+                // Ensure the modal exists before trying to show it
+                const taskModal = $('#taskModal');
+                if (taskModal.length) {
+                    taskModal.modal("show");
+                } else {
+                    console.error('Task modal not found');
+                }
             } else {
                 console.error('Failed to fetch task details');
+                // Fallback: try to show the modal even without fetching details
+                const taskModal = $('#taskModal');
+                if (taskModal.length) {
+                    taskModal.modal("show");
+                }
             }
         } catch (error) {
             console.error('Error:', error);
+
+            // Fallback: try to show the modal even on error
+            const taskModal = $('#taskModal');
+            if (taskModal.length) {
+                taskModal.modal("show");
+            }
+        }
+    }
+
+    // Modify the addTask function to better handle new task creation
+    async function addTask(columnId) {
+        let input = document.getElementById("newTask" + columnId.charAt(0).toUpperCase() + columnId.slice(1));
+        let taskText = input.value.trim();
+        if (taskText === "") return;
+
+        try {
+            let response = await fetch('/kanban/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    projectId: @Model.ProjectId,
+                    title: taskText,
+                    columnId: getColumnIdFromColumnName(columnId)
+                })
+            });
+
+            if (response.ok) {
+                let newTask = await response.json();
+
+                let taskList = document.getElementById(columnId);
+                let taskItem = document.createElement('li');
+                taskItem.id = `task-${newTask.id}`;
+                taskItem.className = 'list-group-item draggable d-flex align-items-center';
+                taskItem.draggable = true;
+                taskItem.ondragstart = drag;
+                taskItem.onclick = function () {
+                    openTaskModal(this);
+                };
+                taskItem.innerHTML = `
+            <p>${newTask.title}</p>
+            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="removeTask(this); event.stopPropagation();">
+                <i class="remove ti-close"></i>
+            </button>`;
+                taskList.appendChild(taskItem);
+                input.value = '';
+
+                // Show visual feedback
+                taskItem.classList.add("task-added");
+                setTimeout(() => {
+                    taskItem.classList.remove("task-added");
+                }, 1000);
+
+                // Optional: Pre-populate the modal with new task details
+                setTimeout(() => {
+                    const newTaskElement = document.getElementById(`task-${newTask.id}`);
+                    if (newTaskElement) {
+                        // Prepare modal with minimal details
+                        const titleInput = document.getElementById("title");
+                        const taskIdInput = document.querySelector("input[name='Id']");
+                        const modalTitleElement = document.getElementById("modal-title");
+
+                        if (titleInput) titleInput.value = newTask.title;
+                        if (taskIdInput) taskIdInput.value = newTask.id;
+                        if (modalTitleElement) modalTitleElement.innerText = newTask.title;
+
+                        // Show the modal
+                        $('#taskModal').modal("show");
+                    }
+                }, 100);  // Small delay to ensure DOM is updated
+            } else {
+                console.error('Failed to add task');
+                showNotification("error", "Failed to add task");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification("error", "Error adding task");
         }
     }
 
@@ -221,60 +332,6 @@
         } catch (error) {
             console.error('Error:', error);
             showNotification("error", "Error moving task");
-        }
-    }
-
-    // Add a new task
-    async function addTask(columnId) {
-        let input = document.getElementById("newTask" + columnId.charAt(0).toUpperCase() + columnId.slice(1));
-        let taskText = input.value.trim();
-        if (taskText === "") return;
-
-        try {
-            let response = await fetch('/kanban/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    projectId: @Model.ProjectId,
-                    title: taskText,
-                    columnId: getColumnIdFromColumnName(columnId)
-                })
-            });
-
-            if (response.ok) {
-                let newTask = await response.json();
-
-                let taskList = document.getElementById(columnId);
-                let taskItem = document.createElement('li');
-                taskItem.id = `task-${newTask.id}`;
-                taskItem.className = 'list-group-item draggable d-flex align-items-center';
-                taskItem.draggable = true;
-                taskItem.ondragstart = drag;
-                taskItem.onclick = function () {
-                    openTaskModal(this);
-                };
-                taskItem.innerHTML = `
-                ${newTask.title}
-                <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="removeTask(this); event.stopPropagation();">
-                    <i class="remove ti-close"></i>
-                </button>`;
-                taskList.appendChild(taskItem);
-                input.value = '';
-
-                // Show visual feedback
-                taskItem.classList.add("task-added");
-                setTimeout(() => {
-                    taskItem.classList.remove("task-added");
-                }, 1000);
-            } else {
-                console.error('Failed to add task');
-                showNotification("error", "Failed to add task");
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showNotification("error", "Error adding task");
         }
     }
 

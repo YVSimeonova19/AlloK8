@@ -73,7 +73,7 @@ public class ProjectsController : Controller
                 Name = model.Name,
                 Description = model.Description,
                 CreatorId = (await this.userService.GetUserProfileByGuidAsync(this.currentUser.UserId)).Id,
-                CreatedOn = DateTime.Now,
+                CreatedOn = DateTime.UtcNow,
             };
 
             var result = await this.projectService.CreateProjectAsync(project);

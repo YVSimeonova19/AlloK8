@@ -105,7 +105,7 @@ public class KanbanController : Controller
         {
             Title = request.Title,
             CreatorId = (await this.userService.GetUserProfileByGuidAsync(this.currentUser.UserId)).Id,
-            CreatedOn = DateTime.Now,
+            CreatedOn = DateTime.UtcNow,
             ColumnId = request.ColumnId,
             ProjectId = request.ProjectId,
         };

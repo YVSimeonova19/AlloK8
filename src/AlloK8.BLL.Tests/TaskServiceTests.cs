@@ -43,12 +43,12 @@ public class TaskServiceTests
             ColumnId = column1.Id,
             ProjectId = project1.Id,
             Position = 1,
-            StartDate = DateTime.Now,
-            DueDate = DateTime.Now.AddDays(2),
+            StartDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(2),
             CreatedByUserId = user1.Id,
-            CreatedOn = DateTime.Now,
+            CreatedOn = DateTime.UtcNow,
             UpdatedByUserId = user1.Id,
-            UpdatedOn = DateTime.Now
+            UpdatedOn = DateTime.UtcNow
         };
         var task2 = new DAL.Models.Task
         {
@@ -58,12 +58,12 @@ public class TaskServiceTests
             ColumnId = column1.Id,
             ProjectId = project1.Id,
             Position = 2,
-            StartDate = DateTime.Now,
-            DueDate = DateTime.Now.AddDays(3),
+            StartDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(3),
             CreatedByUserId = user1.Id,
-            CreatedOn = DateTime.Now,
+            CreatedOn = DateTime.UtcNow,
             UpdatedByUserId = user1.Id,
-            UpdatedOn = DateTime.Now
+            UpdatedOn = DateTime.UtcNow
         };
         var task3 = new DAL.Models.Task
         {
@@ -73,12 +73,12 @@ public class TaskServiceTests
             ColumnId = column2.Id,
             ProjectId = project2.Id,
             Position = 1,
-            StartDate = DateTime.Now,
-            DueDate = DateTime.Now.AddDays(4),
+            StartDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(4),
             CreatedByUserId = user2.Id,
-            CreatedOn = DateTime.Now,
+            CreatedOn = DateTime.UtcNow,
             UpdatedByUserId = user2.Id,
-            UpdatedOn = DateTime.Now
+            UpdatedOn = DateTime.UtcNow
         };
         var task4 = new DAL.Models.Task
         {
@@ -88,12 +88,12 @@ public class TaskServiceTests
             ColumnId = column3.Id,
             ProjectId = project2.Id,
             Position = 1,
-            StartDate = DateTime.Now,
-            DueDate = DateTime.Now.AddDays(5),
+            StartDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(5),
             CreatedByUserId = user2.Id,
-            CreatedOn = DateTime.Now,
+            CreatedOn = DateTime.UtcNow,
             UpdatedByUserId = user2.Id,
-            UpdatedOn = DateTime.Now
+            UpdatedOn = DateTime.UtcNow
         };
 
         await dbContext.UserProfiles.AddRangeAsync(user1, user2);
@@ -155,7 +155,7 @@ public class TaskServiceTests
             ColumnId = 1,
             ProjectId = 1,
             CreatorId = 1,
-            CreatedOn = DateTime.Now
+            CreatedOn = DateTime.UtcNow
         };
 
         // Act

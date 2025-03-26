@@ -39,11 +39,11 @@ internal class TaskService : ITaskService
         {
             Title = taskIM.Title,
             Description = taskIM.Description,
-            DueDate = taskIM.DueDate ?? DateTime.Now,
+            DueDate = taskIM.DueDate ?? DateTime.UtcNow,
             Position = Math.Max(maxPosition + 1, 1),
             ColumnId = taskIM.ColumnId ?? 1,
             ProjectId = taskIM.ProjectId,
-            StartDate = DateTime.Now,
+            StartDate = DateTime.UtcNow,
             CreatedByUserId = taskIM.CreatorId,
             CreatedOn = taskIM.CreatedOn,
             UpdatedByUserId = taskIM.CreatorId,
