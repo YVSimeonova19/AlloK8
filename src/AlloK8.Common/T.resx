@@ -399,4 +399,28 @@
     <data name="LabelsWordText" xml:space="preserve">
         <value>етикета</value>
     </data>
+    <data name="CreateLabelTitleText" xml:space="preserve">
+        <value>Нов етикет</value>
+    </data>
+    <data name="CreateLabelSubtitleText" xml:space="preserve">
+        <value>Задайте му име, описание и цвят</value>
+    </data>
+    <data name="ColorModalEditLabelText" xml:space="preserve">
+        <value>Цвят</value>
+    </data>
+    <data name="CreateLabelSubmitButtonText" xml:space="preserve">
+        <value>Създаване на етикет</value>
+    </data>
+    <data name="UsersRemovedSuccessfullyMessageText" xml:space="preserve">
+        <value>Потребителят беше премахнат успешно.</value>
+    </data>
+    <data name="DeleteTaskModalTitle" xml:space="preserve">
+        <value>Изтриване на задача</value>
+    </data>
+    <data name="TaskSuccessfullyDeletedPopupText" xml:space="preserve">
+        <value>Задачата беше изтрита успешно.</value>
+    </data>
+    <data name="FailedToDeleteTaskErrorMessage" xml:space="preserve">
+        <value>Изтриването на задачата се провали. Моля, опитайта отнново.</value>
+    </data>
 </root>

@@ -42,7 +42,7 @@
                             draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                             <p>@task.Title</p>
                             <button class="btn btn-icon bg-transparent text-danger ml-auto"
-                                    onclick="removeTask(this); event.stopPropagation();">
+                                    onclick="handleRemoveClick(event, this)">
                                 <i class="remove ti-close"></i>
                             </button>
                         </li>
@@ -69,7 +69,7 @@
                             draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                             <p>@task.Title</p>
                             <button class="btn btn-icon bg-transparent text-danger ml-auto"
-                                    onclick="removeTask(this); event.stopPropagation();">
+                                    onclick="handleRemoveClick(event, this)">
                                 <i class="remove ti-close"></i>
                             </button>
                         </li>
@@ -90,7 +90,7 @@
                             draggable="true" ondragstart="drag(event)" onclick="openTaskModal(this)">
                             <p>@task.Title</p>
                             <button class="btn btn-icon bg-transparent text-danger ml-auto"
-                                    onclick="removeTask(this); event.stopPropagation();">
+                                    onclick="handleRemoveClick(event, this)">
                                 <i class="remove ti-close"></i>
                             </button>
                         </li>
@@ -101,6 +101,7 @@
         </div>
     </div>
     @await Html.PartialAsync("_EditTaskModal", new TaskUpdateVM())
+    @await Html.PartialAsync("_DeleteTaskModal")
 </div>
 
 @section Scripts

@@ -59,25 +59,12 @@
     @await Html.PartialAsync("_EditLabelModal", new LabelUpdateVM())
 </div>
 
-<script>
-    function openDeleteModal(labelId) {
-        document.getElementById('labelDeleteModal').setAttribute('data-label-id', labelId);
-        $('#labelDeleteModal').modal('show');
-    }
-
-    function openEditModal(labelId, title, description, color) {
-        document.querySelector('#labelEditModal input[name="Id"]').value = labelId;
-        document.querySelector('#labelEditModal input[name="Title"]').value = title;
-        document.querySelector('#labelEditModal textarea[name="Description"]').value = description;
-        document.querySelector('#labelEditModal input[name="Color"]').value = color;
-        
-        window.updateColorPicker(color);
-        
-        document.getElementById("modal-title").innerText = title;
-
-        $('#labelEditModal').modal('show');
-    }
-</script>
+@section Scripts
+{
+    <script src="~/js/modules/labels.js"></script>
+    <script src="~/js/modules/edit-label-modal.js"></script>
+    <script src="~/js/modules/delete-label-modal.js"></script>
+}
 
 @functions {
     public string GetTextColor(string? backgroundColor) 

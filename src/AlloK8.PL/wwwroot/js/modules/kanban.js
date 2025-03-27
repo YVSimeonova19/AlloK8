@@ -94,7 +94,7 @@ async function addTask(columnId) {
             };
             taskItem.innerHTML = `
             <p>${newTask.title}</p>
-            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="removeTask(this); event.stopPropagation();">
+            <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="handleRemoveClick(event, this)">
                 <i class="remove ti-close"></i>
             </button>`;
             taskList.appendChild(taskItem);
@@ -216,43 +216,81 @@ async function drop(ev) {
     }
 }
 
+// Open delete modal
+function handleRemoveClick(event, element) {
+    event.stopPropagation();
+    const taskItem = element.closest('li[id^="task-"]');
+    const taskId = taskItem.id.split("-")[1];
+    const modal = document.getElementById('taskDeleteModal');
+    modal.setAttribute('data-task-id', taskId);
+
+    // Clear any previous error messages
+    const errorMessageContainer = document.getElementById("deleteErrorMessage");
+    errorMessageContainer.textContent = "";
+    errorMessageContainer.classList.add("d-none");
+
+    $('#taskDeleteModal').modal('show');
+    return false;
+}
+
 // Remove a task
-async function removeTask(button) {
-    if (!confirm(window['__T__']['DeleteTaskSureModalText'])) {
-        return;
-    }
+document.addEventListener("DOMContentLoaded", function () {
+    // Delete confirmation handler
+    document.getElementById("confirmDeleteTask").addEventListener("click", async function () {
+        const modal = document.getElementById("taskDeleteModal");
+        let taskId = modal.getAttribute("data-task-id");
+        let taskItem = document.getElementById("task-" + taskId);
+        const errorMessageContainer = document.getElementById("deleteErrorMessage");
 
-    let taskItem = button.parentElement;
-    let taskId = taskItem.id.split("-")[1];
+        if (!taskId) {
+            console.log("Task ID not set.");
+            return;
+        }
 
-    try {
-        let response = await fetch('/kanban/delete', {
-            method: 'POST',
+        await fetch(`/kanban/delete`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 id: taskId
             })
-        });
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to delete task.");
+                }
+                return Promise.resolve({});
+            })
+            .then(() => {
+                // Hide the modal
+                $('#taskDeleteModal').modal('hide');
 
-        if (response.ok) {
-            // Fade out the task before removing
-            taskItem.style.transition = "opacity 0.3s";
-            taskItem.style.opacity = "0";
+                // Fade out the task before removing
+                taskItem.style.transition = "opacity 0.3s";
+                taskItem.style.opacity = "0";
 
-            setTimeout(() => {
-                taskItem.remove();
-            }, 300);
-        } else {
-            console.error('Failed to delete task');
-            showNotification("error", "Failed to delete task");
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification("error", "Error deleting task: " + error.message);
-    }
-}
+                setTimeout(() => {
+                    taskItem.remove();
+                }, 300);
+
+                // Show success notification
+                const successNotification = document.getElementById("successNotification");
+                successNotification.style.display = "block";
+
+                // Auto-hide notification after 3 seconds
+                setTimeout(() => {
+                    successNotification.style.display = "none";
+                }, 3000);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                // Display error message in the modal
+                errorMessageContainer.textContent = "@Html.Raw(@T.FailedToDeleteTaskErrorMessage)";
+                errorMessageContainer.classList.remove("d-none");
+            });
+    });
+});
 
 // Map column names to IDs
 function getColumnIdFromColumnName(columnName) {

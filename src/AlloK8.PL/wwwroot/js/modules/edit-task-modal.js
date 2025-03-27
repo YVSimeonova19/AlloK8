@@ -290,6 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
             errorMessage.classList.add("alert", "alert-danger", "mb-3");
             errorMessage.innerHTML = window['__T__']['CannotRemoveUserUnsavedError'];
             form.prepend(errorMessage);
+            
             return;
         }
 
@@ -317,10 +318,10 @@ document.addEventListener("DOMContentLoaded", function () {
             renderAssignedUsers();
 
             // Show temporary success message
-            const successMsg = document.createElement("div");
-            successMsg.classList.add("alert", "alert-success", "mt-2", "mb-2");
-            successMsg.textContent = window['__T__']['UsersAddedSuccessfullyMessageText'];
-            assignedUsersContainer.insertAdjacentElement('beforebegin', successMsg);
+            const successMessage = document.createElement("div");
+            successMessage.classList.add("alert", "alert-success", "mb-3");
+            successMessage.innerHTML = window['__T__']['UsersRemovedSuccessfullyMessageText'];
+            assignedUsersContainer.insertAdjacentElement('beforebegin', successMessage);
 
             // Remove the message after 3 seconds
             setTimeout(() => {
@@ -441,13 +442,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function selectUser(user) {
         // Check if already selected
         if (selectedUsers.some(u => u.id === user.id)) {
-            showValidationError(`${getUserEmail(user)} ${window['__T__']['IsAlreadyInYourSelectionText']}`);
+            showValidationError(getUserEmail(user) + " " + window['__T__']['IsAlreadyInYourSelectionText']);
             return;
         }
 
         // Check if already assigned
         if (assignedUsers.some(u => u.id === user.id)) {
-            showValidationError(`${getUserEmail(user)} ${window['__T__']['IsAlreadyAssignedText']}`);
+            showValidationError(getUserEmail(user) + " " + window['__T__']['IsAlreadyAssignedText']);
             return;
         }
 
@@ -546,8 +547,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Show success message
             const successMessage = document.createElement("div");
-            successMessage.className = "alert alert-success mt-2";
-            successMessage.textContent = window['__T__']['UsersAddedSuccessfullyMessageText'];
+            successMessage.classList.add("alert", "alert-success", "mb-3");
+            successMessage.innerHTML = window['__T__']['UsersAddedSuccessfullyMessageText'];
             selectedUsersContainer.appendChild(successMessage);
 
             // Remove success message after 3 seconds

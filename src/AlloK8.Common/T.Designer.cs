@@ -132,6 +132,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Цвят.
+        /// </summary>
+        public static string ColorModalEditLabelText {
+            get {
+                return ResourceManager.GetString("ColorModalEditLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Потвърждение на новата парола.
         /// </summary>
         public static string ConfirmNewPasswordLabel {
@@ -164,6 +173,33 @@ namespace AlloK8.Common {
         public static string ConfirmRemoveModalTitle {
             get {
                 return ResourceManager.GetString("ConfirmRemoveModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Създаване на етикет.
+        /// </summary>
+        public static string CreateLabelSubmitButtonText {
+            get {
+                return ResourceManager.GetString("CreateLabelSubmitButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задайте му име, описание и цвят.
+        /// </summary>
+        public static string CreateLabelSubtitleText {
+            get {
+                return ResourceManager.GetString("CreateLabelSubtitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нов етикет.
+        /// </summary>
+        public static string CreateLabelTitleText {
+            get {
+                return ResourceManager.GetString("CreateLabelTitleText", resourceCulture);
             }
         }
         
@@ -263,6 +299,15 @@ namespace AlloK8.Common {
         public static string DeleteProjectModalTitle {
             get {
                 return ResourceManager.GetString("DeleteProjectModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изтриване на задача.
+        /// </summary>
+        public static string DeleteTaskModalTitle {
+            get {
+                return ResourceManager.GetString("DeleteTaskModalTitle", resourceCulture);
             }
         }
         
@@ -416,6 +461,15 @@ namespace AlloK8.Common {
         public static string FailedToDeleteProjectErrorMessage {
             get {
                 return ResourceManager.GetString("FailedToDeleteProjectErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Изтриването на задачата се провали. Моля, опитайта отнново..
+        /// </summary>
+        public static string FailedToDeleteTaskErrorMessage {
+            get {
+                return ResourceManager.GetString("FailedToDeleteTaskErrorMessage", resourceCulture);
             }
         }
         
@@ -1095,6 +1149,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Задачата беше изтрита успешно..
+        /// </summary>
+        public static string TaskSuccessfullyDeletedPopupText {
+            get {
+                return ResourceManager.GetString("TaskSuccessfullyDeletedPopupText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Задачата беше обновена успешно!.
         /// </summary>
         public static string TaskUpdatedSuccessfullyMessageText {
@@ -1181,6 +1244,15 @@ namespace AlloK8.Common {
         public static string UsersAddedSuccessfullyMessageText {
             get {
                 return ResourceManager.GetString("UsersAddedSuccessfullyMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Потребителят беше премахнат успешно..
+        /// </summary>
+        public static string UsersRemovedSuccessfullyMessageText {
+            get {
+                return ResourceManager.GetString("UsersRemovedSuccessfullyMessageText", resourceCulture);
             }
         }
         
