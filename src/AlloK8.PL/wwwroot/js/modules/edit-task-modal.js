@@ -249,10 +249,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 assignedUsers = taskData.users || [];
                 renderAssignedUsers();
             } else {
-                assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.ErrorLoadingUsersErrorMessageText)</div>";
+                assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>" + window['__T__']['ErrorLoadingUsersErrorMessageText'] + "</div>";
             }
         } catch (error) {
-            assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.ErrorLoadingUsersErrorMessageText)</div>";
+            assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>" + window['__T__']['ErrorLoadingUsersErrorMessageText'] + "</div>";
         }
     }
 
@@ -286,7 +286,10 @@ document.addEventListener("DOMContentLoaded", function () {
     async function removeAssignedUser(userId) {
         const taskId = document.querySelector('#taskModal input[name="Id"]').value;
         if (!taskId) {
-            alert("@Html.Raw(@T.CannotRemoveUserUnsavedError)");
+            const errorMessage = document.createElement("div");
+            errorMessage.classList.add("alert", "alert-danger", "mb-3");
+            errorMessage.innerHTML = window['__T__']['CannotRemoveUserUnsavedError'];
+            form.prepend(errorMessage);
             return;
         }
 
@@ -316,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Show temporary success message
             const successMsg = document.createElement("div");
             successMsg.classList.add("alert", "alert-success", "mt-2", "mb-2");
-            successMsg.textContent = "@Html.Raw(@T.UsersAddedSuccessfullyMessageText)";
+            successMsg.textContent = window['__T__']['UsersAddedSuccessfullyMessageText'];
             assignedUsersContainer.insertAdjacentElement('beforebegin', successMsg);
 
             // Remove the message after 3 seconds
@@ -325,7 +328,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 3000);
         } catch (error) {
             console.error('Error removing user:', error);
-            alert("@Html.Raw(@T.FailedToRemoveUserFromTaskErrorMessageText): " + error.message);
+            const errorMessage = document.createElement("div");
+            errorMessage.classList.add("alert", "alert-danger", "mb-3");
+            errorMessage.innerHTML = window['__T__']['FailedToRemoveUserFromTaskErrorMessageText'];
+            form.prepend(errorMessage);
         }
     }
 
@@ -334,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function () {
         assignedUsersContainer.innerHTML = "";
 
         if (assignedUsers.length === 0) {
-            assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.NoUsersAssignedText)</div>";
+            assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>" + window['__T__']['NoUsersAssignedText'] + "</div>";
             return;
         }
 
@@ -386,11 +392,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     const users = await response.json();
                     renderUserResults(users);
                 } else {
-                    userResults.innerHTML = "<li class='list-group-item'>@Html.Raw(@T.NoUsersFoundMessageText)</li>";
+                    userResults.innerHTML = "<li class='list-group-item'>" + window['__T__']['NoUsersFoundMessageText'] + "</li>";
                 }
             } catch (error) {
                 console.error('Error searching users:', error);
-                userResults.innerHTML = "<li class='list-group-item'>@Html.Raw(@T.ErrorSearchingUsers)</li>";
+                userResults.innerHTML = "<li class='list-group-item'>" + window['__T__']['ErrorSearchingUsers'] + "</li>";
             }
         } else {
             userResults.innerHTML = "";
@@ -435,13 +441,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function selectUser(user) {
         // Check if already selected
         if (selectedUsers.some(u => u.id === user.id)) {
-            showValidationError(`${getUserEmail(user)} @Html.Raw(@T.IsAlreadyInYourSelectionText)`);
+            showValidationError(`${getUserEmail(user)} ${window['__T__']['IsAlreadyInYourSelectionText']}`);
             return;
         }
 
         // Check if already assigned
         if (assignedUsers.some(u => u.id === user.id)) {
-            showValidationError(`${getUserEmail(user)} @Html.Raw(@T.IsAlreadyAssignedText)`);
+            showValidationError(`${getUserEmail(user)} ${window['__T__']['IsAlreadyAssignedText']}`);
             return;
         }
 
@@ -488,13 +494,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Handle adding users without submitting the entire form
     addUsersButton.addEventListener("click", async function () {
         if (selectedUsers.length === 0) {
-            showValidationError("@Html.Raw(@T.PleaseSelectAtLeastOneUserText)");
+            showValidationError(window['__T__']['PleaseSelectAtLeastOneUserText']);
             return;
         }
 
         const taskId = document.querySelector('#taskModal input[name="Id"]').value;
         if (!taskId) {
-            showValidationError("@Html.Raw(@T.ErrorAddingUserToAnUnsavedTask)");
+            showValidationError(window['__T__']['ErrorAddingUserToAnUnsavedTask']);
             return;
         }
 
@@ -541,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Show success message
             const successMessage = document.createElement("div");
             successMessage.className = "alert alert-success mt-2";
-            successMessage.textContent = "@Html.Raw(@T.UsersAddedSuccessfullyMessageText)";
+            successMessage.textContent = window['__T__']['UsersAddedSuccessfullyMessageText'];
             selectedUsersContainer.appendChild(successMessage);
 
             // Remove success message after 3 seconds
@@ -589,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
             loadTaskLabels(taskId);
         } else {
             // For new tasks, there are no assigned users or labels
-            assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>@Html.Raw(@T.NoUsersAssignedText)</div>";
+            assignedUsersContainer.innerHTML = "<div class='text-center text-muted'>" + window['__T__']['NoUsersAssignedText'] + "</div>";
             selectedLabels = [];
             renderSelectedLabels();
         }
@@ -712,11 +718,17 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 let errorData = await response.text();
                 console.error('Failed to update task:', errorData);
-                alert('@Html.Raw(@T.FailedToUpdateTaskText)');
+                const errorMessage = document.createElement("div");
+                errorMessage.classList.add("alert", "alert-danger", "mb-3");
+                errorMessage.innerHTML = window['__T__']['FailedToUpdateTaskText'];
+                form.prepend(errorMessage);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('@Html.Raw(@T.ErrorWhileUpdatingTaskMessageText)');
+            const errorMessage = document.createElement("div");
+            errorMessage.classList.add("alert", "alert-danger", "mb-3");
+            errorMessage.innerHTML = window['__T__']['ErrorWhileUpdatingTaskMessageText'];
+            form.prepend(errorMessage);
         }
     });
 });

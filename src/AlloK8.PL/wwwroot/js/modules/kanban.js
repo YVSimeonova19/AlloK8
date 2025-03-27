@@ -218,7 +218,7 @@ async function drop(ev) {
 
 // Remove a task
 async function removeTask(button) {
-    if (!confirm("@Html.Raw(@T.DeleteTaskSureModalText)")) {
+    if (!confirm(window['__T__']['DeleteTaskSureModalText'])) {
         return;
     }
 
