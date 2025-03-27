@@ -12,6 +12,7 @@ using AlloK8.PL.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Syncfusion.Drawing;
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf.Grid;
@@ -209,6 +210,8 @@ public class ProjectsController : Controller
 
             // Setup pdf document
             var document = new PdfDocument();
+            document.PageSettings.Size = PdfPageSize.A4;
+            document.PageSettings.Orientation = PdfPageOrientation.Landscape;
             var page = document.Pages.Add();
             var graphics = page.Graphics;
             var grid = new PdfGrid
@@ -217,6 +220,7 @@ public class ProjectsController : Controller
                 DataSource = invoiceDetails,
             };
             var primaryColor = new PdfColor(75, 73, 172);
+            var font = new PdfTrueTypeFont("Arial Unicode MS", 14);
 
             // Create the grid cell styles
             var cellStyle = new PdfGridCellStyle
@@ -226,7 +230,6 @@ public class ProjectsController : Controller
                     All = new PdfPen(primaryColor),
                 },
                 TextBrush = PdfBrushes.Black,
-                Font = new PdfStandardFont(PdfFontFamily.Helvetica, 12f),
             };
 
             var header = grid.Headers[0];
@@ -240,7 +243,6 @@ public class ProjectsController : Controller
                 },
                 BackgroundBrush = new PdfSolidBrush(primaryColor),
                 TextBrush = PdfBrushes.White,
-                Font = new PdfStandardFont(PdfFontFamily.Helvetica, 14f, PdfFontStyle.Regular),
             };
 
             // Apply the header style
