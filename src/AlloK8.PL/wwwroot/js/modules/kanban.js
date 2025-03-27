@@ -148,6 +148,9 @@ async function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     var taskId = data.split("-")[1];
+    var taskElement = document.getElementById(data);
+
+    // Find the target column by traversing up from the drop target
     var targetColumn = ev.target.closest(".task-list");
 
     if (!targetColumn) {
@@ -156,32 +159,48 @@ async function drop(ev) {
     }
 
     var targetColumnId = targetColumn.id;
-    var currentColumnId = document.getElementById(data).closest(".task-list").id;
+    var currentColumnId = taskElement.closest(".task-list").id;
+
+    // Exit early if dropping in the same position
+    if (targetColumnId === currentColumnId && ev.target === taskElement) {
+        return;
+    }
 
     // Get all tasks in the target column
     var tasks = Array.from(targetColumn.querySelectorAll(".draggable"));
     console.log("Tasks in Target Column:", tasks);
 
-    // Calculate the position index
-    var position = tasks.length; // Default to the end of the list
+    var position = tasks.length + 1;
     var dropTarget = ev.target.closest(".draggable");
 
     if (dropTarget) {
-        // Find the index of the drop target
-        position = tasks.indexOf(dropTarget);
+        // If dropped directly on a task
+        position = tasks.indexOf(dropTarget) + 1;
 
-        // Check if the task is dropped below the drop target
+        // Check if dropped in the bottom half of the target
         var dropTargetRect = dropTarget.getBoundingClientRect();
-        console.log("Drop Target Rect:", dropTargetRect);
-        console.log("Mouse Y:", ev.clientY);
-
         if (ev.clientY > dropTargetRect.top + dropTargetRect.height / 2) {
+            // If dropped below the center point, insert after this task
             position++;
         }
-        console.log("Adjusted Position:", position);
-    } else {
-        // If no drop target is found, append the task to the end
-        console.log("Appending to End. Position:", position);
+
+        // Adjust position if moving within the same column 
+        // and the task is being moved downward
+        if (targetColumnId === currentColumnId) {
+            var currentPosition = tasks.indexOf(taskElement) + 1;
+            if (currentPosition < position) {
+                position--;
+            }
+        }
+
+        console.log("Position calculation: ", position);
+    }
+
+    // Create a temporary copy of the tasks array for DOM manipulation
+    // Remove the task we're moving if it's in the same column
+    var tempTasks = [...tasks];
+    if (targetColumnId === currentColumnId) {
+        tempTasks = tempTasks.filter(item => item !== taskElement);
     }
 
     // Send the move request to the server
@@ -194,14 +213,25 @@ async function drop(ev) {
             body: JSON.stringify({
                 id: taskId,
                 columnId: getColumnIdFromColumnName(targetColumnId),
-                position: position
+                position: position // Sending 1-based position to the server
             })
         });
 
         if (response.ok) {
-            var taskElement = document.getElementById(data);
-            targetColumn.insertBefore(taskElement, tasks[position] || null);
-            // Show a subtle success indicator
+            // Remove the element from its current position first
+            if (taskElement.parentNode) {
+                taskElement.parentNode.removeChild(taskElement);
+            }
+
+            if (position <= tempTasks.length) {
+                // If position is within the bounds of the array, insert before that position
+                targetColumn.insertBefore(taskElement, tempTasks[position - 1]);
+            } else {
+                // If position is beyond the array bounds, append to the end
+                targetColumn.appendChild(taskElement);
+            }
+
+            // Show a success indicator
             taskElement.classList.add("move-success");
             setTimeout(() => {
                 taskElement.classList.remove("move-success");

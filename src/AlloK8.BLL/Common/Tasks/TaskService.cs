@@ -267,7 +267,7 @@ internal class TaskService : ITaskService
 
         if (task.Labels.Any(u => u.Id == label.Id))
         {
-            throw new Exception("Label is already assigned to this task.");
+            return;
         }
 
         task.Labels.Add(label);
