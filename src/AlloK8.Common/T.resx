@@ -468,4 +468,13 @@
     <data name="DueDatePDFText" xml:space="preserve">
         <value>Край</value>
     </data>
+    <data name="Title30ErrorMessage" xml:space="preserve">
+        <value>Името не може да е повече от 30 символа.</value>
+    </data>
+    <data name="Description100ErrorMessage" xml:space="preserve">
+        <value>Описанието не може да е повече от 100 символа.</value>
+    </data>
+    <data name="HEX7ErrorMessage" xml:space="preserve">
+        <value>Цветът не може да е повече от 7 символа.</value>
+    </data>
 </root>

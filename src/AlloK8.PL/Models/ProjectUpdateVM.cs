@@ -8,10 +8,16 @@ public class ProjectUpdateVM
 {
     public int Id { get; set; }
 
-    [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters.")]
+    [StringLength(
+        30,
+        ErrorMessageResourceType = typeof(Common.T),
+        ErrorMessageResourceName = "Title30ErrorMessage")]
     public string? Title { get; set; }
 
-    [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
+    [StringLength(
+        100,
+        ErrorMessageResourceType = typeof(Common.T),
+        ErrorMessageResourceName = "Description100ErrorMessage")]
     public string? Description { get; set; }
 
     public List<UserProfile> Users { get; set; } = [];

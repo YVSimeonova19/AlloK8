@@ -6,12 +6,21 @@ public class LabelUpdateVM
 {
     public int Id { get; set; }
 
-    [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters.")]
+    [StringLength(
+        30,
+        ErrorMessageResourceType = typeof(Common.T),
+        ErrorMessageResourceName = "Title30ErrorMessage")]
     public string? Title { get; set; }
 
-    [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
+    [StringLength(
+        100,
+        ErrorMessageResourceType = typeof(Common.T),
+        ErrorMessageResourceName = "Description100ErrorMessage")]
     public string? Description { get; set; }
 
-    [StringLength(7, ErrorMessage = "Color HEX cannot exceed 6 characters.")]
+    [StringLength(
+        7,
+        ErrorMessageResourceType = typeof(Common.T),
+        ErrorMessageResourceName = "HEX7ErrorMessage")]
     public string? Color { get; set; }
 }

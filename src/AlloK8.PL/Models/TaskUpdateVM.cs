@@ -10,20 +10,24 @@ public class TaskUpdateVM
     public int Id { get; set; }
 
     [Required(ErrorMessage = "Title is required.")]
-    [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters.")]
+    [StringLength(
+        30,
+        ErrorMessageResourceType = typeof(Common.T),
+        ErrorMessageResourceName = "Title30ErrorMessage")]
     public string? Title { get; set; }
 
-    [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
+    [StringLength(
+        100,
+        ErrorMessageResourceType = typeof(Common.T),
+        ErrorMessageResourceName = "Description100ErrorMessage")]
     public string? Description { get; set; }
 
     public bool IsPriority { get; set; }
 
     [DataType(DataType.Date)]
-    [Display(Name = "Start Date")]
     public DateTime? StartDate { get; set; }
 
     [DataType(DataType.Date)]
-    [Display(Name = "Due Date")]
     public DateTime? DueDate { get; set; }
 
     public List<UserProfile> Users { get; set; } = [];
@@ -32,6 +36,5 @@ public class TaskUpdateVM
     public List<Label> Labels { get; set; } = [];
     public List<Label> AllLabels { get; set; } = [];
 
-    [Display(Name = "Label IDs")]
     public List<int> LabelIds { get; set; } = [];
 }

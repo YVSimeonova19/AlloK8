@@ -330,6 +330,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Описанието не може да е повече от 100 символа..
+        /// </summary>
+        public static string Description100ErrorMessage {
+            get {
+                return ResourceManager.GetString("Description100ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Описание.
         /// </summary>
         public static string DescriptionModalEditTaskText {
@@ -596,6 +605,15 @@ namespace AlloK8.Common {
         public static string HaveAccountText {
             get {
                 return ResourceManager.GetString("HaveAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Цветът не може да е повече от 7 символа..
+        /// </summary>
+        public static string HEX7ErrorMessage {
+            get {
+                return ResourceManager.GetString("HEX7ErrorMessage", resourceCulture);
             }
         }
         
@@ -1307,6 +1325,15 @@ namespace AlloK8.Common {
         public static string TaskUsersLabel {
             get {
                 return ResourceManager.GetString("TaskUsersLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Името не може да е повече от 30 символа..
+        /// </summary>
+        public static string Title30ErrorMessage {
+            get {
+                return ResourceManager.GetString("Title30ErrorMessage", resourceCulture);
             }
         }
         

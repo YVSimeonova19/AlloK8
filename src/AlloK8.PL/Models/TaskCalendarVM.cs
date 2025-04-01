@@ -10,6 +10,7 @@ public class TaskCalendarVM
 {
     public int Id { get; set; }
 
+    // Make properties lowercase so they match calendar properties
     public string? title { get; set; }
 
     public DateTime start { get; set; }
