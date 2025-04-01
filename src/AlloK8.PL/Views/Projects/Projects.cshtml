@@ -47,7 +47,7 @@
                                        onclick="openShareModal(this)">@T.ShareDropdownButtonText</a>
                                     <a class="dropdown-item" href="javascript:void(0)">
                                         @{
-                                            Html.BeginForm("CreateReport", "Projects", new { projectId = @project.Id }, FormMethod.Get);
+                                            Html.BeginForm("CreateReport", "Projects", new { projectId = @project.Id, projectName = project.Name }, FormMethod.Get);
                                             {
                                                 <div>
                                                     <input type="submit" value="Get report" style="background-color: transparent; border: none"/>

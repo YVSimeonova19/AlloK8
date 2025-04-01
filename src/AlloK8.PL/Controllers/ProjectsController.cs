@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using AlloK8.BLL.Common.Invoices;
 using AlloK8.BLL.Common.Projects;
+using AlloK8.BLL.Common.Reports;
 using AlloK8.BLL.Common.Search;
 using AlloK8.BLL.Common.Users;
 using AlloK8.BLL.Identity.Contracts;
@@ -12,11 +12,6 @@ using AlloK8.PL.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Syncfusion.Drawing;
-using Syncfusion.Pdf;
-using Syncfusion.Pdf.Graphics;
-using Syncfusion.Pdf.Grid;
-using PointF = Syncfusion.Drawing.PointF;
 using ProjectVM = AlloK8.PL.Models.ProjectVM;
 
 namespace AlloK8.PL.Controllers;
@@ -201,80 +196,12 @@ public class ProjectsController : Controller
     }
 
     [HttpGet("/project/{projectId}/create-report")]
-    public async Task<IActionResult> CreateReport([FromRoute] int projectId)
+    public async Task<IActionResult> CreateReport([FromRoute] int projectId, string projectName)
     {
         try
         {
-            // Create data source
-            var invoiceDetails = await this.reportService.GetProjectProgressAsync(projectId);
-
-            // Setup pdf document
-            var document = new PdfDocument();
-            document.PageSettings.Size = PdfPageSize.A4;
-            document.PageSettings.Orientation = PdfPageOrientation.Landscape;
-            var page = document.Pages.Add();
-            var graphics = page.Graphics;
-            var grid = new PdfGrid
-            {
-                // Add the data source
-                DataSource = invoiceDetails,
-            };
-            var primaryColor = new PdfColor(75, 73, 172);
-            var font = new PdfTrueTypeFont("Arial Unicode MS", 14);
-
-            // Create the grid cell styles
-            var cellStyle = new PdfGridCellStyle
-            {
-                Borders =
-                {
-                    All = new PdfPen(primaryColor),
-                },
-                TextBrush = PdfBrushes.Black,
-            };
-
-            var header = grid.Headers[0];
-
-            // Create the header style
-            var headerStyle = new PdfGridCellStyle
-            {
-                Borders =
-                {
-                    All = new PdfPen(primaryColor),
-                },
-                BackgroundBrush = new PdfSolidBrush(primaryColor),
-                TextBrush = PdfBrushes.White,
-            };
-
-            // Apply the header style
-            header.ApplyStyle(headerStyle);
-
-            // Create the layout format for grid
-            var layoutFormat = new PdfGridLayoutFormat
-            {
-                // Allow table pagination
-                Layout = PdfLayoutType.Paginate,
-            };
-
-            // Draw the grid to the PDF page
-            grid.Draw(
-                page,
-                new PointF(10, 10),
-                layoutFormat);
-
-            // Save the document to memory stream
-            using var stream = new MemoryStream();
-            document.Save(stream);
-            document.Close(true);
-
-            // Reset the position to the beginning of the stream
-            stream.Position = 0;
-
-            // Return the PDF as a file
-            return this.File(
-                fileContents: stream.ToArray(),
-                contentType: "application/pdf",
-                fileDownloadName: $"Project{projectId}Report.pdf",
-                enableRangeProcessing: false);
+            var pdfBytes = await this.reportService.GenerateProjectReportPdfAsync(projectId, projectName);
+            return this.File(pdfBytes, "application/pdf", $"Project_{projectId}_Report.pdf");
         }
         catch (Exception ex)
         {

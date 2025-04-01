@@ -17,8 +17,6 @@ public static class AppPreparation
 {
     public static async Task PrepareAsync(this IApplicationBuilder app, IConfiguration configuration)
     {
-        var licenseKey = configuration.GetSection("Syncfusion").GetSection("LicenseKey").Value;
-        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey);
         try
         {
             using var scope = app.ApplicationServices.CreateScope();

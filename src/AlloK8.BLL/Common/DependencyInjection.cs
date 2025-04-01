@@ -1,7 +1,7 @@
 ﻿using AlloK8.BLL.Common.EmailSending;
-using AlloK8.BLL.Common.Invoices;
 using AlloK8.BLL.Common.Labels;
 using AlloK8.BLL.Common.Projects;
+using AlloK8.BLL.Common.Reports;
 using AlloK8.BLL.Common.Search;
 using AlloK8.BLL.Common.Tasks;
 using AlloK8.BLL.Common.Users;
