@@ -58,10 +58,4 @@ internal class UserService : IUserService
 
         return userProfile;
     }
-
-    public async Task<List<UserProfile>> GetAllUserProfilesAsync()
-    {
-        var users = this.context.UserProfiles.ToList();
-        return users;
-    }
 }

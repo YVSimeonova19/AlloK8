@@ -22,6 +22,4 @@ public class TaskIM
 
     [Required]
     public int ProjectId { get; set; }
-
-    // Add assignees
 }

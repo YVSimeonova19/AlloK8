@@ -11,7 +11,6 @@ public interface IProjectService
     Task<DAL.Models.Project> CreateProjectAsync(ProjectIM projectIM);
 
     Task<DAL.Models.Project> GetProjectByIdAsync(int id);
-    Task<List<DAL.Models.Project>> GetAllProjectsAsync();
     Task<List<DAL.Models.Project>> GetProjectsByUserIdAsync(Guid? userId);
 
     Task<DAL.Models.Project> UpdateProjectAsync(ProjectUM projectUM, int id);

@@ -65,20 +65,6 @@ namespace AlloK8.BLL.Tests
         }
 
         [Fact]
-        public async Task GetAllProjectsAsync_ShouldReturnAllProjects()
-        {
-            // Arrange
-            await SeedTestDataAsync();
-
-            // Act
-            var result = await projectService.GetAllProjectsAsync();
-
-            // Assert
-            result.Should().NotBeNull();
-            result.Count.Should().Be(2);
-        }
-
-        [Fact]
         public async Task UpdateTaskAsync_ValidInput_ShouldReturnUpdatedProject()
         {
             // Arrange

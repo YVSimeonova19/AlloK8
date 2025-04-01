@@ -13,6 +13,4 @@ public interface IUserService
     Task<UserProfile> GetUserProfileByIdAsync(int id);
 
     Task<UserProfile> GetUserProfileByGuidAsync(Guid? userGuid);
-
-    Task<List<UserProfile>> GetAllUserProfilesAsync();
 }

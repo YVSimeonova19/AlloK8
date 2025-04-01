@@ -60,11 +60,6 @@ internal class ProjectService : IProjectService
         return project;
     }
 
-    public async Task<List<DAL.Models.Project>> GetAllProjectsAsync()
-    {
-        return await this.context.Projects.ToListAsync();
-    }
-
     public async Task<List<DAL.Models.Project>> GetProjectsByUserIdAsync(Guid? userId)
     {
         var user = await this.userService.GetUserProfileByGuidAsync(userId);
