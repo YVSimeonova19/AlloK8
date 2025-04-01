@@ -86,6 +86,15 @@ internal class ProjectService : IProjectService
     {
         var project = await this.GetProjectByIdAsync(id);
 
+        var tasksToDelete = await this.context.Tasks
+            .Where(t => t.ProjectId == id)
+            .ToListAsync();
+
+        if (tasksToDelete.Any())
+        {
+            this.context.Tasks.RemoveRange(tasksToDelete);
+        }
+
         this.context.Projects.Remove(project);
         await this.context.SaveChangesAsync();
     }

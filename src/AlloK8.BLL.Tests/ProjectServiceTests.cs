@@ -7,6 +7,7 @@ using AlloK8.DAL;
 using AlloK8.DAL.Models;
 using FluentAssertions;
 using Moq;
+using Xunit;
 using Task = System.Threading.Tasks.Task;
 
 namespace AlloK8.BLL.Tests

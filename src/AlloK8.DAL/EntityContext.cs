@@ -56,7 +56,7 @@ public class EntityContext
             .WithMany(p => p.Tasks)
             .HasForeignKey(t => t.ProjectId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         // Task(1) - Creator(m)
         builder
