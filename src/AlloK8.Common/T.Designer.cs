@@ -96,6 +96,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Отговорни.
+        /// </summary>
+        public static string AssigneesColumnTitlePDFText {
+            get {
+                return ResourceManager.GetString("AssigneesColumnTitlePDFText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Задайте потребители.
         /// </summary>
         public static string AssignUsersLabel {
@@ -357,6 +366,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Край.
+        /// </summary>
+        public static string DueDatePDFText {
+            get {
+                return ResourceManager.GetString("DueDatePDFText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Редактирай.
         /// </summary>
         public static string EditDropdownButtonText {
@@ -546,6 +564,24 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Генериран.
+        /// </summary>
+        public static string GeneratedPDFTitleText {
+            get {
+                return ResourceManager.GetString("GeneratedPDFTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доклад за напредъка.
+        /// </summary>
+        public static string GenerateReportButtonText {
+            get {
+                return ResourceManager.GetString("GenerateReportButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Започни.
         /// </summary>
         public static string GetStratedButtonLandingText {
@@ -560,6 +596,15 @@ namespace AlloK8.Common {
         public static string HaveAccountText {
             get {
                 return ResourceManager.GetString("HaveAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Висок.
+        /// </summary>
+        public static string HighTitlePDFText {
+            get {
+                return ResourceManager.GetString("HighTitlePDFText", resourceCulture);
             }
         }
         
@@ -807,6 +852,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Нормален.
+        /// </summary>
+        public static string NormalTitlePDFText {
+            get {
+                return ResourceManager.GetString("NormalTitlePDFText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Няма зададени потребители.
         /// </summary>
         public static string NoUsersAssignedText {
@@ -834,6 +888,15 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to от.
+        /// </summary>
+        public static string OfPDFText {
+            get {
+                return ResourceManager.GetString("OfPDFText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Стара парола.
         /// </summary>
         public static string OldPasswordLabel {
@@ -848,6 +911,15 @@ namespace AlloK8.Common {
         public static string OnlyMineButtonText {
             get {
                 return ResourceManager.GetString("OnlyMineButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Страница.
+        /// </summary>
+        public static string PagePDFText {
+            get {
+                return ResourceManager.GetString("PagePDFText", resourceCulture);
             }
         }
         
@@ -933,11 +1005,38 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Приоритет.
+        /// </summary>
+        public static string PriorityColumnTitlePDFText {
+            get {
+                return ResourceManager.GetString("PriorityColumnTitlePDFText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Прогрес.
+        /// </summary>
+        public static string ProgressColumnTitlePDFText {
+            get {
+                return ResourceManager.GetString("ProgressColumnTitlePDFText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Име на проекта.
         /// </summary>
         public static string ProjectNameLabelText {
             get {
                 return ResourceManager.GetString("ProjectNameLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Проект.
+        /// </summary>
+        public static string ProjectPDFTitleText {
+            get {
+                return ResourceManager.GetString("ProjectPDFTitleText", resourceCulture);
             }
         }
         
@@ -1010,6 +1109,15 @@ namespace AlloK8.Common {
         public static string RemoveButtonText {
             get {
                 return ResourceManager.GetString("RemoveButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Доклад за напредъка.
+        /// </summary>
+        public static string ReportPDFTitleText {
+            get {
+                return ResourceManager.GetString("ReportPDFTitleText", resourceCulture);
             }
         }
         
@@ -1140,11 +1248,38 @@ namespace AlloK8.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Начало.
+        /// </summary>
+        public static string StartDatePDFText {
+            get {
+                return ResourceManager.GetString("StartDatePDFText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Запази промените.
         /// </summary>
         public static string SubmitChangesModalEditButtonText {
             get {
                 return ResourceManager.GetString("SubmitChangesModalEditButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задача.
+        /// </summary>
+        public static string TaskColumnTitlePDFText {
+            get {
+                return ResourceManager.GetString("TaskColumnTitlePDFText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Задачи в проекта.
+        /// </summary>
+        public static string TasksPDFTitleText {
+            get {
+                return ResourceManager.GetString("TasksPDFTitleText", resourceCulture);
             }
         }
         

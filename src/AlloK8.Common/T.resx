@@ -423,4 +423,49 @@
     <data name="FailedToDeleteTaskErrorMessage" xml:space="preserve">
         <value>Изтриването на задачата се провали. Моля, опитайта отнново.</value>
     </data>
+    <data name="GenerateReportButtonText" xml:space="preserve">
+        <value>Доклад за напредъка</value>
+    </data>
+    <data name="ReportPDFTitleText" xml:space="preserve">
+        <value>Доклад за напредъка</value>
+    </data>
+    <data name="ProjectPDFTitleText" xml:space="preserve">
+        <value>Проект</value>
+    </data>
+    <data name="GeneratedPDFTitleText" xml:space="preserve">
+        <value>Генериран</value>
+    </data>
+    <data name="TasksPDFTitleText" xml:space="preserve">
+        <value>Задачи в проекта</value>
+    </data>
+    <data name="TaskColumnTitlePDFText" xml:space="preserve">
+        <value>Задача</value>
+    </data>
+    <data name="PriorityColumnTitlePDFText" xml:space="preserve">
+        <value>Приоритет</value>
+    </data>
+    <data name="ProgressColumnTitlePDFText" xml:space="preserve">
+        <value>Прогрес</value>
+    </data>
+    <data name="AssigneesColumnTitlePDFText" xml:space="preserve">
+        <value>Отговорни</value>
+    </data>
+    <data name="HighTitlePDFText" xml:space="preserve">
+        <value>Висок</value>
+    </data>
+    <data name="NormalTitlePDFText" xml:space="preserve">
+        <value>Нормален</value>
+    </data>
+    <data name="PagePDFText" xml:space="preserve">
+        <value>Страница</value>
+    </data>
+    <data name="OfPDFText" xml:space="preserve">
+        <value>от</value>
+    </data>
+    <data name="StartDatePDFText" xml:space="preserve">
+        <value>Начало</value>
+    </data>
+    <data name="DueDatePDFText" xml:space="preserve">
+        <value>Край</value>
+    </data>
 </root>

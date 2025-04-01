@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AlloK8.BLL.Common.Tasks;
+using AlloK8.Common;
 using AlloK8.Common.Models.Report;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -43,10 +43,10 @@ internal class ReportService : IReportService
 
             var progress = task.ColumnId switch
             {
-                1 => "To Do",
-                2 => "In Progress",
-                3 => "Done",
-                _ => "Undefined",
+                1 => @T.ToDoColumnLabel,
+                2 => @T.DoingColumnLabel,
+                3 => @T.DoneColumnLabel,
+                _ => "-",
             };
 
             var reportVM = new ReportVM
@@ -115,14 +115,14 @@ internal class ReportService : IReportService
                     {
                         row.RelativeItem().Column(column =>
                         {
-                            column.Item().Text("Report").FontSize(20).Bold();
-                            column.Item().Text($"Project: {this.ProjectName}").FontSize(14);
-                            column.Item().Text($"Generated: {this.GeneratedDate:dd/MM/yyyy}").FontSize(10);
+                            column.Item().Text(@T.ReportPDFTitleText).FontSize(18).Bold();
+                            column.Item().Text($"{@T.ProjectPDFTitleText}: {this.ProjectName}").FontSize(14);
+                            column.Item().Text($"{@T.GeneratedPDFTitleText}: {this.GeneratedDate:dd/MM/yyyy}").FontSize(10);
                         });
                     });
                     page.Content().PaddingVertical(10).Column(column =>
             {
-                column.Item().Text("Project Tasks").FontSize(16).Bold();
+                column.Item().Text(@T.TasksPDFTitleText).FontSize(16).Bold();
                 column.Spacing(5);
 
                 column.Item().Table(table =>
@@ -143,14 +143,14 @@ internal class ReportService : IReportService
                     table.Header(header =>
                     {
                         header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("#").FontSize(10);
-                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("Task").FontSize(10);
-                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("Description").FontSize(10);
-                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("Priority").FontSize(10);
-                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("Progress").FontSize(10);
-                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("Start Date").FontSize(10);
-                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("Due Date").FontSize(10);
-                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("Assignees").FontSize(10);
-                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text("Labels").FontSize(10);
+                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text(@T.TaskColumnTitlePDFText).FontSize(10);
+                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text(@T.DescriptionModalEditTaskText).FontSize(10);
+                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text(@T.PriorityColumnTitlePDFText).FontSize(10);
+                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text(@T.ProgressColumnTitlePDFText).FontSize(10);
+                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text(@T.StartDatePDFText).FontSize(10);
+                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text(@T.DueDatePDFText).FontSize(10);
+                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text(@T.AssigneesColumnTitlePDFText).FontSize(10);
+                        header.Cell().DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black).Text(@T.LabelsViewTitle).FontSize(10);
                     });
 
                     for (int i = 0; i < this.ReportData.Count; i++)
@@ -161,7 +161,7 @@ internal class ReportService : IReportService
                         table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(rowNumber.ToString()).FontSize(10);
                         table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(item.TaskName).FontSize(10);
                         table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(this.TextTruncate(item.TaskDescription!, 100)).FontSize(10);
-                        table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(item.IsPriority ? "High" : "Normal").FontSize(10);
+                        table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(item.IsPriority ? @T.HighTitlePDFText : @T.NormalTitlePDFText).FontSize(10);
                         table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(item.Progress).FontSize(10);
                         table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(((DateTime)item.StartDate!).ToString("dd/MM/yyyy")).FontSize(8);
                         table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(((DateTime)item.DueDate!).ToString("dd/MM/yyyy")).FontSize(8);
@@ -178,11 +178,11 @@ internal class ReportService : IReportService
                     {
                         column.Item().AlignCenter().Text(text =>
                         {
-                            text.Span("AlloK8").Bold();
-                            text.Span(" - Page ").NormalWeight();
-                            text.CurrentPageNumber();
-                            text.Span(" of ").NormalWeight();
-                            text.TotalPages();
+                            text.Span("AlloK8").Bold().FontSize(8);
+                            text.Span($" - {@T.PagePDFText} ").NormalWeight().FontSize(8);
+                            text.CurrentPageNumber().FontSize(8);
+                            text.Span($" {@T.OfPDFText} ").NormalWeight().FontSize(8);
+                            text.TotalPages().FontSize(8);
                         });
                     });
                 });

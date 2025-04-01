@@ -195,13 +195,13 @@ public class ProjectsController : Controller
         return this.Ok(users);
     }
 
-    [HttpGet("/project/{projectId}/create-report")]
-    public async Task<IActionResult> CreateReport([FromRoute] int projectId, string projectName)
+    [HttpGet("/project/{projectId}/{projectName}/create-report")]
+    public async Task<IActionResult> CreateReport([FromRoute] int projectId, [FromRoute] string projectName)
     {
         try
         {
             var pdfBytes = await this.reportService.GenerateProjectReportPdfAsync(projectId, projectName);
-            return this.File(pdfBytes, "application/pdf", $"Project_{projectId}_Report.pdf");
+            return this.File(pdfBytes, "application/pdf", $"{projectName}_Report.pdf");
         }
         catch (Exception ex)
         {
