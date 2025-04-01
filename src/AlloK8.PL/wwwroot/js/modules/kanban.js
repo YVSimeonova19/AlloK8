@@ -61,7 +61,7 @@ async function openTaskModal(element) {
     }
 }
 
-// Modify the addTask function to better handle new task creation
+// Create a task
 async function addTask(columnId) {
     let input = document.getElementById("newTask" + columnId.charAt(0).toUpperCase() + columnId.slice(1));
     let taskText = input.value.trim();
@@ -89,9 +89,6 @@ async function addTask(columnId) {
             taskItem.className = 'list-group-item draggable d-flex align-items-center';
             taskItem.draggable = true;
             taskItem.ondragstart = drag;
-            taskItem.onclick = function () {
-                openTaskModal(this);
-            };
             taskItem.innerHTML = `
             <p>${newTask.title}</p>
             <button class="btn btn-icon bg-transparent text-danger ml-auto" onclick="handleRemoveClick(event, this)">
@@ -105,24 +102,11 @@ async function addTask(columnId) {
             setTimeout(() => {
                 taskItem.classList.remove("task-added");
             }, 1000);
-
-            // Optional: Pre-populate the modal with new task details
             setTimeout(() => {
-                const newTaskElement = document.getElementById(`task-${newTask.id}`);
-                if (newTaskElement) {
-                    // Prepare modal with minimal details
-                    const titleInput = document.getElementById("title");
-                    const taskIdInput = document.querySelector("input[name='Id']");
-                    const modalTitleElement = document.getElementById("modal-title");
-
-                    if (titleInput) titleInput.value = newTask.title;
-                    if (taskIdInput) taskIdInput.value = newTask.id;
-                    if (modalTitleElement) modalTitleElement.innerText = newTask.title;
-
-                    // Show the modal
-                    $('#taskModal').modal("show");
-                }
-            }, 100);  // Small delay to ensure DOM is updated
+                taskItem.onclick = function () {
+                    openTaskModal(this);
+                };
+            }, 500);
         } else {
             console.error('Failed to add task');
             showNotification("error", "Failed to add task");
@@ -384,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('onlyMineCheckbox').checked = onlyMine;
 
     // Enable or disable drag-and-drop based on the toggle state
-    if (sortByPriority) {
+    if (sortByPriority || onlyMine) {
         disableDragAndDrop();
     } else {
         enableDragAndDrop();

@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to get the project ID from the URL
     function getProjectIdFromUrl() {
-        // Try to extract project ID from URL, assuming it follows the pattern /projects/{projectId}/...
         const urlParts = window.location.pathname.split('/');
         const projectIdIndex = urlParts.indexOf('projects') + 1;
 
@@ -207,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Update UI for selected labels
         renderSelectedLabels();
 
-        // If we found the removed label, add it back to availableLabels
+        // If we found the removed label, add it back to available labels
         if (removedLabel) {
             // Make sure it's not already in availableLabels
             if (!availableLabels.some(label => label.id === removedLabel.id)) {
