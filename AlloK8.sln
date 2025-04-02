@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlloK8.BLL.Tests", "src\AlloK8.BLL.Tests\AlloK8.BLL.Tests.csproj", "{A257C854-A247-4273-B2D1-13F44632D37E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlloK8.Tests.Integration", "AlloK8.Tests.Integration\AlloK8.Tests.Integration.csproj", "{4BAA63E6-BF3F-47AE-A053-DDEB5F77523A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlloK8.Tests.Integration", "src\AlloK8.Tests.Integration\AlloK8.Tests.Integration.csproj", "{CF6CE3B2-583C-477F-B088-3D1738F18E7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +49,10 @@ Global
 		{A257C854-A247-4273-B2D1-13F44632D37E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A257C854-A247-4273-B2D1-13F44632D37E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A257C854-A247-4273-B2D1-13F44632D37E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BAA63E6-BF3F-47AE-A053-DDEB5F77523A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BAA63E6-BF3F-47AE-A053-DDEB5F77523A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BAA63E6-BF3F-47AE-A053-DDEB5F77523A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BAA63E6-BF3F-47AE-A053-DDEB5F77523A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF6CE3B2-583C-477F-B088-3D1738F18E7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF6CE3B2-583C-477F-B088-3D1738F18E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF6CE3B2-583C-477F-B088-3D1738F18E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF6CE3B2-583C-477F-B088-3D1738F18E7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

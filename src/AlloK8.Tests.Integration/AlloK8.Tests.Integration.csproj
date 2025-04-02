@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\AlloK8.BLL\AlloK8.BLL.csproj" />
-    <ProjectReference Include="..\src\AlloK8.Common\AlloK8.Common.csproj" />
-    <ProjectReference Include="..\src\AlloK8.DAL\AlloK8.DAL.csproj" />
+    <ProjectReference Include="..\AlloK8.BLL\AlloK8.BLL.csproj" />
+    <ProjectReference Include="..\AlloK8.Common\AlloK8.Common.csproj" />
+    <ProjectReference Include="..\AlloK8.DAL\AlloK8.DAL.csproj" />
   </ItemGroup>
 
 </Project>
