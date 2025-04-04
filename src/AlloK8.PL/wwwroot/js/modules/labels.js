@@ -13,5 +13,8 @@ function openEditModal(labelId, title, description, color) {
 
     document.getElementById("modal-title").innerText = title;
 
+    // Store the current editing label ID in a data attribute on the modal itself
+    document.getElementById('labelEditModal').setAttribute('data-editing-label-id', labelId);
+
     $('#labelEditModal').modal('show');
 }

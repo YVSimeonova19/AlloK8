@@ -19,17 +19,33 @@
     }, 100); // Small delay to ensure elements are available
 };
 
-// Attach event handlers to the color picker when document is ready
+// Attach event handlers when document is ready
 document.addEventListener("DOMContentLoaded", function () {
+    // Initialize data attributes for all label rows for reliable selection
+    function initializeLabelRows() {
+        document.querySelectorAll('table.table-hover tbody tr').forEach(row => {
+            const editButton = row.querySelector('button.btn-outline-secondary');
+            if (editButton) {
+                const onclickAttr = editButton.getAttribute('onclick') || '';
+                const match = onclickAttr.match(/openEditModal\((\d+)/);
+                if (match && match[1]) {
+                    row.setAttribute('data-label-id', match[1]);
+                }
+            }
+        });
+    }
+
+    // Run this initially
+    initializeLabelRows();
+
+    // Set up color picker
     const setupColorPicker = function () {
-        // Color picker functionality
         const colorInput = document.getElementById('color');
         const colorPreview = document.querySelector('#labelEditModal .color-preview');
         const colorDisplay = document.getElementById('colorDisplay');
         const colorPicker = document.getElementById('colorPicker');
 
         if (colorPreview && colorDisplay && colorPicker) {
-            // Open color picker when clicking on the preview or text input
             colorPreview.addEventListener('click', function () {
                 colorPicker.click();
             });
@@ -38,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 colorPicker.click();
             });
 
-            // Update all values when color is selected
             colorPicker.addEventListener('input', function (e) {
                 const selectedColor = e.target.value;
                 colorInput.value = selectedColor;
@@ -50,15 +65,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    // Try to set up the color picker
     setupColorPicker();
 
     // Set up form action when modal opens
     $('#labelEditModal').on('shown.bs.modal', function () {
         const form = document.querySelector("#labelEditModal form");
-
-        // Update the form action with the correct ID
-        const labelId = form.querySelector('input[name="Id"]').value;
+        const labelId = document.getElementById('labelEditModal').getAttribute('data-editing-label-id');
         form.action = `/labels/${labelId}/edit`;
     });
 
@@ -66,13 +78,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("#labelEditModal form").addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        let form = e.target;
-        let formData = new FormData(form);
-        const labelId = formData.get('Id');
+        const form = e.target;
+        const formData = new FormData(form);
+        const labelId = document.getElementById('labelEditModal').getAttribute('data-editing-label-id');
 
         try {
-            // Send the form data as is (with # in color)
-            let response = await fetch(form.action, {
+            const response = await fetch(form.action, {
                 method: 'POST',
                 body: formData
             });
@@ -83,11 +94,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 try {
                     updatedLabel = await response.json();
 
-                    // Use the color directly from the response or from the form
+                    // Use the color from the response or from the form
                     updatedLabel.color = updatedLabel.color || formData.get('Color');
 
-                    // Find the table row
-                    const tr = document.querySelector(`tr:has(button[onclick*="${labelId}"])`);
+                    // Find the table row using the data attribute
+                    const tr = document.querySelector(`tr[data-label-id="${labelId}"]`);
+
                     if (tr) {
                         // Update the badge with new color and title
                         const badge = tr.querySelector('.badge');
@@ -97,28 +109,41 @@ document.addEventListener("DOMContentLoaded", function () {
                             badge.textContent = updatedLabel.title;
                         }
 
-                        // Update the description
+                        // Update the description cell
                         const descriptionCell = tr.querySelectorAll('td')[1];
                         if (descriptionCell) {
                             descriptionCell.textContent = updatedLabel.description;
                         }
 
-                        // Update the edit button onclick attributes
+                        // Properly escape values for attributes
+                        const safeTitle = updatedLabel.title.replace(/'/g, "\\'");
+                        const safeDescription = updatedLabel.description.replace(/'/g, "\\'");
+                        const safeColor = updatedLabel.color.replace(/'/g, "\\'");
+
+                        // Update the edit button onclick
                         const editButton = tr.querySelector('button.btn-outline-secondary');
                         if (editButton) {
-                            editButton.setAttribute('onclick', `openEditModal(${updatedLabel.id}, '${updatedLabel.title}', '${updatedLabel.description}', '${updatedLabel.color}')`);
+                            editButton.setAttribute('onclick',
+                                `openEditModal(${updatedLabel.id}, '${safeTitle}', '${safeDescription}', '${safeColor}')`);
                         }
 
-                        // Update delete button onclick attribute 
+                        // Update delete button onclick
                         const deleteButton = tr.querySelector('button.btn-outline-danger');
                         if (deleteButton) {
                             deleteButton.setAttribute('onclick', `openDeleteModal(${updatedLabel.id})`);
                         }
+
+                        // Update the data-label-id if the ID has changed
+                        if (updatedLabel.id !== parseInt(labelId)) {
+                            tr.setAttribute('data-label-id', updatedLabel.id);
+                        }
                     } else {
+                        console.error(`Could not find row with data-label-id=${labelId}`);
                         window.location.reload();
                         return;
                     }
                 } catch (jsonErr) {
+                    console.error('Error parsing JSON response:', jsonErr);
                     window.location.reload();
                     return;
                 }
@@ -129,6 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert('Failed to update label. Please try again.');
             }
         } catch (error) {
+            console.error('Error updating label:', error);
             alert('An error occurred while updating the label.');
         }
     });
